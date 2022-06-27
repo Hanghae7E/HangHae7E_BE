@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'hanghae7e6'
@@ -18,6 +19,10 @@ repositories {
 	mavenCentral()
 }
 
+jacoco {
+	toolVersion = "0.8.5"
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -31,6 +36,37 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 }
 
-tasks.named('test') {
+tasks.withType(Test) {
 	useJUnitPlatform()
+	finalizedBy 'jacocoTestReport'
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled true
+		xml.enabled false
+	}
+
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, includes: [
+					'**/service',
+			])
+		}))
+
+		finalizedBy 'jacocoTestCoverageVerification'
+	}
+
+	jacocoTestCoverageVerification {
+		violationRules( {
+			rule {
+				element = 'CLASS'
+
+				limit {
+					counter = 'LINE'
+					value = 'COVEREDRATIO'
+					minimum = 1.0
+				}
+			}
+		})}
 }
