@@ -1,0 +1,33 @@
+# 공통 설정
+server:
+  port: 8080
+
+---
+# 로컬 환경 설정
+spring:
+  profiles:
+    active: local
+
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql: trace
