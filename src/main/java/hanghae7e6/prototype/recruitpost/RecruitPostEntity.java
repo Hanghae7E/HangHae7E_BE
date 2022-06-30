@@ -10,9 +10,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecruitPosts {
+public class RecruitPostEntity {
 
     @Id
     @Column(name = "id", nullable = false)
