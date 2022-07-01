@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,18 @@ public class RecruitPostService {
         Sort sort = SortValue.getSort(requestDto.getSort());
 
         Pageable pageable = PageRequest.of(
-                requestDto.getPage(), requestDto.getPage(), sort);
+                requestDto.getPage(), requestDto.getLimit(), sort);
 
         posts = recruitPostRepository.findAll(pageable);
 
         return SimplePostResponseDto.getDtos(posts);
+    }
+
+    public DetailPostResponseDto getPost(Long postId){
+        RecruitPostEntity post = recruitPostRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("no data"));
+
+        return new DetailPostResponseDto(post);
+
     }
 }

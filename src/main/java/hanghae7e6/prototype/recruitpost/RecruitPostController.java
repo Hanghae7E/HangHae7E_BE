@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class RecruitPostController {
 
         PostParamDto requestDto = PostParamDto.builder()
                 .limit(limit)
-                .page(page-1)
+                .page(page)
                 .sort(sort)
                 .tag(tag).build();
 
@@ -44,6 +45,15 @@ public class RecruitPostController {
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
+    @GetMapping("/recruit/{postId}")
+    public ResponseEntity<DetailPostResponseDto> getPost(
+//            @AuthenticationPrincipal userDetailsImpl userDetails,
+            @PathVariable Long postId){
+
+        DetailPostResponseDto body = recruitPostService.getPost(postId);
+
+        return new ResponseEntity<>(body, HttpStatus.OK);
+    }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

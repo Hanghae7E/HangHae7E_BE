@@ -1,20 +1,15 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostParamDto {
 
     @NotBlank(message = PostDtoMessage.EMPTY_PARAMETER)
@@ -30,6 +25,14 @@ public class PostParamDto {
 
     @NotBlank(message = PostDtoMessage.EMPTY_PARAMETER)
     private String tag;
+
+    @Builder
+    public PostParamDto(int limit, int page, int sort, String tag) {
+        this.limit = limit;
+        this.page = page-1;
+        this.sort = sort;
+        this.tag = tag;
+    }
 
     public static void validate(@Valid PostParamDto requestDto){
     }
