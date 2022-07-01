@@ -1,5 +1,7 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
+import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,15 +22,17 @@ public class RecruitPostService {
     }
 
     public List<SimplePostResponseDto> getPosts(
-            int limit, int page, int sortOrder, String tag){
+            PostParamDto requestDto){
 
         Page<RecruitPostEntity> posts;
 
 //        if(tag.equals("all")){
 //        }
 
-        Sort sort = SortValue.getSort(sortOrder);
-        Pageable pageable = PageRequest.of(page, limit, sort);
+        Sort sort = SortValue.getSort(requestDto.getSort());
+
+        Pageable pageable = PageRequest.of(
+                requestDto.getPage(), requestDto.getPage(), sort);
 
         posts = recruitPostRepository.findAll(pageable);
 
