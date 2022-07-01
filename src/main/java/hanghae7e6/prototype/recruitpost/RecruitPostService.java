@@ -37,6 +37,8 @@ public class RecruitPostService {
 
         posts = recruitPostRepository.findAll(pageable);
 
+        System.out.println(posts.getClass().getName());
+
         return SimplePostResponseDto.getDtos(posts);
     }
 

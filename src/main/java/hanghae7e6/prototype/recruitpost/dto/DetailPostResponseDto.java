@@ -1,16 +1,15 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DetailPostResponseDto {
 
@@ -36,7 +35,7 @@ public class DetailPostResponseDto {
     public DetailPostResponseDto(RecruitPostEntity post){
 //        this.userId = post.getUser
         this.title = post.getTitle();
-        this.body = post.getTitle();
+        this.body = post.getBody();
         this.projectStartTime = post.getProjectStartTime();
         this.projectEndTime = post.getProjectEndTime();
         this.recruitDueTime = post.getRecruitDueTime();

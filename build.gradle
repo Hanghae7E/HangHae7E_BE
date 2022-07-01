@@ -43,32 +43,32 @@ tasks.withType(Test) {
 	finalizedBy 'jacocoTestReport'
 }
 
-jacocoTestReport {
-	reports {
-		html.enabled true
-		xml.enabled false
-	}
-
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, includes: [
-					'**/service',
-			])
-		}))
-
-		finalizedBy 'jacocoTestCoverageVerification'
-	}
-
-	jacocoTestCoverageVerification {
-		violationRules( {
-			rule {
-				element = 'CLASS'
-
-				limit {
-					counter = 'LINE'
-					value = 'COVEREDRATIO'
-					minimum = 1.0
-				}
-			}
-		})}
-}
+//jacocoTestReport {
+//	reports {
+//		html.enabled true
+//		xml.enabled false
+//	}
+//
+//	afterEvaluate {
+//		classDirectories.setFrom(files(classDirectories.files.collect {
+//			fileTree(dir: it, includes: [
+//					'**/service',
+//			])
+//		}))
+//
+//		finalizedBy 'jacocoTestCoverageVerification'
+//	}
+//
+//	jacocoTestCoverageVerification {
+//		violationRules( {
+//			rule {
+//				element = 'CLASS'
+//
+//				limit {
+//					counter = 'LINE'
+//					value = 'COVEREDRATIO'
+//					minimum = 1.0
+//				}
+//			}
+//		})}
+//}
