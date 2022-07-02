@@ -6,7 +6,7 @@ REPOSITORY=/home/ec2-user/huddleUp
 echo "> build 파일 복사"
 cp $REPOSITORY/build/libs/*SNAPSHOT.jar $REPOSITORY/
 
-CURRENT_PID=$(pgrep -fl realWorld)
+CURRENT_PID=$(pgrep -fl prototype)
 echo "> 현재 실행중인 애플리케이션 pid 확인: $CURRENT_PID"
 
 if [ -z "$CURRENT_PID" ]; then
