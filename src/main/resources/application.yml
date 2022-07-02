@@ -37,6 +37,7 @@ logging:
 spring:
   profiles:
     active: prov
+    include: oauth
 
   datasource:
     url: ${DATABASE_URL}

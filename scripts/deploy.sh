@@ -23,4 +23,4 @@ JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
 chmod +x $JAR_NAME
 
 echo "> 새 애플리케이션을 실행합니다."
-nohup java -jar $JAR_NAME > /home/ec2-user/huddleUp/nohup.out 2>&1 &
+nohup java -jar -Dspring.profiles.active=prod -Dspring.config.location=classpath:/application.yml,/home/ec2-user/application-oauth.yml prototype-0.0.1-SNAPSHOT.jar > /home/ec2-user/huddleUp/nohup.out 2>&1 &
