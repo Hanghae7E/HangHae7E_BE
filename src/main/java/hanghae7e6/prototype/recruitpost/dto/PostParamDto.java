@@ -27,7 +27,7 @@ public class PostParamDto {
     private String tag;
 
     @Builder
-    public PostParamDto(int limit, int page, int sort, String tag) {
+    public PostParamDto(int limit, int page, int sort, String tag){
         this.limit = limit;
         this.page = page-1;
         this.sort = sort;

@@ -2,6 +2,7 @@ package hanghae7e6.prototype.recruitpost;
 
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
+import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -23,6 +25,7 @@ public class RecruitPostController {
     public RecruitPostController(RecruitPostService recruitPostService) {
         this.recruitPostService = recruitPostService;
     }
+
 
     @GetMapping("/main")
     public ResponseEntity<List<SimplePostResponseDto>> getPosts(
@@ -45,15 +48,46 @@ public class RecruitPostController {
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
+
     @GetMapping("/recruit/{postId}")
     public ResponseEntity<DetailPostResponseDto> getPost(
-//            @AuthenticationPrincipal userDetailsImpl userDetails,
             @PathVariable Long postId){
 
         DetailPostResponseDto body = recruitPostService.getPost(postId);
 
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
+
+
+    @PostMapping("/recruitPost")
+    public ResponseEntity<String> createPost(
+//            @AuthenticationPrinciple UserDetails userDetails
+            @ModelAttribute @Valid PostRequestDto requestDto){
+
+        recruitPostService.createPost(requestDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+
+    @PutMapping("/recruitPost/{postId}")
+    public ResponseEntity<String> updatePost(
+//            UserDetails userDetails,
+            @PathVariable Long postId,
+            @ModelAttribute PostRequestDto postRequestDto){
+
+//        recruitPostService.updatePost()
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+
+//    @DeleteMapping("recruitPost/{postId}")
+
+
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
