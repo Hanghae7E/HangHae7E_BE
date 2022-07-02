@@ -158,3 +158,6 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
+
+# properties
+application-oauth.yml
