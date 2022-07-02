@@ -40,7 +40,7 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION }}
         
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./huddleUp.zip s3://$S3_BUCKET_NAME/huddleUp.zip
+      run: aws s3 cp --region us-east-1 ./huddleUp.zip s3://$S3_BUCKET_NAME/huddleUp.zip
 
     - name: Code Deploy
-      run: aws deploy create-deployment --application-name huddleUp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name realworld-single-deploy --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=huddleUp.zip
+      run: aws deploy create-deployment --application-name huddleUp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name huddleUp-deploy --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=huddleUp.zip
