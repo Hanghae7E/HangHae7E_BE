@@ -2,12 +2,16 @@
 server:
   port: 8080
 
+spring:
+  profiles:
+    include: oauth
+
 ---
 # 로컬 환경 설정
 spring:
-  profiles:
-    active: local
-    include: oauth
+  config:
+    activate:
+      on-profile: local
 
   h2:
     console:
@@ -38,9 +42,9 @@ jwt:
 ---
 # 프로덕션(배포) 환경 설정
 spring:
-  profiles:
-    active: prov
-    include: oauth
+  config:
+    activate:
+      on-profile: prod
 
   datasource:
     url: ${DATABASE_URL}
@@ -57,3 +61,5 @@ spring:
       hibernate:
         show_sql : false
         format_sql : false
+jwt:
+  secret: ${JWT_SECRET}
