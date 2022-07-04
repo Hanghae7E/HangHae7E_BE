@@ -1,6 +1,6 @@
-package hanghae7e6.prototype.config.oauth;
+package hanghae7e6.prototype.security.oauth;
 
-import hanghae7e6.prototype.config.jwt.JwtProvider;
+import hanghae7e6.prototype.security.jwt.JwtProvider;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

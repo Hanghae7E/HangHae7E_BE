@@ -1,6 +1,5 @@
-package hanghae7e6.prototype.dto;
+package hanghae7e6.prototype.user;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 

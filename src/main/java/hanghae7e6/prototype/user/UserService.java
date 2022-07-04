@@ -1,4 +1,4 @@
-package hanghae7e6.prototype.service;
+package hanghae7e6.prototype.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

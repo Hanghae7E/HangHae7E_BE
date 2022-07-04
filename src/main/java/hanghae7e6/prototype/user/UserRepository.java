@@ -1,6 +1,5 @@
-package hanghae7e6.prototype.repository;
+package hanghae7e6.prototype.user;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

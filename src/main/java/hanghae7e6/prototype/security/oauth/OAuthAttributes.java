@@ -1,7 +1,7 @@
-package hanghae7e6.prototype.config.oauth;
+package hanghae7e6.prototype.security.oauth;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
-import hanghae7e6.prototype.domain.entity.UserRole;
+import hanghae7e6.prototype.user.UserEntity;
+import hanghae7e6.prototype.user.UserRole;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Builder;

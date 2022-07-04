@@ -1,7 +1,5 @@
-package hanghae7e6.prototype.dto;
+package hanghae7e6.prototype.user;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
-import hanghae7e6.prototype.domain.entity.UserRole;
 import java.util.ArrayList;
 import java.util.Collection;
 import lombok.Builder;

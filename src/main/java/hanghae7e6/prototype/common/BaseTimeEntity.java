@@ -1,4 +1,4 @@
-package hanghae7e6.prototype.domain.entity;
+package hanghae7e6.prototype.common;
 
 import java.time.LocalDateTime;
 import javax.persistence.MappedSuperclass;

@@ -1,4 +1,4 @@
-package hanghae7e6.prototype.config.jwt;
+package hanghae7e6.prototype.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

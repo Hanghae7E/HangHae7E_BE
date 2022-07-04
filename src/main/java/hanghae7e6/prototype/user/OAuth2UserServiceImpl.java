@@ -1,8 +1,6 @@
-package hanghae7e6.prototype.service;
+package hanghae7e6.prototype.user;
 
-import hanghae7e6.prototype.config.oauth.OAuthAttributes;
-import hanghae7e6.prototype.domain.entity.UserEntity;
-import hanghae7e6.prototype.repository.UserRepository;
+import hanghae7e6.prototype.security.oauth.OAuthAttributes;
 import java.util.Collections;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

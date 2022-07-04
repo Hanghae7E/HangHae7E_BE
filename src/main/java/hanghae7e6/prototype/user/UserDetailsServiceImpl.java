@@ -1,8 +1,5 @@
-package hanghae7e6.prototype.service;
+package hanghae7e6.prototype.user;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
-import hanghae7e6.prototype.dto.CustomUserDetails;
-import hanghae7e6.prototype.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

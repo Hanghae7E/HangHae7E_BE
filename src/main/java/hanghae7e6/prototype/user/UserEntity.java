@@ -1,5 +1,6 @@
-package hanghae7e6.prototype.domain.entity;
+package hanghae7e6.prototype.user;
 
+import hanghae7e6.prototype.common.BaseTimeEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;

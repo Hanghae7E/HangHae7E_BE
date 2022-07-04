@@ -1,4 +1,4 @@
-package hanghae7e6.prototype.config.jwt;
+package hanghae7e6.prototype.security.jwt;
 
 import com.google.gson.Gson;
 import hanghae7e6.prototype.exception.ErrorCode;
