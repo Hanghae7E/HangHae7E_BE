@@ -6,6 +6,7 @@ import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,18 +35,18 @@ public class RecruitPostController {
             @RequestParam("limit") int limit,
             @RequestParam("page") int page,
             @RequestParam("sort") int sort,
-            @RequestParam("tag") String tag){
+            @RequestParam("tag") Long tag){
 
         PostParamDto requestDto = PostParamDto.builder()
                 .limit(limit)
                 .page(page)
                 .sort(sort)
-                .tag(tag).build();
+                .tagId(tag).build();
 
         PostParamDto.validate(requestDto);
 
-        List<SimplePostResponseDto> body =
-                recruitPostService.getPosts(requestDto);
+        Page<RecruitPostEntity> posts = recruitPostService.getPosts(requestDto);
+        List<SimplePostResponseDto> body = SimplePostResponseDto.getDtos(posts);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
@@ -55,7 +56,8 @@ public class RecruitPostController {
     public ResponseEntity<DetailPostResponseDto> getPost(
             @PathVariable Long postId){
 
-        DetailPostResponseDto body = recruitPostService.getPost(postId);
+        RecruitPostEntity post = recruitPostService.getPost(postId);
+        DetailPostResponseDto body = new DetailPostResponseDto(post);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }

@@ -6,7 +6,12 @@ import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagService;
 import hanghae7e6.prototype.repository.UserRepository;
+import hanghae7e6.prototype.tag.TagEntity;
+import hanghae7e6.prototype.tag.TagService;
+import hanghae7e6.prototype.tag.TagValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,47 +25,56 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecruitPostService {
 
     RecruitPostRepository recruitPostRepository;
+    RecruitPostTagService recruitPostTagService;
 
     // UserService가 구현되지 않아서 임시적으로 사용
     @Autowired
     UserRepository userRepository;
 
+
     @Autowired
-    public RecruitPostService(RecruitPostRepository recruitPostRepository) {
+    public RecruitPostService(RecruitPostRepository recruitPostRepository,
+                              RecruitPostTagService recruitPostTagService) {
         this.recruitPostRepository = recruitPostRepository;
+        this.recruitPostTagService = recruitPostTagService;
     }
 
 
     @Transactional(readOnly = true)
-    public List<SimplePostResponseDto> getPosts(
+    public Page<RecruitPostEntity> getPosts(
             PostParamDto requestDto) {
-
-        Page<RecruitPostEntity> posts;
-
-//        if(tag.equals("all")){
-//        }
 
         Sort sort = SortValue.getSort(requestDto.getSort());
         Pageable pageable = PageRequest.of(
                 requestDto.getPage(), requestDto.getLimit(), sort);
 
-        posts = recruitPostRepository.findAll(pageable);
+        if(requestDto.getTagId().equals(TagValue.ALL.getTagId())){
+            return recruitPostRepository.findAll(pageable);
+        }
 
-        return SimplePostResponseDto.getDtos(posts);
+
+        List<Long> postIds = recruitPostTagService.findByTagId(requestDto.getTagId()).stream()
+                .map(RecruitPostTagEntity::getRecruitPost)
+                .map(RecruitPostEntity::getId)
+                .collect(Collectors.toList());
+
+        return recruitPostRepository.findAllByIdIn(postIds, pageable);
+
+
     }
 
 
     @Transactional(readOnly = true)
-    public DetailPostResponseDto getPost(Long postId) {
-        RecruitPostEntity post = recruitPostRepository.findById(postId)
+    public RecruitPostEntity getPost(Long postId) {
+        return recruitPostRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("no data"));
 
-        return new DetailPostResponseDto(post);
     }
 
 
@@ -69,11 +83,10 @@ public class RecruitPostService {
             CustomUserDetails userDetails,
             PostRequestDto requestDto) {
 
-
         UserEntity user = userRepository.findById(userDetails.getId())
                 .orElseThrow(IllegalArgumentException::new);
 
-        RecruitPostEntity entity = requestDto.getPostEntity(user);
+        RecruitPostEntity entity = requestDto.getPostEntity(user, recruitPostTagService);
 
         return recruitPostRepository.save(entity);
     }
@@ -100,6 +113,7 @@ public class RecruitPostService {
         return recruitPostRepository.findByIdAndUserId(postId, userDetails.getId())
                 .orElseThrow(IllegalArgumentException::new);
     }
+
 
     @Transactional
     public RecruitPostEntity deletePost(

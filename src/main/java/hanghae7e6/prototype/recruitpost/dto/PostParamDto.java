@@ -24,14 +24,14 @@ public class PostParamDto{
     private int sort;
 
     @NotBlank(message = PostDtoMessage.EMPTY_PARAMETER)
-    private String tag;
+    private Long tagId;
 
     @Builder
-    public PostParamDto(int limit, int page, int sort, String tag){
+    public PostParamDto(int limit, int page, int sort, Long tagId){
         this.limit = limit;
         this.page = page-1;
         this.sort = sort;
-        this.tag = tag;
+        this.tagId = tagId;
     }
 
     public static void validate(@Valid PostParamDto requestDto){

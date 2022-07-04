@@ -2,6 +2,8 @@ package hanghae7e6.prototype.recruitpost.dto;
 
 import hanghae7e6.prototype.domain.entity.UserEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagService;
 import lombok.*;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,14 +41,13 @@ public class PostRequestDto {
     @Min(1)
     private Integer totalMemberCount;
 
-    private List<String> tagList;
+    private List<Long> tags;
 
     private MultipartFile img;
 
-    public RecruitPostEntity getPostEntity(UserEntity user){
+    public RecruitPostEntity getPostEntity(UserEntity user, RecruitPostTagService recruitPostTagService){
 
-
-        return RecruitPostEntity.builder()
+        RecruitPostEntity postEntity = RecruitPostEntity.builder()
                 .user(user)
                 .title(title)
                 .body(body)
@@ -57,8 +58,11 @@ public class PostRequestDto {
                 .recruitDueTime(Objects.nonNull(recruitDueTime)?
                         LocalDate.parse(recruitDueTime) : null)
                 .totalMemderCount(totalMemberCount)
-//                .tagList()
 //                .img(awsS3.save(img))
                 .build();
+
+        recruitPostTagService.saveTags(postEntity, tags);
+
+        return postEntity;
     }
 }

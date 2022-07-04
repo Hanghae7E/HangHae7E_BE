@@ -2,6 +2,7 @@ package hanghae7e6.prototype.recruitpost;
 
 import hanghae7e6.prototype.domain.entity.UserEntity;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +18,7 @@ import java.util.Objects;
 @Builder
 @DynamicInsert
 @DynamicUpdate
+@Table(name = "RECRUIT_POSTS")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecruitPostEntity {
@@ -28,6 +31,9 @@ public class RecruitPostEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "recruitPost", orphanRemoval = true)
+    private List<RecruitPostTagEntity> recruitPostTag;
 
     @Column(nullable = false)
     private String title;
