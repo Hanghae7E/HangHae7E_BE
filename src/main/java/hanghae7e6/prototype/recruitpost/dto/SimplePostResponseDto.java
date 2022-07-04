@@ -1,8 +1,8 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.tag.TagResponseDto;
+import hanghae7e6.prototype.user.UserEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

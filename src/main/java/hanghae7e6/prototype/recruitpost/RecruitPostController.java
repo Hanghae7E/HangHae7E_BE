@@ -1,10 +1,10 @@
 package hanghae7e6.prototype.recruitpost;
 
-import hanghae7e6.prototype.dto.CustomUserDetails;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
+import hanghae7e6.prototype.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller

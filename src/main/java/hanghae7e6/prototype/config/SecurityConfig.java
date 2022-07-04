@@ -1,13 +1,13 @@
 package hanghae7e6.prototype.config;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import hanghae7e6.prototype.security.jwt.JwtAuthEntryPoint;
 import hanghae7e6.prototype.security.jwt.JwtFilter;
 import hanghae7e6.prototype.security.jwt.JwtProvider;
 import hanghae7e6.prototype.security.oauth.OAuth2AuthenticationSuccessHandler;
 import hanghae7e6.prototype.user.OAuth2UserServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

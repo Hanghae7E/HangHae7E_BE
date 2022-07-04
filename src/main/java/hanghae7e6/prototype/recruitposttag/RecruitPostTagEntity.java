@@ -2,7 +2,6 @@ package hanghae7e6.prototype.recruitposttag;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.tag.TagEntity;
-import hanghae7e6.prototype.tag.TagRepository;
 import lombok.*;
 
 import javax.persistence.*;

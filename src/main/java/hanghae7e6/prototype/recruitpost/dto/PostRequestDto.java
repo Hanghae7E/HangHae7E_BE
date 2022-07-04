@@ -1,16 +1,16 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
-import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagService;
+import hanghae7e6.prototype.user.UserEntity;
 import lombok.*;
-import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 

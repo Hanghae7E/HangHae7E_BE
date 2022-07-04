@@ -1,15 +1,11 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
-import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
-import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.tag.TagResponseDto;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter

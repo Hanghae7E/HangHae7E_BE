@@ -1,15 +1,14 @@
 package hanghae7e6.prototype.recruitpost;
 
-import hanghae7e6.prototype.domain.entity.UserEntity;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
+import hanghae7e6.prototype.user.UserEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
