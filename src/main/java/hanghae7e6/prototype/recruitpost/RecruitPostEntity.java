@@ -13,7 +13,6 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @DynamicInsert
 @DynamicUpdate
