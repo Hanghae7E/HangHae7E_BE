@@ -2,11 +2,10 @@ package hanghae7e6.prototype.security.oauth;
 
 import hanghae7e6.prototype.user.UserEntity;
 import hanghae7e6.prototype.user.UserRole;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Builder;
+import lombok.Getter;
 
 @Getter
 public class OAuthAttributes {
