@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
+import hanghae7e6.prototype.domain.entity.UserEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,16 +32,18 @@ public class SimplePostResponseDto {
 
     private String projectImage;
 
-    private LocalDateTime projectStartTime;
+    private LocalDate projectStartTime;
 
-    private LocalDateTime projectEndTime;
+    private LocalDate projectEndTime;
 
-    private LocalDateTime recruitDueTime;
+    private LocalDate recruitDueTime;
 
     private List<String> tags;
 
     public SimplePostResponseDto(RecruitPostEntity post){
-//        this.username = post.
+        UserEntity user = post.getUser();
+
+        this.username = user.getUsername();
 //        this.authorImage = post.getUser().getImage();
 //        this.introduce = post.
 //        this.userPosition

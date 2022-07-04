@@ -51,10 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
             .authorizeRequests()
-//            .antMatchers("/api","/api/login", "/api/register").permitAll()
-//            .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
-//            .antMatchers(HttpMethod.GET, "/api/recruitPost/**").permitAll()
-//            .antMatchers(HttpMethod.GET, "/login/**").permitAll()
+            .antMatchers("/api","/api/login", "/api/register").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/recruitPost/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/login/**").permitAll()
 //            .antMatchers("/api/user").hasRole(UserRole.USER.name())
             .anyRequest().permitAll()
 //            .authenticated()
@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
             .oauth2Login()
-//            .defaultSuccessUrl("/login-success")
+            .defaultSuccessUrl("/login-success")
             .successHandler(oAuth2AuthenticationSuccessHandler)
             .userInfoEndpoint()
             .userService(oAuth2UserService);

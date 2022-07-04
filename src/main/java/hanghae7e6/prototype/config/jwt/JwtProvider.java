@@ -8,6 +8,8 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -62,13 +64,15 @@ public class JwtProvider {
     public Authentication getAuthentication(String token) {
         String userId = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
                             .get("userId", String.class);
+
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
         return new UsernamePasswordAuthenticationToken(
             userDetails, "", userDetails.getAuthorities());
     }
 
-    public void setJwtToHeader(String jwt, HttpServletResponse response) {
+    public void setJwtToHeader(String jwt, HttpServletResponse response){
         response.addHeader("Authorization", jwt);
         response.addHeader("Token-type", "Bearer");
     }

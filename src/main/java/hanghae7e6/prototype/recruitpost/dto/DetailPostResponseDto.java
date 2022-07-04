@@ -3,6 +3,7 @@ package hanghae7e6.prototype.recruitpost.dto;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,11 +20,11 @@ public class DetailPostResponseDto {
 
     private String body;
 
-    private LocalDateTime projectStartTime;
+    private LocalDate projectStartTime;
 
-    private LocalDateTime projectEndTime;
+    private LocalDate projectEndTime;
 
-    private LocalDateTime recruitDueTime;
+    private LocalDate recruitDueTime;
 
     private int totalHeadCount;
 
@@ -33,7 +34,7 @@ public class DetailPostResponseDto {
 
 
     public DetailPostResponseDto(RecruitPostEntity post){
-//        this.userId = post.getUser
+        this.userId = post.getUser().getId();
         this.title = post.getTitle();
         this.body = post.getBody();
         this.projectStartTime = post.getProjectStartTime();

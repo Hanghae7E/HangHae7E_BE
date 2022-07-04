@@ -26,13 +26,6 @@ jacoco {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-<<<<<<< HEAD
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-    compileOnly 'org.projectlombok:lombok'
-=======
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -43,7 +36,6 @@ dependencies {
 	compileOnly 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.6.8'
 	compileOnly 'org.projectlombok:lombok'
 
->>>>>>> 94bb954 (FEAT: 사용자 기능 - 소셜 회원가입, 로그인 기능 구현(구글), JWT 적용)
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'

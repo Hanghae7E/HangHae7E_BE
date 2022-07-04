@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.dto.CustomUserDetails;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
@@ -7,6 +8,7 @@ import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,47 +47,54 @@ public class RecruitPostController {
         List<SimplePostResponseDto> body =
                 recruitPostService.getPosts(requestDto);
 
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 
-    @GetMapping("/recruit/{postId}")
+    @GetMapping("/recruitPost/{postId}")
     public ResponseEntity<DetailPostResponseDto> getPost(
             @PathVariable Long postId){
 
         DetailPostResponseDto body = recruitPostService.getPost(postId);
 
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 
     @PostMapping("/recruitPost")
-    public ResponseEntity<String> createPost(
-//            @AuthenticationPrinciple UserDetails userDetails
-            @ModelAttribute @Valid PostRequestDto requestDto){
+    public ResponseEntity<?> createPost(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @ModelAttribute PostRequestDto requestDto){
 
-        recruitPostService.createPost(requestDto);
+        recruitPostService.createPost(userDetails, requestDto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
-
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 
     @PutMapping("/recruitPost/{postId}")
-    public ResponseEntity<String> updatePost(
-//            UserDetails userDetails,
+    public ResponseEntity<?> updatePost(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long postId,
-            @ModelAttribute PostRequestDto postRequestDto){
+            @ModelAttribute PostRequestDto requestDto){
 
-//        recruitPostService.updatePost()
+        recruitPostService.updatePost(userDetails, postId, requestDto);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 
 
 
-//    @DeleteMapping("recruitPost/{postId}")
+    @DeleteMapping("recruitPost/{postId}")
+    public ResponseEntity<?> deletePost(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long postId){
+
+        recruitPostService.deletePost(userDetails, postId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 
 
@@ -101,6 +110,6 @@ public class RecruitPostController {
                 .findFirst()
                 .orElseGet(() -> "there's no error message");
 
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 }
