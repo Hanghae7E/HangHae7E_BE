@@ -5,7 +5,7 @@ env:
 
 on:
   push:
-    branches: [ "main", "CICD-Setting" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
