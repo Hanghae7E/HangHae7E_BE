@@ -7,6 +7,7 @@ import hanghae7e6.prototype.security.oauth.OAuth2AuthenticationSuccessHandler;
 import hanghae7e6.prototype.user.OAuth2UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -49,10 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
             .authorizeRequests()
-//            .antMatchers("/api","/api/login", "/api/register").permitAll()
-//            .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
-//            .antMatchers(HttpMethod.GET, "/api/recruitPost/**").permitAll()
-//            .antMatchers(HttpMethod.GET, "/login/**").permitAll()
+            .antMatchers("/api","/api/login", "/api/register").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/recruitPost/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/login/**").permitAll()
+
 //            .antMatchers("/api/user").hasRole(UserRole.USER.name())
             .anyRequest().permitAll()
 //            .authenticated()
@@ -64,7 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
             .oauth2Login()
-//            .defaultSuccessUrl("/login-success")
+            .defaultSuccessUrl("/login-success")
+
             .successHandler(oAuth2AuthenticationSuccessHandler)
             .userInfoEndpoint()
             .userService(oAuth2UserService);
