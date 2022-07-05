@@ -23,7 +23,7 @@ import java.util.Objects;
 public class RecruitPostEntity {
 
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "RECRUIT_POST_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

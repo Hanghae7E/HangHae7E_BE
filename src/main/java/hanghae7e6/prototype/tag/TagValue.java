@@ -21,4 +21,8 @@ public enum TagValue {
         this.tagId = tagId;
         this.value = value;
     }
+
+    public static boolean isAll(Long tagId){
+        return ALL.getTagId().equals(tagId);
+    }
 }

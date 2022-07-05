@@ -46,7 +46,7 @@ public class RecruitPostService {
         Pageable pageable = PageRequest.of(
                 requestDto.getPage(), requestDto.getLimit(), sort);
 
-        if(requestDto.getTagId().equals(TagValue.ALL.getTagId())){
+        if(TagValue.isAll(requestDto.getTagId())){
             return recruitPostRepository.findAll(pageable);
         }
 
