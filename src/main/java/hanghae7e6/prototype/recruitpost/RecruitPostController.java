@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.ObjectError;
@@ -31,10 +32,10 @@ public class RecruitPostController {
 
     @GetMapping("/main")
     public ResponseEntity<List<SimplePostResponseDto>> getPosts(
-            @RequestParam("limit") int limit,
-            @RequestParam("page") int page,
-            @RequestParam("sort") int sort,
-            @RequestParam("tag") Long tag){
+            @Nullable @RequestParam("limit") Integer limit,
+            @Nullable @RequestParam("page") Integer page,
+            @Nullable @RequestParam("sort") Integer sort,
+            @Nullable @RequestParam("tag") Long tag){
 
         PostParamDto requestDto = PostParamDto.builder()
                 .limit(limit)
