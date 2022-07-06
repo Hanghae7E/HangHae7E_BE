@@ -39,27 +39,18 @@ public class UserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String username;
 
-    @Column(name = "PHONE_NUMBER", nullable = true)
-    private String phoneNumber;
-
-    @Column(name = "IMAGE_URL", nullable = true)
-    private String imageUrl;
-
-    @Column(name = "SOCIAL_TYPE", nullable = false)
+    @Column(name = "SOCIAL_TYPE", nullable = true)
     private String socialType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "USER_ROLE", nullable = false)
+    @Column(name = "USER_ROLE", nullable = true)
     private UserRole userRole;
 
     @Builder
-    public UserEntity(Long id, String email, String username,
-        String phoneNumber, String imageUrl, UserRole userRole, String socialType) {
+    public UserEntity(Long id, String email, String username, UserRole userRole, String socialType) {
         this.id = id;
         this.email = email;
         this.username = username;
-        this.phoneNumber = phoneNumber;
-        this.imageUrl = imageUrl;
         this.userRole = userRole;
         this.socialType = socialType;
     }

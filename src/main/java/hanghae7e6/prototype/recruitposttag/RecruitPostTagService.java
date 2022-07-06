@@ -3,10 +3,9 @@ package hanghae7e6.prototype.recruitposttag;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.tag.TagService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class RecruitPostTagService {
