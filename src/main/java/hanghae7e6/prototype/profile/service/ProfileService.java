@@ -12,10 +12,11 @@ import hanghae7e6.prototype.profile.entity.ProfileTagEntity;
 import hanghae7e6.prototype.profile.repository.PositionRepository;
 import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.profile.repository.ProfileTagRepository;
-import java.util.List;
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class ProfileService {

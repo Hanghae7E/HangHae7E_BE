@@ -2,10 +2,11 @@ package hanghae7e6.prototype.recruitposttag;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.tag.TagEntity;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter

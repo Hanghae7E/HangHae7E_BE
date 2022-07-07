@@ -2,20 +2,10 @@ package hanghae7e6.prototype.tag;
 
 import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
@@ -30,9 +20,8 @@ public class TagEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tag", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tag", orphanRemoval = true)
     private List<RecruitPostTagEntity> recruitPostTag;
-
 
     @Column(nullable = false, unique = true)
     private String body;
@@ -40,5 +29,9 @@ public class TagEntity extends BaseTimeEntity {
     public TagEntity(TagValue tag){
         this.id = tag.getTagId();
         this.body = tag.getValue();
+    }
+
+    public TagEntity(Long id){
+        this.id = id;
     }
 }

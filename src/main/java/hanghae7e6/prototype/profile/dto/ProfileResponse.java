@@ -4,10 +4,11 @@ package hanghae7e6.prototype.profile.dto;
 import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.profile.entity.ProfileTagEntity;
 import hanghae7e6.prototype.user.UserEntity;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ProfileResponse {

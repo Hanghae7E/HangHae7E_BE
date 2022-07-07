@@ -1,7 +1,7 @@
-package hanghae7e6.prototype.recruitposttag;
+package hanghae7e6.prototype.applicant;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
-import hanghae7e6.prototype.tag.TagEntity;
+import hanghae7e6.prototype.user.UserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,21 +9,22 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Builder
-@Table(name = "RECRUIT_POST_TAGS")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecruitPostTagEntity {
-
+public class ApplicantEntity {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RECRUITPOST_ID")
-    private RecruitPostEntity recruitPost;
+    @JoinColumn(name = "USER_ID")
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TAG_ID")
-    private TagEntity tag;
+    @JoinColumn(name = "RECRUIT_POST_ID")
+    private RecruitPostEntity recruitPost;
+
+    @Column(nullable = false)
+    private Integer status;
 }
