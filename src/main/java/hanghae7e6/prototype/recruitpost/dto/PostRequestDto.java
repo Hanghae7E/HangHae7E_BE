@@ -1,7 +1,6 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
-import hanghae7e6.prototype.recruitposttag.RecruitPostTagService;
 import hanghae7e6.prototype.user.UserEntity;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,49 +19,62 @@ import java.util.Objects;
 @AllArgsConstructor
 public class PostRequestDto {
 
-    @NotBlank
+    @NotBlank(message = PostDtoMessage.EMPTY_TITLE)
     private String title;
 
-    @NotBlank
+    @NotBlank(message = PostDtoMessage.EMPTY_BODY)
     private String body;
 
-    @NotEmpty
-    @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$")
+    @NotEmpty(message = PostDtoMessage.INVALID_DATE)
+    @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
+            message = PostDtoMessage.INVALID_DATE)
     private String projectStartTime;
 
-    @NotEmpty
-    @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$")
+    @NotEmpty(message = PostDtoMessage.INVALID_DATE)
+    @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
+            message = PostDtoMessage.INVALID_DATE)
     private String projectEndTime;
 
-    @NotEmpty
-    @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$")
+    @NotEmpty(message = PostDtoMessage.INVALID_DATE)
+    @Pattern(regexp = "^([12]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\\d|3[01]))$",
+            message = PostDtoMessage.INVALID_DATE)
     private String recruitDueTime;
 
-    @Min(1)
+    @Min(value = 1, message = PostDtoMessage.INVALID_NUMBER)
     private Integer totalMemberCount;
 
     private List<Long> tags;
 
     private MultipartFile img;
 
-    public RecruitPostEntity getPostEntity(UserEntity user, RecruitPostTagService recruitPostTagService){
 
-        RecruitPostEntity postEntity = RecruitPostEntity.builder()
-                .user(user)
-                .title(title)
-                .body(body)
-                .projectStartTime(Objects.nonNull(projectStartTime)?
-                        LocalDate.parse(projectStartTime) : null)
-                .projectEndTime(Objects.nonNull(projectEndTime)?
-                        LocalDate.parse(projectEndTime) : null)
-                .recruitDueTime(Objects.nonNull(recruitDueTime)?
-                        LocalDate.parse(recruitDueTime) : null)
-                .totalMemderCount(totalMemberCount)
-//                .img(awsS3.save(img))
+    public LocalDate getProjectStartTime() {
+        return getLocalDate(projectStartTime);
+    }
+
+    public LocalDate getProjectEndTime() {
+        return getLocalDate(projectEndTime);
+    }
+
+    public LocalDate getRecruitDueTime() {
+        return getLocalDate(recruitDueTime);
+    }
+
+    private LocalDate getLocalDate(String date){
+        return Objects.nonNull(date)?
+                LocalDate.parse(date) : null;
+    }
+
+    public RecruitPostEntity getEntity(Long userId){
+
+        return RecruitPostEntity.builder()
+                .user(UserEntity.builder().id(userId).build())
+                .title(getTitle())
+                .body(getBody())
+                .projectStartTime(getProjectStartTime())
+                .projectEndTime(getProjectEndTime())
+                .recruitDueTime(getRecruitDueTime())
+                .totalMemberCount(getTotalMemberCount())
                 .build();
-
-        recruitPostTagService.saveTags(postEntity, tags);
-
-        return postEntity;
     }
 }

@@ -23,7 +23,7 @@ public class RecruitPostTagEntity {
     @JoinColumn(name = "RECRUITPOST_ID")
     private RecruitPostEntity recruitPost;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private TagEntity tag;
 }

@@ -18,9 +18,8 @@ public class TagEntity {
     @Column(nullable = false)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "tag", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tag", orphanRemoval = true)
     private List<RecruitPostTagEntity> recruitPostTag;
-
 
     @Column(nullable = false, unique = true)
     private String body;
@@ -28,5 +27,9 @@ public class TagEntity {
     public TagEntity(TagValue tag){
         this.id = tag.getTagId();
         this.body = tag.getValue();
+    }
+
+    public TagEntity(Long id){
+        this.id = id;
     }
 }

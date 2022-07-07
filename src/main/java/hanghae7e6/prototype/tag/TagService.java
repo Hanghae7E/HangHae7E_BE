@@ -13,7 +13,8 @@ public class TagService {
     TagRepository tagRepository;
 
     @Autowired
-    public TagService(TagRepository tagRepository) {
+    public TagService(
+            TagRepository tagRepository){
         this.tagRepository = tagRepository;
     }
 
@@ -31,6 +32,5 @@ public class TagService {
 
     public List<TagEntity> findAll(){
         return tagRepository.findAll();
-
     }
 }

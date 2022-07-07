@@ -6,14 +6,11 @@ import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import hanghae7e6.prototype.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +22,8 @@ public class RecruitPostController {
     RecruitPostService recruitPostService;
 
     @Autowired
-    public RecruitPostController(RecruitPostService recruitPostService) {
+    public RecruitPostController(
+            RecruitPostService recruitPostService){
         this.recruitPostService = recruitPostService;
     }
 
@@ -39,14 +37,13 @@ public class RecruitPostController {
 
         PostParamDto requestDto = PostParamDto.builder()
                 .limit(limit)
-                .page(page)
+                .offSet(page)
                 .sort(sort)
                 .tagId(tag).build();
 
         PostParamDto.validate(requestDto);
 
-        Page<RecruitPostEntity> posts = recruitPostService.getPosts(requestDto);
-        List<SimplePostResponseDto> body = SimplePostResponseDto.getDtos(posts);
+        List<SimplePostResponseDto> body = recruitPostService.getPosts(requestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
@@ -56,8 +53,7 @@ public class RecruitPostController {
     public ResponseEntity<DetailPostResponseDto> getPost(
             @PathVariable Long postId){
 
-        RecruitPostEntity post = recruitPostService.getPost(postId);
-        DetailPostResponseDto body = new DetailPostResponseDto(post);
+        DetailPostResponseDto body = recruitPostService.getPost(postId);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
@@ -101,17 +97,5 @@ public class RecruitPostController {
 
 
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex){
 
-        String message = ex.getBindingResult()
-                .getAllErrors()
-                .stream()
-                .map(ObjectError::getDefaultMessage)
-                .peek(System.out::println)
-                .findFirst()
-                .orElseGet(() -> "there's no error message");
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
-    }
 }

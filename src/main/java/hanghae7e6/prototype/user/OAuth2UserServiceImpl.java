@@ -1,9 +1,6 @@
 package hanghae7e6.prototype.user;
 
 import hanghae7e6.prototype.security.oauth.OAuthAttributes;
-
-import java.util.Collections;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -13,6 +10,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service

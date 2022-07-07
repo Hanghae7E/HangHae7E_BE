@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RecruitPostTagService {
@@ -26,7 +27,9 @@ public class RecruitPostTagService {
     public List<RecruitPostTagEntity> saveTags(
             RecruitPostEntity recruitPostEntity, List<Long> tagIds){
 
-        List<TagEntity> tags = tagService.findTagsById(tagIds);
+        List<TagEntity> tags = tagIds.stream()
+                .map(TagEntity::new)
+                .collect(Collectors.toList());
 
         List<RecruitPostTagEntity> recruitPostTagEntities =
                 RecruitPostTagDto.getEntities(recruitPostEntity, tags);
@@ -34,10 +37,4 @@ public class RecruitPostTagService {
         return recruitPostTagRepository.saveAll(recruitPostTagEntities);
 
     }
-
-
-    public List<RecruitPostTagEntity> findByTagId(Long tagId){
-        return recruitPostTagRepository.findAllByTagId(tagId);
-    }
-
 }

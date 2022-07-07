@@ -31,7 +31,7 @@ public class RecruitPostEntity {
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "recruitPost", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
     private List<RecruitPostTagEntity> recruitPostTag;
 
     @Column(nullable = false)
@@ -41,7 +41,7 @@ public class RecruitPostEntity {
     private String body;
 
     @Column(nullable = false)
-    private int totalMemderCount;
+    private int totalMemberCount;
 
     @Column
     private LocalDate projectStartTime;
@@ -55,28 +55,29 @@ public class RecruitPostEntity {
     @Column
     private String imageUrl;
 
+
     public RecruitPostEntity updateFields(PostRequestDto requestDto){
         String title = requestDto.getTitle();
         String body = requestDto.getBody();
-        Integer totalMemderCount = requestDto.getTotalMemberCount();
-        String projectStartTime = requestDto.getProjectStartTime();
-        String projectEndTime = requestDto.getProjectEndTime();
-        String recruitDueTime = requestDto.getRecruitDueTime();
+        Integer totalMemberCount = requestDto.getTotalMemberCount();
+        LocalDate projectStartTime = requestDto.getProjectStartTime();
+        LocalDate projectEndTime = requestDto.getProjectEndTime();
+        LocalDate recruitDueTime = requestDto.getRecruitDueTime();
 
         this.title = Objects.nonNull(title)? title : this.title;
         this.body = Objects.nonNull(body)? body : this.body;
 
-        this.totalMemderCount = Objects.nonNull(totalMemderCount)?
-                totalMemderCount : this.totalMemderCount;
+        this.totalMemberCount = Objects.nonNull(totalMemberCount)?
+                totalMemberCount : this.totalMemberCount;
 
         this.projectStartTime = Objects.nonNull(projectStartTime)?
-                LocalDate.parse(projectStartTime) : this.projectStartTime;
+                projectStartTime : this.projectStartTime;
 
         this.projectEndTime = Objects.nonNull(projectEndTime)?
-                LocalDate.parse(projectEndTime) : this.projectEndTime;
+                projectEndTime : this.projectEndTime;
 
         this.recruitDueTime = Objects.nonNull(recruitDueTime)?
-                LocalDate.parse(recruitDueTime) : this.recruitDueTime;
+                recruitDueTime : this.recruitDueTime;
 
 
 //        if (Objects.nonNull(img)) {
