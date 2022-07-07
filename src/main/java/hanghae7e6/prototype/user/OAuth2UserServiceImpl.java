@@ -1,6 +1,10 @@
 package hanghae7e6.prototype.user;
 
+import hanghae7e6.prototype.profile.entity.ProfileEntity;
+import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.security.oauth.OAuthAttributes;
+import java.util.Collections;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -19,6 +23,7 @@ import java.util.Collections;
 public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -30,18 +35,19 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        System.out.println("reg id : " + registrationId + "  " + userNameAttributeName);
-
-        UserEntity user = userRepository.findBySocialTypeAndEmail(attributes.getSocialType(), attributes.getEmail()).orElse(saveUser(attributes));
+        UserEntity user = userRepository.findBySocialTypeAndEmail(attributes.getSocialType(), attributes.getEmail()).orElse(saveUserAndProfile(attributes));
         attributes.setUserId(user.getId());
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getUserRole().getKey())), attributes.getHashMapAttributes(), attributes.getNameAttributeKey());
     }
 
     @Transactional
-    public UserEntity saveUser(OAuthAttributes attributes) {
+    public UserEntity saveUserAndProfile(OAuthAttributes attributes) {
         UserEntity user = attributes.toEntity();
+        ProfileEntity profile = ProfileEntity.builder().user(user).build();
+
         userRepository.save(user);
+        profileRepository.save(profile);
 
         return user;
     }

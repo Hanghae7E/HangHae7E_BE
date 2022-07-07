@@ -72,7 +72,6 @@ public class CustomUserDetails implements UserDetails {
         return CustomUserDetails.builder()
                                 .id(user.getId())
                                 .email(user.getEmail())
-                                .email(user.getEmail())
                                 .socialType(user.getSocialType())
                                 .authorities(authorities)
                                 .build();
