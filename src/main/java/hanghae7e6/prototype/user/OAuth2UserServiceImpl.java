@@ -3,8 +3,6 @@ package hanghae7e6.prototype.user;
 import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.security.oauth.OAuthAttributes;
-import java.util.Collections;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

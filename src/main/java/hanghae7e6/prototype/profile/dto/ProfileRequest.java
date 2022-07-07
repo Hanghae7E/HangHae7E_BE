@@ -1,8 +1,9 @@
 package hanghae7e6.prototype.profile.dto;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
 
 @Getter
 public class ProfileRequest {

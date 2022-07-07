@@ -2,19 +2,16 @@ package hanghae7e6.prototype.recruitpost.dto;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.user.UserEntity;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
