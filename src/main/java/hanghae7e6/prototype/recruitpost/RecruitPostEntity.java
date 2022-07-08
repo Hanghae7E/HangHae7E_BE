@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
 import hanghae7e6.prototype.user.UserEntity;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @Table(name = "RECRUIT_POSTS")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecruitPostEntity {
+public class RecruitPostEntity extends BaseTimeEntity {
 
     @Id
     @Column(name = "RECRUIT_POST_ID", nullable = false)
