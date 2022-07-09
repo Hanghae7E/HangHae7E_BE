@@ -3,6 +3,7 @@ package hanghae7e6.prototype.user;
 import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.security.oauth.OAuthAttributes;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -33,7 +34,8 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        UserEntity user = userRepository.findBySocialTypeAndEmail(attributes.getSocialType(), attributes.getEmail()).orElse(saveUserAndProfile(attributes));
+        UserEntity user  = userRepository.findBySocialTypeAndEmail(attributes.getSocialType(), attributes.getEmail())
+                                         .orElseGet(() -> this.saveUserAndProfile(attributes));
         attributes.setUserId(user.getId());
 
         return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getUserRole().getKey())), attributes.getHashMapAttributes(), attributes.getNameAttributeKey());
@@ -41,11 +43,8 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
 
     @Transactional
     public UserEntity saveUserAndProfile(OAuthAttributes attributes) {
-        UserEntity user = attributes.toEntity();
-        ProfileEntity profile = ProfileEntity.builder().user(user).build();
-
-        userRepository.save(user);
-        profileRepository.save(profile);
+        UserEntity user = userRepository.save(attributes.toEntity());
+        profileRepository.save(ProfileEntity.builder().user(user).build());
 
         return user;
     }

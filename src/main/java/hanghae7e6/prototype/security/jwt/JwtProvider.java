@@ -20,7 +20,7 @@ import java.util.Objects;
 @Component
 public class JwtProvider {
     private final String secretKey;
-    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60;  // 초단위, 1시간
+    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 *1000 * 24;  // 초단위, 1시간
 
     private final UserDetailsService userDetailsService;
 
