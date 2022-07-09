@@ -6,7 +6,9 @@ import hanghae7e6.prototype.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +29,10 @@ public class RecruitPostTagService {
     public List<RecruitPostTagEntity> saveTags(
             RecruitPostEntity recruitPostEntity, List<Long> tagIds){
 
+        if(Objects.isNull(tagIds) || tagIds.isEmpty()){
+            return Arrays.asList();
+        }
+
         List<TagEntity> tags = tagIds.stream()
                 .map(TagEntity::new)
                 .collect(Collectors.toList());
@@ -35,6 +41,5 @@ public class RecruitPostTagService {
                 RecruitPostTagDto.getEntities(recruitPostEntity, tags);
 
         return recruitPostTagRepository.saveAll(recruitPostTagEntities);
-
     }
 }
