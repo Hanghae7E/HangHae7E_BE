@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+//@RequestMapping()
 public class UserController {
 
     @Autowired
@@ -19,16 +19,22 @@ public class UserController {
     @Autowired
     ProfileRepository profileRepository;
 
-    @PostMapping
+    @PostMapping("/api/user")
     public void insertUser(@RequestBody UserRequest userRequest) {
         UserEntity saved = userRepository.save(userRequest.toEntity());
         ProfileEntity profile = ProfileEntity.builder().user(saved).build();
         profileRepository.save(profile);
     }
 
-    @GetMapping
+    @GetMapping("/api/user")
     public List<UserEntity> getAllUser() {
 
         return userRepository.findAll();
     }
+
+//    @GetMapping("/login/oauth2/code/kakao")
+//    public void asdf(@RequestParam String code) {
+//        System.out.println("code : " + code);
+//
+//    }
 }
