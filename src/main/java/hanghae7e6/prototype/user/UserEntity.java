@@ -28,9 +28,6 @@ public class UserEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
-    private List<RecruitPostEntity> board;
-
     @Column(nullable = false)
     private String email;
 
