@@ -12,6 +12,10 @@ import java.util.stream.Collectors;
 @Setter
 public class RecruitPostTagDto {
 
+    private Long postId;
+
+    private Long tagId;
+
     public static RecruitPostTagEntity getEntity(RecruitPostEntity recruitPost, TagEntity tag){
         return RecruitPostTagEntity.builder()
                 .tag(tag)

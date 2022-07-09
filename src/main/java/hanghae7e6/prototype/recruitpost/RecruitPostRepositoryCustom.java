@@ -1,6 +1,8 @@
 package hanghae7e6.prototype.recruitpost;
 
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import hanghae7e6.prototype.exception.ErrorCode;
@@ -9,13 +11,16 @@ import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import hanghae7e6.prototype.recruitposttag.QRecruitPostTagEntity;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagDto;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagRepository;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagRepositoryCustom;
 import hanghae7e6.prototype.tag.QTagEntity;
+import hanghae7e6.prototype.tag.TagResponseDto;
 import hanghae7e6.prototype.tag.TagValue;
 import hanghae7e6.prototype.user.QUserEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class RecruitPostRepositoryCustom {
@@ -25,25 +30,25 @@ public class RecruitPostRepositoryCustom {
     private QRecruitPostTagEntity postTag = QRecruitPostTagEntity.recruitPostTagEntity;
     private QTagEntity tag = QTagEntity.tagEntity;
 
+    private RecruitPostTagRepositoryCustom recruitPostTagRepositoryCustom;
 
-    public RecruitPostRepositoryCustom(JPAQueryFactory queryFactory) {
+    public RecruitPostRepositoryCustom(
+            JPAQueryFactory queryFactory,
+            RecruitPostTagRepositoryCustom recruitPostTagRepositoryCustom){
         this.queryFactory = queryFactory;
+        this.recruitPostTagRepositoryCustom = recruitPostTagRepositoryCustom;
     }
 
 
     public List<SimplePostResponseDto> findAllByTagId(PostParamDto dto){
 
-        List<Long> postIds = queryFactory
-                .select(postTag.recruitPost.id)
-                .from(postTag)
-                .where(postTag.tag.id.eq(dto.getTagId()))
-                .offset(dto.getOffSet())
-                .limit(dto.getLimit())
-                .fetch();
+        Map<Long, SimplePostResponseDto> dtoMap = new HashMap<>();
 
+        List<Long> postIds = getPostIds(dto);
+        List<RecruitPostTagDto> postTagDtos =
+                recruitPostTagRepositoryCustom.findByPostIds(postIds);
 
-        JPAQuery<SimplePostResponseDto> query =
-                queryFactory.select(
+        List<SimplePostResponseDto> postDtos = queryFactory.select(
                 Projections.fields(SimplePostResponseDto.class,
                         post.id.as("postId"),
                         user.username,
@@ -54,14 +59,36 @@ public class RecruitPostRepositoryCustom {
                 ))
                 .from(post)
                 .innerJoin(post.recruitPostTag, postTag)
-                .innerJoin(post.user, user);
+                .innerJoin(post.user, user)
+                .where(post.id.in(postIds))
+                .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
+                .fetch();
+
+
+        postDtos.forEach((post) -> dtoMap.put(post.getPostId(), post));
+
+        postTagDtos.forEach((postTag) -> {
+            SimplePostResponseDto postDto = dtoMap.get(postTag.getPostId());
+            postDto.addTag(postTag.getTagId());
+            dtoMap.put(postTag.getPostId(), postDto);
+        });
+
+        return new ArrayList<>(dtoMap.values());
+
+    }
+
+    public List<Long> getPostIds(PostParamDto dto){
+        JPAQuery<Long> query = queryFactory
+                .select(post.id)
+                .from(post);
 
         if(TagValue.notAll(dto.getTagId())){
-            query.where(post.id.in(postIds));
+            query.join(post.recruitPostTag, postTag)
+                    .on(postTag.tag.id.eq(dto.getTagId()));
         }
 
-        return query
-                .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
+        return query.offset(dto.getOffSet())
+                .limit(dto.getLimit())
                 .fetch();
     }
 

@@ -29,10 +29,6 @@ public class TagService {
         return tagRepository.saveAll(tags);
     }
 
-    public List<TagEntity> findTagsById(List<Long> tagIds){
-            return tagRepository.findAllById(tagIds);
-    }
-
     public List<TagEntity> findAll(){
         return tagRepository.findAll();
     }
