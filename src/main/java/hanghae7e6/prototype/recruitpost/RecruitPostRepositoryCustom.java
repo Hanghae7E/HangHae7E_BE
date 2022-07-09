@@ -32,6 +32,16 @@ public class RecruitPostRepositoryCustom {
 
 
     public List<SimplePostResponseDto> findAllByTagId(PostParamDto dto){
+
+        List<Long> postIds = queryFactory
+                .select(postTag.recruitPost.id)
+                .from(postTag)
+                .where(postTag.tag.id.eq(dto.getTagId()))
+                .offset(dto.getOffSet())
+                .limit(dto.getLimit())
+                .fetch();
+
+
         JPAQuery<SimplePostResponseDto> query =
                 queryFactory.select(
                 Projections.fields(SimplePostResponseDto.class,
@@ -43,17 +53,15 @@ public class RecruitPostRepositoryCustom {
                         post.recruitDueTime
                 ))
                 .from(post)
-                .innerJoin(post.recruitPostTag, postTag);
+                .innerJoin(post.recruitPostTag, postTag)
+                .innerJoin(post.user, user);
 
         if(TagValue.notAll(dto.getTagId())){
-            query.on(postTag.tag.id.eq(dto.getTagId()));
+            query.where(post.id.in(postIds));
         }
 
         return query
-                .innerJoin(post.user, user)
                 .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
-                .offset(dto.getOffSet())
-                .limit(dto.getLimit())
                 .fetch();
     }
 

@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitposttag;
 
+import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.tag.TagEntity;
 import lombok.*;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "RECRUIT_POST_TAGS")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecruitPostTagEntity {
+public class RecruitPostTagEntity extends BaseTimeEntity {
 
     @Id
     @Column(name = "id", nullable = false)
