@@ -1,8 +1,6 @@
 package hanghae7e6.prototype.recruitpost;
 
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import hanghae7e6.prototype.exception.ErrorCode;
@@ -12,10 +10,8 @@ import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import hanghae7e6.prototype.recruitposttag.QRecruitPostTagEntity;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagDto;
-import hanghae7e6.prototype.recruitposttag.RecruitPostTagRepository;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagRepositoryCustom;
 import hanghae7e6.prototype.tag.QTagEntity;
-import hanghae7e6.prototype.tag.TagResponseDto;
 import hanghae7e6.prototype.tag.TagValue;
 import hanghae7e6.prototype.user.QUserEntity;
 import org.springframework.stereotype.Repository;
@@ -93,7 +89,7 @@ public class RecruitPostRepositoryCustom {
 
 
     public DetailPostResponseDto findById(Long postId){
-        return Optional.ofNullable(
+        DetailPostResponseDto dto = Optional.ofNullable(
                 queryFactory.select(
                         Projections.fields(DetailPostResponseDto.class,
                                 post.id.as("postId"),
@@ -103,6 +99,14 @@ public class RecruitPostRepositoryCustom {
                         .where(post.id.eq(postId))
                         .fetchOne())
                         .orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
+
+
+        List<Long> postTagDtos =
+                recruitPostTagRepositoryCustom.findByPostId(dto.getPostId());
+
+        dto.setTags(postTagDtos);
+
+        return dto;
     }
 
 

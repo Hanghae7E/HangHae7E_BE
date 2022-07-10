@@ -30,4 +30,12 @@ public class RecruitPostTagRepositoryCustom {
                 .where(postTag.recruitPost.id.in(postIds))
                 .fetch();
     }
+
+
+    public List<Long> findByPostId(Long postIds){
+        return  queryFactory.select(postTag.tag.id)
+                .from(postTag)
+                .where(postTag.recruitPost.id.eq(postIds))
+                .fetch();
+    }
 }
