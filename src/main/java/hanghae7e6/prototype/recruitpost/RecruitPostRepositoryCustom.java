@@ -42,6 +42,7 @@ public class RecruitPostRepositoryCustom {
 
     public List<SimplePostResponseDto> findAllByTagId(PostParamDto dto){
 
+
         Map<Long, SimplePostResponseDto> dtoMap = new HashMap<>();
 
         List<Long> postIds = getPostIds(dto);
