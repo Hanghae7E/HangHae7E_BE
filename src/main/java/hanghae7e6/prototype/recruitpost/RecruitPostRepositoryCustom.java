@@ -58,7 +58,6 @@ public class RecruitPostRepositoryCustom {
                         post.recruitDueTime
                 ))
                 .from(post)
-                .innerJoin(post.recruitPostTag, postTag)
                 .innerJoin(post.user, user)
                 .where(post.id.in(postIds))
                 .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
