@@ -17,8 +17,9 @@ public enum ErrorCode {
     INVALID_TAG("잘못된 태그입니다."),
     TAG_ALREADY_EXISTS("이미 존재하는 태그입니다."),
     POSITION_ALREADY_EXISTS("이미 존재하는 포지션입니다."),
-    INVALID_POSITION("잘못된 포지션입니다."),
+    INVALID_POSITION("잘못되거나 없는 포지션입니다."),
     EMPTY_BODY("필요한 값이 비어있거나 잘못되어 있습니다. 값 형식을 확인해 주세요!"),
+    EMPTY_POSITION("포지션이 비어있습니다."),
 
     /* 401 UNAUTHORIZED 인증되지 않은 사용자 */
     LOGIN_REQUIRED( "로그인이 필요합니다."),

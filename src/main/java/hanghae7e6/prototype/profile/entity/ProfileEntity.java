@@ -81,9 +81,8 @@ public class ProfileEntity extends BaseTimeEntity {
     }
 
     public void update(ProfileRequest profileRequest, PositionEntity updatedPosition) {
-        this.position = updatedPosition;
+        this.position = updatedPosition != null? updatedPosition : this.position;
         this.phoneNumber = profileRequest.getPhone_number();
-        this.imageUrl = profileRequest.getProfile_image_url();
         this.portfolioUrl = profileRequest.getPortfolio_url();
         this.availablePeriod = profileRequest.getAvailable_period();
         this.availableTime = profileRequest.getAvailable_time();
@@ -97,4 +96,7 @@ public class ProfileEntity extends BaseTimeEntity {
         return this.position.getPositionName();
     }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

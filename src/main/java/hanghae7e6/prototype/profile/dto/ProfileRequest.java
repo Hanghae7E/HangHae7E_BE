@@ -4,14 +4,16 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 public class ProfileRequest {
 
     private String username;
     private String email;
     private String phone_number;
-    private String profile_image_url;
     private String residence;
     private String available_period;
     private String available_time;
@@ -21,6 +23,7 @@ public class ProfileRequest {
     private List<String> skills;
     private String career_period;
     private String portfolio_url;
+    private MultipartFile files;
 
 
     public List<String> getFields() {

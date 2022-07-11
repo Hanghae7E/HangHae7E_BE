@@ -3,6 +3,7 @@ package hanghae7e6.prototype.profile.controller;
 import hanghae7e6.prototype.profile.dto.ProfileRequest;
 import hanghae7e6.prototype.profile.dto.ProfileResponse;
 import hanghae7e6.prototype.profile.service.ProfileService;
+import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUserProfile(@PathVariable Long userId, @RequestBody ProfileRequest profileRequest) {
+    public ResponseEntity<?> updateUserProfile(@PathVariable Long userId, ProfileRequest profileRequest) throws IOException {
         profileService.updateUserProfile(userId, profileRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);

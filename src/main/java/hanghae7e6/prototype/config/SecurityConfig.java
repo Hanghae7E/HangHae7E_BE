@@ -15,7 +15,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -30,17 +32,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final OAuth2UserServiceImpl oAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final CustomHttpSessionOAuth2AuthorizationRequestRepository customHttpSessionOAuth2AuthorizationRequestRepository;
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    public CustomHttpSessionOAuth2AuthorizationRequestRepository sessionOAuth2AuthorizationRequestRepository() {
-        return new CustomHttpSessionOAuth2AuthorizationRequestRepository();
     }
 
     @Override
@@ -58,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
             .authorizeRequests()
-            .antMatchers("/api","/api/login", "/api/register", "/login/**").permitAll()
+            .antMatchers("/api","/api/login", "/api/register").permitAll()
             .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
             .antMatchers(HttpMethod.GET, "/api/recruitPost/**").permitAll()
 //            .antMatchers(HttpMethod.GET, "/login/**").permitAll()
@@ -75,11 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
             .oauth2Login()
-            .authorizationEndpoint()
-            .baseUri("/oauth2/authorization")
-            .authorizationRequestRepository(sessionOAuth2AuthorizationRequestRepository())
-//            .defaultSuccessUrl("/login-success")
-            .and()
             .successHandler(oAuth2AuthenticationSuccessHandler)
             .userInfoEndpoint()
             .userService(oAuth2UserService);
