@@ -4,7 +4,9 @@ server:
 
 spring:
   profiles:
-    include: oauth
+    include:
+      - oauth
+      - s3
 
 ---
 # 로컬 환경 설정

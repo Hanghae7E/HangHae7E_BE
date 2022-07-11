@@ -161,3 +161,4 @@ gradle-app.setting
 
 # properties
 application-oauth.yml
+application-s3.yml
