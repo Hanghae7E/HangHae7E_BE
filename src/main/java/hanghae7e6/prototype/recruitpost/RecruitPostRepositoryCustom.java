@@ -9,13 +9,14 @@ import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import hanghae7e6.prototype.recruitposttag.QRecruitPostTagEntity;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagDto;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagRepositoryCustom;
 import hanghae7e6.prototype.tag.QTagEntity;
 import hanghae7e6.prototype.tag.TagValue;
 import hanghae7e6.prototype.user.QUserEntity;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class RecruitPostRepositoryCustom {
@@ -25,25 +26,26 @@ public class RecruitPostRepositoryCustom {
     private QRecruitPostTagEntity postTag = QRecruitPostTagEntity.recruitPostTagEntity;
     private QTagEntity tag = QTagEntity.tagEntity;
 
+    private RecruitPostTagRepositoryCustom recruitPostTagRepositoryCustom;
 
-    public RecruitPostRepositoryCustom(JPAQueryFactory queryFactory) {
+    public RecruitPostRepositoryCustom(
+            JPAQueryFactory queryFactory,
+            RecruitPostTagRepositoryCustom recruitPostTagRepositoryCustom){
         this.queryFactory = queryFactory;
+        this.recruitPostTagRepositoryCustom = recruitPostTagRepositoryCustom;
     }
 
 
     public List<SimplePostResponseDto> findAllByTagId(PostParamDto dto){
 
-        List<Long> postIds = queryFactory
-                .select(postTag.recruitPost.id)
-                .from(postTag)
-                .where(postTag.tag.id.eq(dto.getTagId()))
-                .offset(dto.getOffSet())
-                .limit(dto.getLimit())
-                .fetch();
 
+        Map<Long, SimplePostResponseDto> dtoMap = new HashMap<>();
 
-        JPAQuery<SimplePostResponseDto> query =
-                queryFactory.select(
+        List<Long> postIds = getPostIds(dto);
+        List<RecruitPostTagDto> postTagDtos =
+                recruitPostTagRepositoryCustom.findByPostIds(postIds);
+
+        List<SimplePostResponseDto> postDtos = queryFactory.select(
                 Projections.fields(SimplePostResponseDto.class,
                         post.id.as("postId"),
                         user.username,
@@ -53,21 +55,42 @@ public class RecruitPostRepositoryCustom {
                         post.recruitDueTime
                 ))
                 .from(post)
-                .innerJoin(post.recruitPostTag, postTag)
-                .innerJoin(post.user, user);
+                .innerJoin(post.user, user)
+                .where(post.id.in(postIds))
+                .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
+                .fetch();
+
+
+        postDtos.forEach((post) -> dtoMap.put(post.getPostId(), post));
+
+        postTagDtos.forEach((postTag) -> {
+            SimplePostResponseDto postDto = dtoMap.get(postTag.getPostId());
+            postDto.addTag(postTag.getTagId());
+            dtoMap.put(postTag.getPostId(), postDto);
+        });
+
+        return new ArrayList<>(dtoMap.values());
+
+    }
+
+    public List<Long> getPostIds(PostParamDto dto){
+        JPAQuery<Long> query = queryFactory
+                .select(post.id)
+                .from(post);
 
         if(TagValue.notAll(dto.getTagId())){
-            query.where(post.id.in(postIds));
+            query.join(post.recruitPostTag, postTag)
+                    .on(postTag.tag.id.eq(dto.getTagId()));
         }
 
-        return query
-                .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
+        return query.offset(dto.getOffSet())
+                .limit(dto.getLimit())
                 .fetch();
     }
 
 
     public DetailPostResponseDto findById(Long postId){
-        return Optional.ofNullable(
+        DetailPostResponseDto dto = Optional.ofNullable(
                 queryFactory.select(
                         Projections.fields(DetailPostResponseDto.class,
                                 post.id.as("postId"),
@@ -77,6 +100,14 @@ public class RecruitPostRepositoryCustom {
                         .where(post.id.eq(postId))
                         .fetchOne())
                         .orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
+
+
+        List<Long> postTagDtos =
+                recruitPostTagRepositoryCustom.findByPostId(dto.getPostId());
+
+        dto.setTags(postTagDtos);
+
+        return dto;
     }
 
 

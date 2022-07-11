@@ -1,6 +1,5 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
-import hanghae7e6.prototype.tag.TagResponseDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -29,7 +28,7 @@ public class DetailPostResponseDto {
 
     private int totalMemberCount;
 
-    private List<TagResponseDto> tags;
+    private List<Long> tags;
 
     private List<?> applicants;
 

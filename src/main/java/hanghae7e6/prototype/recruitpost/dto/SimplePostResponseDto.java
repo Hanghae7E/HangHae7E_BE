@@ -1,9 +1,9 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
-import hanghae7e6.prototype.tag.TagResponseDto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,6 +33,9 @@ public class SimplePostResponseDto {
 
     private LocalDate recruitDueTime;
 
-    private List<TagResponseDto> tags;
+    private List<Long> tags = new ArrayList<>();
 
+    public void addTag(Long postTagDto){
+        tags.add(postTagDto);
+    }
 }
