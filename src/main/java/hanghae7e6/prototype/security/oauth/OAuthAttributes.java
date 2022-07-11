@@ -28,7 +28,7 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        if (registrationId.equals("kakao"))
+        if (!userNameAttributeName.equals("sub"))
             return ofKaKao(userNameAttributeName, attributes);
 
         return ofGoogle(userNameAttributeName, attributes);
@@ -46,9 +46,12 @@ public class OAuthAttributes {
 
     public static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
 
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+
         return OAuthAttributes.builder()
-                              .username((String) attributes.get("profile_nickname"))
-                              .email((String) attributes.get("account_email"))
+                              .username((String) properties.get("nickname"))
+                              .email((String) kakaoAccount.get("email"))
                               .socialType("kakao")
                               .attributes(attributes)
                               .nameAttributeKey(userNameAttributeName)
