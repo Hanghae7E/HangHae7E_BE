@@ -13,7 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api")
@@ -29,7 +29,7 @@ public class RecruitPostController {
 
 
     @GetMapping("/main")
-    public ResponseEntity<List<SimplePostResponseDto>> getPosts(
+    public ResponseEntity<Map<String, Object>> getPosts(
             @Nullable @RequestParam("limit") Integer limit,
             @Nullable @RequestParam("page") Integer page,
             @Nullable @RequestParam("sort") Integer sort,
@@ -43,7 +43,7 @@ public class RecruitPostController {
 
         PostParamDto.validate(requestDto);
 
-        List<SimplePostResponseDto> body = recruitPostService.getPosts(requestDto);
+        Map<String, Object> body = recruitPostService.getPosts(requestDto);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }

@@ -45,8 +45,6 @@ public class RecruitPostRepositoryCustom {
 
         Map<Long, SimplePostResponseDto> dtoMap = new HashMap<>();
 
-        Boolean isLast = countRecords(dto) <= (dto.getOffSet() + 1) * dto.getLimit();
-
         List<Long> postIds = getPostIds(dto);
         List<RecruitPostTagDto> postTagDtos =
                 recruitPostTagRepositoryCustom.findByPostIds(postIds);
@@ -77,7 +75,6 @@ public class RecruitPostRepositoryCustom {
         postTagDtos.forEach((postTag) -> {
             SimplePostResponseDto postDto = dtoMap.get(postTag.getPostId());
             postDto.addTag(postTag.getTagId());
-            if (isLast){ postDto.setIsLast(true);}
             dtoMap.put(postTag.getPostId(), postDto);
         });
 
@@ -101,7 +98,7 @@ public class RecruitPostRepositoryCustom {
                 .fetch();
     }
 
-    public Long countRecords(PostParamDto dto){
+    public boolean isLastPage(PostParamDto dto){
         JPAQuery<Long> query = queryFactory
                 .select(post.count())
                 .from(post);
@@ -111,8 +108,9 @@ public class RecruitPostRepositoryCustom {
                     .on(postTag.tag.id.eq(dto.getTagId()));
         }
 
-        Long val = query.fetchOne();
-        return val;
+        Long postCount = query.fetchOne();
+
+        return postCount <= (dto.getOffSet() + 1) * dto.getLimit();
     }
 
 
