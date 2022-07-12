@@ -9,12 +9,13 @@ import javax.persistence.*;
 @Getter
 @Entity
 @Builder
+@Table(name = "APPLICANTS")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplicantEntity {
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "APPLICANT_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -19,7 +19,7 @@ public class TagEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "TAG_ID", nullable = false)
     private Long id;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tag", orphanRemoval = true)
