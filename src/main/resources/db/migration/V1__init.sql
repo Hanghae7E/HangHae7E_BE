@@ -8,8 +8,8 @@ drop table if exists recruit_post_tags CASCADE;
 drop table if exists recruit_posts CASCADE;
 drop table if exists tags CASCADE;
 drop table if exists users CASCADE;
-drop sequence if exists hibernate_sequence;
-create sequence hibernate_sequence start with 1 increment by 1;
+-- drop sequence if exists hibernate_sequence;
+-- create sequence hibernate_sequence start with 1 increment by 1;
 
 create table applicants (
                             applicant_id bigint auto_increment,
