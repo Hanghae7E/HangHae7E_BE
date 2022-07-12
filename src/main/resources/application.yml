@@ -80,8 +80,7 @@ spring:
     user: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     locations:
-      - classpath:db/migration
-      - classpath:db/seed
+      - classpath:db/**/*.sql
 
 jwt:
   secret: ${JWT_SECRET}
