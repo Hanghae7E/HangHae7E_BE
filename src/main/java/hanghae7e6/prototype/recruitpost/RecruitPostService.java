@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RecruitPostService {
@@ -30,10 +32,18 @@ public class RecruitPostService {
 
 
     @Transactional(readOnly = true)
-    public List<SimplePostResponseDto> getPosts(
+    public Map<String, Object> getPosts(
             PostParamDto requestDto) {
 
-        return recruitPostRepositoryCustom.findAllByTagId(requestDto);
+        Map<String, Object> result = new HashMap<>();
+
+        List<SimplePostResponseDto> posts = recruitPostRepositoryCustom.findAllByTagId(requestDto);
+        boolean isLast = recruitPostRepositoryCustom.isLastPage(requestDto);
+
+        result.put("posts", posts);
+        result.put("isLast", isLast);
+
+        return result;
     }
 
 
