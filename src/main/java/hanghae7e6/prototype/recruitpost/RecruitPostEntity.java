@@ -43,8 +43,15 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String body;
 
-    @Column(nullable = false)
-    private int totalMemberCount;
+
+    @Column(name = "required_developers", columnDefinition = "integer default 0")
+    private Integer requiredDevelopers;
+
+    @Column(name = "required_designers", columnDefinition = "integer default 0")
+    private Integer requiredDesigners;
+
+    @Column(name = "required_project_managers", columnDefinition = "integer default 0")
+    private Integer requiredProjectManagers;
 
     @Column
     private LocalDate projectStartTime;
@@ -62,16 +69,12 @@ public class RecruitPostEntity extends BaseTimeEntity {
     public RecruitPostEntity updateFields(PostRequestDto requestDto){
         String title = requestDto.getTitle();
         String body = requestDto.getBody();
-        Integer totalMemberCount = requestDto.getTotalMemberCount();
         LocalDate projectStartTime = requestDto.getProjectStartTime();
         LocalDate projectEndTime = requestDto.getProjectEndTime();
         LocalDate recruitDueTime = requestDto.getRecruitDueTime();
 
         this.title = Objects.nonNull(title)? title : this.title;
         this.body = Objects.nonNull(body)? body : this.body;
-
-        this.totalMemberCount = Objects.nonNull(totalMemberCount)?
-                totalMemberCount : this.totalMemberCount;
 
         this.projectStartTime = Objects.nonNull(projectStartTime)?
                 projectStartTime : this.projectStartTime;
@@ -83,11 +86,19 @@ public class RecruitPostEntity extends BaseTimeEntity {
                 recruitDueTime : this.recruitDueTime;
 
 
+        this.requiredProjectManagers = requestDto.getRequiredProjectManagers();
+        this.requiredDesigners = requestDto.getRequiredDesigners();
+        this.requiredDevelopers = requestDto.getRequiredDevelopers();
+
 //        if (Objects.nonNull(img)) {
 //            awsS3Service.deleteFile(this.imgUrl);
 //            this.imgUrl = awsS3Service.uploadFile(img);
 //        }
 
         return this;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -3,21 +3,17 @@ package hanghae7e6.prototype.config;
 import hanghae7e6.prototype.security.jwt.JwtAuthEntryPoint;
 import hanghae7e6.prototype.security.jwt.JwtFilter;
 import hanghae7e6.prototype.security.jwt.JwtProvider;
-import hanghae7e6.prototype.security.oauth.CustomHttpSessionOAuth2AuthorizationRequestRepository;
 import hanghae7e6.prototype.security.oauth.OAuth2AuthenticationSuccessHandler;
 import hanghae7e6.prototype.user.OAuth2UserServiceImpl;
+import hanghae7e6.prototype.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -56,6 +52,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/api","/api/login", "/api/register").permitAll()
             .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/recruitPost").hasRole(UserRole.USER.name())
+            .antMatchers(HttpMethod.PUT, "/api/recruitPost/**").hasRole(UserRole.USER.name())
+            .antMatchers(HttpMethod.PUT, "/api/user/**").hasRole(UserRole.USER.name())
+            .antMatchers(HttpMethod.DELETE, "/api/recruitPost").hasRole(UserRole.USER.name())
             .antMatchers(HttpMethod.GET, "/api/recruitPost/**").permitAll()
 //            .antMatchers(HttpMethod.GET, "/login/**").permitAll()
 

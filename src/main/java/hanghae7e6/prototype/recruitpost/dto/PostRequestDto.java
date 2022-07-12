@@ -2,6 +2,7 @@ package hanghae7e6.prototype.recruitpost.dto;
 
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.user.UserEntity;
+import javax.persistence.Column;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,13 +41,20 @@ public class PostRequestDto {
             message = PostDtoMessage.INVALID_DATE)
     private String recruitDueTime;
 
-    @Min(value = 1, message = PostDtoMessage.INVALID_NUMBER)
-    private Integer totalMemberCount;
-
     private List<Long> tags;
 
     private MultipartFile img;
 
+    private Integer requiredDevelopers;
+
+    private Integer requiredDesigners;
+
+    private Integer requiredProjectManagers;
+
+    private String previousImgUrl;
+
+
+    public Object getPreviousImgUrl() {return this.previousImgUrl; }
 
     public LocalDate getProjectStartTime() {
         return getLocalDate(projectStartTime);
@@ -74,7 +82,6 @@ public class PostRequestDto {
                 .projectStartTime(getProjectStartTime())
                 .projectEndTime(getProjectEndTime())
                 .recruitDueTime(getRecruitDueTime())
-                .totalMemberCount(getTotalMemberCount())
                 .build();
     }
 }

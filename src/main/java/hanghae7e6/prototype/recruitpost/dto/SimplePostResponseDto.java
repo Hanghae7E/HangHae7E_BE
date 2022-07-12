@@ -27,6 +27,12 @@ public class SimplePostResponseDto {
 
     private String projectImage;
 
+    private Integer requiredDevelopers;
+
+    private Integer requiredDesigners;
+
+    private Integer requiredProjectManagers;
+
     private LocalDate projectStartTime;
 
     private LocalDate projectEndTime;

@@ -26,7 +26,13 @@ public class DetailPostResponseDto {
 
     private LocalDate recruitDueTime;
 
-    private int totalMemberCount;
+    private Integer requiredDevelopers;
+
+    private Integer requiredDesigners;
+
+    private Integer requiredProjectManagers;
+
+    private String imageUrl;
 
     private List<Long> tags;
 

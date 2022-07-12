@@ -73,7 +73,9 @@ create table recruit_posts (
                                project_start_time date,
                                recruit_due_time date,
                                title varchar(255) not null,
-                               total_member_count integer not null,
+                               required_developers integer default 0,
+                               required_designers integer default 0,
+                               required_project_managers integer default 0,
                                user_id bigint,
                                primary key (recruit_post_id)
 );
