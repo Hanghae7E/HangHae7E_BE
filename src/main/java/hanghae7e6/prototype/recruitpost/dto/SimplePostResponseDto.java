@@ -33,6 +33,8 @@ public class SimplePostResponseDto {
 
     private LocalDate recruitDueTime;
 
+    private Boolean isLast = false;
+
     private List<Long> tags = new ArrayList<>();
 
     public void addTag(Long postTagDto){
