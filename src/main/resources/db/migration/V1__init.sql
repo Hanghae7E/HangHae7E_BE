@@ -23,7 +23,7 @@ create table positions (
                            position_id bigint auto_increment,
                            created_at timestamp,
                            updated_at timestamp,
-                           position_name varchar(255),
+                           position_name varchar(255) unique,
                            primary key (position_id)
 );
 
@@ -33,7 +33,7 @@ create table profile_tags (
                               updated_at timestamp,
                               profile_attribute_name varchar(255),
                               profile_id bigint,
-                              tag_id bigint,
+                              tag_id bigint unique ,
                               primary key (profile_tag_id)
 );
 
@@ -82,7 +82,7 @@ create table tags (
                       tag_id bigint auto_increment,
                       created_at timestamp,
                       updated_at timestamp,
-                      body varchar(255) not null,
+                      body varchar(255) not null unique,
                       primary key (tag_id)
 );
 
@@ -97,56 +97,48 @@ create table users (
                        primary key (user_id)
 );
 
-alter table positions
-    add constraint UK_b6lkwasxdrfpxihi038w6ixt6 unique (position_name);
-
-alter table profile_tags
-    add constraint UK_g4clkljxsntmx13odla6tipw0 unique (tag_id);
-
-alter table tags
-    add constraint UK_m3vc2stgr50365pdb7v6viv7j unique (body);
 
 alter table applicants
-    add constraint FK30477m048rwunfws9u80f4mp3
+    add constraint fk_recruit_post_id
         foreign key (recruit_post_id)
-            references recruit_posts;
+            references recruit_posts(recruit_post_id);
 
 alter table applicants
-    add constraint FKomb2kaikjaatqt8uf5mp5jf1u
+    add constraint fk_user_id
         foreign key (user_id)
-            references users;
+            references users(user_id);
 
 alter table profile_tags
-    add constraint FKh2cnq3v5k0p5la4ec2rkt8or
+    add constraint fk_profile_id
         foreign key (profile_id)
-            references profiles;
+            references profiles(profile_id);
 
 alter table profile_tags
-    add constraint FK5ao5pw06w9glc2dkkko1lh26w
+    add constraint fk_tag_id
         foreign key (tag_id)
-            references tags;
+            references tags(tag_id);
 
 alter table profiles
-    add constraint FK1rx5gmrfxycn1309s154a38g
+    add constraint fk_position_id
         foreign key (position_id)
-            references positions;
+            references positions(position_id);
 
 alter table profiles
-    add constraint FK410q61iev7klncmpqfuo85ivh
+    add constraint fk_user_id
         foreign key (user_id)
-            references users;
+            references users(user_id);
 
 alter table recruit_post_tags
-    add constraint FKl9fa1qftq079r8jmxcmsuh2ch
+    add constraint fk_recruit_post_id
         foreign key (recruit_post_id)
-            references recruit_posts;
+            references recruit_posts(recruit_post_id);
 
 alter table recruit_post_tags
-    add constraint FKsatq22sf6ry4j9f4gmd0uhc5d
+    add constraint fk_tag_id
         foreign key (tag_id)
-            references tags;
+            references tags(tag_id);
 
 alter table recruit_posts
-    add constraint FK2400ym5oroydfv42fcv53rcf9
+    add constraint fk_user_id
         foreign key (user_id)
-            references users;
+            references users(user_id);
