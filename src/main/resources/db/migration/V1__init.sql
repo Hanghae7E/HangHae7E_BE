@@ -1,4 +1,3 @@
-drop table if exists profile_tag_entity cascade;
 drop table if exists applicants CASCADE;
 drop table if exists positions CASCADE;
 drop table if exists profile_tags CASCADE;
