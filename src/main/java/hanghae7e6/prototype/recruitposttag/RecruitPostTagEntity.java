@@ -4,6 +4,7 @@ import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.tag.TagEntity;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Builder
 @Table(name = "RECRUIT_POST_TAGS")
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecruitPostTagEntity extends BaseTimeEntity {

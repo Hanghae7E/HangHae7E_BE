@@ -5,6 +5,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import hanghae7e6.prototype.exception.ErrorCode;
 import hanghae7e6.prototype.exception.NotFoundException;
+import hanghae7e6.prototype.profile.entity.QPositionEntity;
+import hanghae7e6.prototype.profile.entity.QProfileEntity;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
@@ -25,6 +27,8 @@ public class RecruitPostRepositoryCustom {
     private QUserEntity user = QUserEntity.userEntity;
     private QRecruitPostTagEntity postTag = QRecruitPostTagEntity.recruitPostTagEntity;
     private QTagEntity tag = QTagEntity.tagEntity;
+    private QProfileEntity profile = QProfileEntity.profileEntity;
+    private QPositionEntity position = QPositionEntity.positionEntity;
 
     private RecruitPostTagRepositoryCustom recruitPostTagRepositoryCustom;
 
@@ -49,6 +53,8 @@ public class RecruitPostRepositoryCustom {
                 Projections.fields(SimplePostResponseDto.class,
                         post.id.as("postId"),
                         user.username,
+//                        position.positionName.as("userPosition"),
+                        profile.imageUrl.as("authorImage"),
                         post.title,
                         post.projectStartTime,
                         post.projectEndTime,
@@ -56,6 +62,9 @@ public class RecruitPostRepositoryCustom {
                 ))
                 .from(post)
                 .innerJoin(post.user, user)
+                .innerJoin(profile)
+                .on(profile.user.id.eq(user.id))
+//                .innerJoin(profile.position, position)
                 .where(post.id.in(postIds))
                 .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
                 .fetch();
@@ -85,6 +94,7 @@ public class RecruitPostRepositoryCustom {
 
         return query.offset(dto.getOffSet())
                 .limit(dto.getLimit())
+                .orderBy(SortValue.getOrderSpecifier(dto.getSort()))
                 .fetch();
     }
 
@@ -95,7 +105,13 @@ public class RecruitPostRepositoryCustom {
                         Projections.fields(DetailPostResponseDto.class,
                                 post.id.as("postId"),
                                 post.user.id.as("userId"),
-                                post.title))
+                                post.title,
+                                post.body,
+                                post.projectStartTime,
+                                post.projectEndTime,
+                                post.recruitDueTime,
+                                post.totalMemberCount
+                        ))
                         .from(post)
                         .where(post.id.eq(postId))
                         .fetchOne())

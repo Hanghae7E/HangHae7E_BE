@@ -7,6 +7,7 @@ import hanghae7e6.prototype.user.UserEntity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "RECRUIT_POSTS")
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RecruitPostEntity extends BaseTimeEntity {

@@ -4,14 +4,12 @@ import com.querydsl.core.types.OrderSpecifier;
 import lombok.Getter;
 import org.springframework.data.domain.Sort;
 
-import java.time.LocalDate;
-
 import static hanghae7e6.prototype.recruitpost.QRecruitPostEntity.recruitPostEntity;
 
 @Getter
 public enum SortValue {
-    LATEST_ORDER(Sort.Direction.ASC, "projectStartTime",
-            recruitPostEntity.projectStartTime.asc()),
+    LATEST_ORDER(Sort.Direction.ASC, "createdAt",
+            recruitPostEntity.createdAt.asc()),
     CLOSING_ORDER(Sort.Direction.DESC, "recruitDueTime",
             recruitPostEntity.recruitDueTime.desc());
 
@@ -19,9 +17,9 @@ public enum SortValue {
 
     private String sortBy;
 
-    private OrderSpecifier<LocalDate> orderSpecifier;
+    private OrderSpecifier<?> orderSpecifier;
 
-    SortValue(Sort.Direction direction, String sortBy, OrderSpecifier<LocalDate> orderSpecifier) {
+    SortValue(Sort.Direction direction, String sortBy, OrderSpecifier<?> orderSpecifier) {
         this.direction = direction;
         this.sortBy = sortBy;
         this.orderSpecifier = orderSpecifier;
@@ -32,7 +30,7 @@ public enum SortValue {
         return Sort.by(sort.direction, sort.sortBy);
     }
 
-    public static OrderSpecifier<LocalDate> getOrderSpecifier(int order){
+    public static OrderSpecifier<?> getOrderSpecifier(int order){
         SortValue sort = SortValue.values()[order];
         return sort.getOrderSpecifier();
     }
