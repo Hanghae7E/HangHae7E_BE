@@ -7,6 +7,7 @@ spring:
     include:
       - oauth
       - s3
+      - flyway
 
 ---
 # 로컬 환경 설정
@@ -14,14 +15,13 @@ spring:
   config:
     activate:
       on-profile: local
-      
+
   h2:
     console:
       enabled: true
 
   datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-#    url: jdbc:h2:mem:test
+    url: jdbc:h2:mem:test
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -30,15 +30,25 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
         show_sql: true
 
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    user: sa
+    password:
+    locations:
+      - classpath:db/migration
+      - classpath:db/seed
+
 logging:
   level:
     org.hibernate.type.descriptor.sql: trace
+
 
 jwt:
   secret: test
@@ -59,10 +69,20 @@ spring:
     database: mysql
     open-in-view: false
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     properties:
       hibernate:
         show_sql : false
         format_sql : false
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    user: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    locations:
+      - classpath:db/migration
+      - classpath:db/seed
+
 jwt:
   secret: ${JWT_SECRET}

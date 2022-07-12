@@ -18,12 +18,12 @@ import javax.persistence.*;
 public class RecruitPostTagEntity extends BaseTimeEntity {
 
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "RECRUIT_POST_TAG_ID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RECRUITPOST_ID")
+    @JoinColumn(name = "RECRUIT_POST_ID")
     private RecruitPostEntity recruitPost;
 
     @ManyToOne(fetch = FetchType.LAZY)

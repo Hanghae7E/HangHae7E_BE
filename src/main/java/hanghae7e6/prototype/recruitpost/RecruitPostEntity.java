@@ -27,7 +27,7 @@ public class RecruitPostEntity extends BaseTimeEntity {
 
     @Id
     @Column(name = "RECRUIT_POST_ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
