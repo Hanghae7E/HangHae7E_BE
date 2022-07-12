@@ -7,7 +7,6 @@ spring:
     include:
       - oauth
       - s3
-      - flyway
 
 ---
 # 로컬 환경 설정
@@ -83,7 +82,6 @@ spring:
     locations:
       - classpath:db/migration
       - classpath:db/seed
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 jwt:
   secret: ${JWT_SECRET}
