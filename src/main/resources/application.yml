@@ -77,6 +77,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+    baseline-version: 0
     user: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
     locations:
