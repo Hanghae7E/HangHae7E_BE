@@ -99,46 +99,46 @@ create table users (
 
 
 alter table applicants
-    add constraint fk_recruit_post_id
+    add constraint fk_applicant_recruit_post_id
         foreign key (recruit_post_id)
             references recruit_posts(recruit_post_id);
 
 alter table applicants
-    add constraint fk_user_id
+    add constraint fk_applicant_user_id
         foreign key (user_id)
             references users(user_id);
 
 alter table profile_tags
-    add constraint fk_profile_id
+    add constraint fk_profile_tag_profile_id
         foreign key (profile_id)
             references profiles(profile_id);
 
 alter table profile_tags
-    add constraint fk_tag_id
+    add constraint fk_profile_tag_tag_id
         foreign key (tag_id)
             references tags(tag_id);
 
 alter table profiles
-    add constraint fk_position_id
+    add constraint fk_profile_position_id
         foreign key (position_id)
             references positions(position_id);
 
 alter table profiles
-    add constraint fk_user_id
+    add constraint fk_profile_user_id
         foreign key (user_id)
             references users(user_id);
 
 alter table recruit_post_tags
-    add constraint fk_recruit_post_id
+    add constraint fk_recruit_post_tag_recruit_post_id
         foreign key (recruit_post_id)
             references recruit_posts(recruit_post_id);
 
 alter table recruit_post_tags
-    add constraint fk_tag_id
+    add constraint fk_recruit_post_tag_tag_id
         foreign key (tag_id)
             references tags(tag_id);
 
 alter table recruit_posts
-    add constraint fk_user_id
+    add constraint fk_recruit_post_user_id
         foreign key (user_id)
             references users(user_id);
