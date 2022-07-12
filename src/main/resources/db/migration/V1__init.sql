@@ -1,3 +1,5 @@
+set foreign_key_checks = 0;
+
 drop table if exists applicants CASCADE;
 drop table if exists positions CASCADE;
 drop table if exists profile_tags CASCADE;
