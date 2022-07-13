@@ -2,6 +2,9 @@ package hanghae7e6.prototype.recruitpost;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import hanghae7e6.prototype.exception.AbstractException;
+import hanghae7e6.prototype.exception.ErrorCode;
+import hanghae7e6.prototype.exception.NotFoundException;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
@@ -9,14 +12,13 @@ import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagService;
 import hanghae7e6.prototype.user.CustomUserDetails;
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +55,11 @@ public class RecruitPostService {
         return recruitPostRepositoryCustom.findById(postId);
     }
 
+    public RecruitPostEntity getPostById(Long postId) throws AbstractException {
+        return recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(
+            ErrorCode.BOARD_NOT_FOUND));
+    }
+
 
     @Transactional
     public RecruitPostEntity createPost(
@@ -61,8 +68,8 @@ public class RecruitPostService {
 
         RecruitPostEntity post = recruitPostRepository.save(
                 requestDto.getEntity(userDetails.getId()));
-
-        recruitPostTagService.saveTags(post, requestDto.getTags());
+        if (requestDto.getTags() != null && !requestDto.getTags().equals(""))
+            recruitPostTagService.saveTags(post, requestDto.getParsedTags());
 
         deleteAndUploadImg(requestDto, post,  post.getId());
 
@@ -100,6 +107,15 @@ public class RecruitPostService {
 
         return post;
     }
+
+    public List<RecruitPostEntity> getMyPostsByUserId(Long userId) {
+        return recruitPostRepository.findAllByUserId(userId);
+    }
+
+    public List<RecruitPostEntity> getAppliedPostsByUserId(Long userId) {
+        return recruitPostRepository.findMyApplyPostsByUserId(userId);
+    }
+
 
     private void uploadMultipartFileToS3(MultipartFile file, String key) throws IOException {
 

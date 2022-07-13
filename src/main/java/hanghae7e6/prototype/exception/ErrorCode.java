@@ -18,6 +18,7 @@ public enum ErrorCode {
     TAG_ALREADY_EXISTS("이미 존재하는 태그입니다."),
     POSITION_ALREADY_EXISTS("이미 존재하는 포지션입니다."),
     INVALID_POSITION("잘못되거나 없는 포지션입니다."),
+    APPLICANT_ALREADY_EXISTS("해당 프로젝트에 이미 신청하셨습니다."),
     EMPTY_BODY("필요한 값이 비어있거나 잘못되어 있습니다. 값 형식을 확인해 주세요!"),
     EMPTY_POSITION("포지션이 비어있습니다."),
 
@@ -27,7 +28,8 @@ public enum ErrorCode {
 
     /* 404 NOT_FOUND  리소스를 찾을 수 없음 */
     BOARD_NOT_FOUND("해당 게시글을 찾을 수 없습니다."),
-    USER_NOT_FOUND("해당 사용자를 찾을 수 없습니다.");
+    USER_NOT_FOUND("해당 사용자를 찾을 수 없습니다."),
+    APPLICANT_NOT_FOUND("해당 프로젝트를 먼저 신청해 주세요!");
 
     private final String message;
 }

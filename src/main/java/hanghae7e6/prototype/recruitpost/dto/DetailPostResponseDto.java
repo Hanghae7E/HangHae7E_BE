@@ -36,6 +36,4 @@ public class DetailPostResponseDto {
 
     private List<Long> tags;
 
-    private List<?> applicants;
-
 }
