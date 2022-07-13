@@ -13,7 +13,10 @@ drop table if exists users CASCADE;
 
 create table applicants (
                             applicant_id bigint auto_increment,
-                            status integer not null,
+                            created_at timestamp,
+                            updated_at timestamp,
+                            status varchar(10) default '대기중',
+                            position varchar(255),
                             recruit_post_id bigint,
                             user_id bigint,
                             primary key (applicant_id)
@@ -73,7 +76,10 @@ create table recruit_posts (
                                project_start_time date,
                                recruit_due_time date,
                                title varchar(255) not null,
-                               total_member_count integer not null,
+                               required_developers integer default 0,
+                               required_designers integer default 0,
+                               required_project_managers integer default 0,
+                               recruit_status  boolean  default true,
                                user_id bigint,
                                primary key (recruit_post_id)
 );

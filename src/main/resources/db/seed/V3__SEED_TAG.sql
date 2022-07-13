@@ -24,3 +24,4 @@ insert into tags(body, created_at, updated_at) values ('html', now(), now());
 insert into tags(body, created_at, updated_at) values ('intelliJ', now(), now());
 insert into tags(body, created_at, updated_at) values ('java', now(), now());
 insert into tags(body, created_at, updated_at) values ('node', now(), now());
+insert into tags(body, created_at, updated_at) values ('react', now(), now());

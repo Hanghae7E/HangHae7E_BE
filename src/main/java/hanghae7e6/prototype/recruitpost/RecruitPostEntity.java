@@ -1,12 +1,18 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.applicant.ApplicantEntity;
 import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
 import hanghae7e6.prototype.user.UserEntity;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -35,7 +41,11 @@ public class RecruitPostEntity extends BaseTimeEntity {
     private UserEntity user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
-    private List<RecruitPostTagEntity> recruitPostTag;
+    private List<RecruitPostTagEntity> recruitPostTag = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
+    private List<ApplicantEntity> applicants = new ArrayList<>();
+
 
     @Column(nullable = false)
     private String title;
@@ -43,8 +53,15 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String body;
 
-    @Column(nullable = false)
-    private int totalMemberCount;
+
+    @Column(name = "required_developers", columnDefinition = "integer default 0")
+    private Integer requiredDevelopers;
+
+    @Column(name = "required_designers", columnDefinition = "integer default 0")
+    private Integer requiredDesigners;
+
+    @Column(name = "required_project_managers", columnDefinition = "integer default 0")
+    private Integer requiredProjectManagers;
 
     @Column
     private LocalDate projectStartTime;
@@ -58,20 +75,18 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column
     private String imageUrl;
 
+    @Column
+    private Boolean recruitStatus;
 
     public RecruitPostEntity updateFields(PostRequestDto requestDto){
         String title = requestDto.getTitle();
         String body = requestDto.getBody();
-        Integer totalMemberCount = requestDto.getTotalMemberCount();
         LocalDate projectStartTime = requestDto.getProjectStartTime();
         LocalDate projectEndTime = requestDto.getProjectEndTime();
         LocalDate recruitDueTime = requestDto.getRecruitDueTime();
 
         this.title = Objects.nonNull(title)? title : this.title;
         this.body = Objects.nonNull(body)? body : this.body;
-
-        this.totalMemberCount = Objects.nonNull(totalMemberCount)?
-                totalMemberCount : this.totalMemberCount;
 
         this.projectStartTime = Objects.nonNull(projectStartTime)?
                 projectStartTime : this.projectStartTime;
@@ -83,11 +98,29 @@ public class RecruitPostEntity extends BaseTimeEntity {
                 recruitDueTime : this.recruitDueTime;
 
 
-//        if (Objects.nonNull(img)) {
-//            awsS3Service.deleteFile(this.imgUrl);
-//            this.imgUrl = awsS3Service.uploadFile(img);
-//        }
+        this.requiredProjectManagers = Optional.ofNullable(requestDto.getRequiredProjectManagers()).orElseGet(this::getRequiredProjectManagers);
+        this.requiredDesigners =  Optional.ofNullable(requestDto.getRequiredDesigners()).orElseGet(this::getRequiredDesigners);
+        this.requiredDevelopers =  Optional.ofNullable(requestDto.getRequiredDevelopers()).orElseGet(this::getRequiredDevelopers);
 
         return this;
     }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void addApplicant(ApplicantEntity applicant) {
+        this.applicants.add(applicant);
+
+        if (applicant.getRecruitPost() != this) {
+            applicant.setRecruitPost(this);
+        }
+    }
+
+    public List<ApplicantEntity> getAcceptedApplicantByPosition(String positionName) {
+        return this.applicants.stream()
+                              .filter(applicant -> applicant.getPosition().equals(positionName) && applicant.getStatus().equals("합격"))
+                              .collect(Collectors.toList());
+    }
+
 }

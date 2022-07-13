@@ -60,7 +60,7 @@ public class OAuthAttributes {
 
 
     public UserEntity toEntity() {
-        return UserEntity.builder().username(username).email(email).userRole(UserRole.GUEST).socialType(socialType).build();
+        return UserEntity.builder().username(username).email(email).userRole(UserRole.USER).socialType(socialType).build();
     }
 
     public void setUserId(Long userId) {

@@ -15,6 +15,8 @@ import hanghae7e6.prototype.profile.entity.ProfileTagEntity;
 import hanghae7e6.prototype.profile.repository.PositionRepository;
 import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.profile.repository.ProfileTagRepository;
+import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
+import hanghae7e6.prototype.recruitpost.RecruitPostService;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileTagRepository profileTagRepository;
     private final PositionRepository positionRepository;
+    private final RecruitPostService recruitPostService;
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -48,7 +51,9 @@ public class ProfileService {
         List<ProfileTagEntity> profileTags =
             profileTagRepository.findAllByProfileId(profile.getId());
 
-        return ProfileResponse.toResponse(profile, profileTags);
+        List <RecruitPostEntity> myRecruitPosts = recruitPostService.getMyPostsByUserId(userId);
+        List <RecruitPostEntity> myAppliedPosts = recruitPostService.getAppliedPostsByUserId(userId);
+        return ProfileResponse.toResponse(profile, profileTags, myRecruitPosts, myAppliedPosts);
     }
 
     @Transactional

@@ -58,7 +58,12 @@ public class RecruitPostRepositoryCustom {
                         post.title,
                         post.projectStartTime,
                         post.projectEndTime,
-                        post.recruitDueTime
+                        post.recruitDueTime,
+                        post.imageUrl.as("projectImage"),
+                        post.requiredDesigners,
+                        post.requiredDevelopers,
+                        post.requiredProjectManagers
+
                 ))
                 .from(post)
                 .innerJoin(post.user, user)
@@ -125,8 +130,11 @@ public class RecruitPostRepositoryCustom {
                                 post.projectStartTime,
                                 post.projectEndTime,
                                 post.recruitDueTime,
-                                post.totalMemberCount
-                        ))
+                                post.imageUrl.as("imageUrl"),
+                                post.requiredDesigners,
+                                post.requiredDevelopers,
+                                post.requiredProjectManagers
+                                          ))
                         .from(post)
                         .where(post.id.eq(postId))
                         .fetchOne())

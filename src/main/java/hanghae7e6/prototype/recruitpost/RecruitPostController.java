@@ -5,6 +5,7 @@ import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import hanghae7e6.prototype.user.CustomUserDetails;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +63,7 @@ public class RecruitPostController {
     @PostMapping("/recruitPost")
     public ResponseEntity<?> createPost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @ModelAttribute PostRequestDto requestDto){
+            @ModelAttribute PostRequestDto requestDto) throws IOException{
 
         recruitPostService.createPost(userDetails, requestDto);
 
@@ -74,7 +75,7 @@ public class RecruitPostController {
     public ResponseEntity<?> updatePost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long postId,
-            @ModelAttribute PostRequestDto requestDto){
+            @ModelAttribute PostRequestDto requestDto) throws IOException {
 
         recruitPostService.updatePost(userDetails, postId, requestDto);
 
