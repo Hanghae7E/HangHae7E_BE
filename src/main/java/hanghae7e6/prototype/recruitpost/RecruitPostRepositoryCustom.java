@@ -115,7 +115,7 @@ public class RecruitPostRepositoryCustom {
 
         Long postCount = query.fetchOne();
 
-        return postCount <= (dto.getOffSet() + 1) * dto.getLimit();
+        return postCount <= (long) (dto.getOffSet() + 1) * dto.getLimit();
     }
 
 

@@ -5,16 +5,26 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.exception.ErrorCode;
 import hanghae7e6.prototype.exception.NotFoundException;
+import hanghae7e6.prototype.profile.entity.ProfileEntity;
+import hanghae7e6.prototype.profile.repository.ProfileRepository;
+import hanghae7e6.prototype.profile.service.ProfileService;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagService;
+import hanghae7e6.prototype.tag.TagEntity;
+import hanghae7e6.prototype.tag.TagResponseDto;
 import hanghae7e6.prototype.user.CustomUserDetails;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,22 +37,60 @@ import org.springframework.web.multipart.MultipartFile;
 public class RecruitPostService {
 
     private final RecruitPostRepository recruitPostRepository;
+    private final ProfileRepository profileRepository;
     private final RecruitPostRepositoryCustom recruitPostRepositoryCustom;
     private final RecruitPostTagService recruitPostTagService;
     private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}") private String BUCKET;
 
 
-    @Transactional(readOnly = true)
-    public Map<String, Object> getPosts(
-            PostParamDto requestDto) {
+    private SimplePostResponseDto transfer(RecruitPostEntity entity) {
+        SimplePostResponseDto response = SimplePostResponseDto.toDto(entity);
+        List <TagResponseDto> tagRes = TagResponseDto.getDtos(recruitPostTagService.getTagsByPostId(
+            entity.getId()));
+        response.setTags(tagRes);
 
+        return response;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getPosts(PageRequest pageRequest, Long tagId) {
+        boolean isLast = true;
         Map<String, Object> result = new HashMap<>();
 
-        List<SimplePostResponseDto> posts = recruitPostRepositoryCustom.findAllByTagId(requestDto);
-        boolean isLast = recruitPostRepositoryCustom.isLastPage(requestDto);
+        if (tagId == null) {
+            Page<RecruitPostEntity> recruitPostPage = recruitPostRepository.findAll(pageRequest);
+            List<RecruitPostEntity> recruitPosts = recruitPostPage.getContent();
 
-        result.put("posts", posts);
+            List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
+            result.put("posts", responseDtos);
+
+            if (recruitPostPage.hasNext())
+                isLast = false;
+        } else {
+            List <RecruitPostTagEntity> recruitPostTagEntities = recruitPostTagService.getPostTagsByTagId(tagId);
+            List <Long> postIds = recruitPostTagEntities.stream().map(tags -> tags.getRecruitPost().getId()).collect(
+                Collectors.toList());
+
+
+            List<RecruitPostEntity> recruitPostPage = recruitPostRepository.findAllById(postIds);
+//            List<RecruitPostEntity> recruitPosts = recruitPostPage.getContent();
+
+//            List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
+//            result.put("posts", responseDtos);
+
+//            if (recruitPostPage.hasNext())
+//                isLast = false;
+        }
+//
+//
+
+//        Map<String, Object> result = new HashMap<>();
+
+//        List<SimplePostResponseDto> posts = recruitPostRepositoryCustom.findAllByTagId(requestDto);
+//        boolean isLast = recruitPostRepositoryCustom.isLastPage(requestDto);
+
+//        result.put("posts", posts);
         result.put("isLast", isLast);
 
         return result;
@@ -66,8 +114,14 @@ public class RecruitPostService {
             CustomUserDetails userDetails,
             PostRequestDto requestDto) throws IOException {
 
+
+
+        ProfileEntity profile = profileRepository.findByUserId(userDetails.getId())
+                                                 .orElseThrow(() -> new NotFoundException(
+                                                     ErrorCode.USER_NOT_FOUND));;
+
         RecruitPostEntity post = recruitPostRepository.save(
-                requestDto.getEntity(userDetails.getId()));
+                requestDto.toEntity(userDetails.getId(), profile));
         if (requestDto.getTags() != null && !requestDto.getTags().equals(""))
             recruitPostTagService.saveTags(post, requestDto.getParsedTags());
 

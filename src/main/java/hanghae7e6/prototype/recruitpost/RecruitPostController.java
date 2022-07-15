@@ -7,6 +7,11 @@ import hanghae7e6.prototype.recruitpost.dto.SimplePostResponseDto;
 import hanghae7e6.prototype.user.CustomUserDetails;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -31,20 +36,21 @@ public class RecruitPostController {
 
     @GetMapping("/main")
     public ResponseEntity<Map<String, Object>> getPosts(
-            @Nullable @RequestParam("limit") Integer limit,
-            @Nullable @RequestParam("page") Integer page,
-            @Nullable @RequestParam("sort") Integer sort,
-            @Nullable @RequestParam("tag") Long tag){
+        @RequestParam("page") Integer page, @RequestParam("size") Integer size, @RequestParam("sort") String sort, @RequestParam(required = false, value = "tags") Long tagId){
+//
+        if (sort.equals("new")) sort = "createdAt";
+        if (sort.equals("due")) sort = "recruitDueTime";
 
-        PostParamDto requestDto = PostParamDto.builder()
-                .limit(limit)
-                .offSet(page)
-                .sort(sort)
-                .tagId(tag).build();
+          PageRequest pageRequest = PageRequest.of(page, size, Direction.ASC, sort);
+//        PostParamDto requestDto = PostParamDto.builder()
+//                .limit(limit)
+//                .offSet(page)
+//                .sort(sort)
+//                .tagId(tag).build();
 
-        PostParamDto.validate(requestDto);
+//        PostParamDto.validate(requestDto);
 
-        Map<String, Object> body = recruitPostService.getPosts(requestDto);
+        Map<String, Object> body = recruitPostService.getPosts(pageRequest, tagId);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }

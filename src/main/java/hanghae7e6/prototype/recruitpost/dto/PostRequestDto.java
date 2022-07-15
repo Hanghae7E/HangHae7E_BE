@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
+import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.user.UserEntity;
 import java.util.ArrayList;
@@ -75,15 +76,19 @@ public class PostRequestDto {
                 LocalDate.parse(date) : null;
     }
 
-    public RecruitPostEntity getEntity(Long userId){
+    public RecruitPostEntity toEntity(Long userId, ProfileEntity profile){
 
         return RecruitPostEntity.builder()
                 .user(UserEntity.builder().id(userId).build())
                 .title(getTitle())
                 .body(getBody())
+                .profile(profile)
                 .projectStartTime(getProjectStartTime())
                 .projectEndTime(getProjectEndTime())
                 .recruitDueTime(getRecruitDueTime())
+                .requiredDesigners(getRequiredDesigners())
+                .requiredDevelopers(getRequiredDevelopers())
+                .requiredProjectManagers(getRequiredProjectManagers())
                 .build();
     }
 

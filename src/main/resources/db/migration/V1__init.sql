@@ -48,7 +48,7 @@ create table profiles (
                           available_time varchar(255),
                           career_period varchar(255),
                           face_to_face boolean,
-                          image_url varchar(255),
+                          image_url varchar(255) default '',
                           phone_number varchar(255),
                           portfolio_url varchar(255),
                           residence varchar(255),
@@ -81,6 +81,7 @@ create table recruit_posts (
                                required_project_managers integer default 0,
                                recruit_status  boolean  default true,
                                user_id bigint,
+                               profile_id bigint,
                                primary key (recruit_post_id)
 );
 
@@ -148,3 +149,8 @@ alter table recruit_posts
     add constraint fk_recruit_post_user_id
         foreign key (user_id)
             references users(user_id);
+
+alter table recruit_posts
+    add constraint fk_recruit_post_profile_id
+        foreign key (profile_id)
+            references profiles(profile_id);

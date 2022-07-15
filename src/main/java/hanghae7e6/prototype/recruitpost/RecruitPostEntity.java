@@ -2,6 +2,7 @@ package hanghae7e6.prototype.recruitpost;
 
 import hanghae7e6.prototype.applicant.ApplicantEntity;
 import hanghae7e6.prototype.common.BaseTimeEntity;
+import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
 import hanghae7e6.prototype.user.UserEntity;
@@ -26,6 +27,16 @@ import java.util.Objects;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "RECRUIT_POSTS")
+@NamedEntityGraphs({
+    @NamedEntityGraph(name = "RecruitPost.findAll",attributeNodes = {
+        @NamedAttributeNode("user"),
+        @NamedAttributeNode("profile"),
+        @NamedAttributeNode("recruitPostTag")}),
+
+@NamedEntityGraph(
+    name = "RecruitPost.findAllByTagId", attributeNodes = {@NamedAttributeNode("user"), @NamedAttributeNode("profile"), @NamedAttributeNode(value = "recruitPostTag", subgraph = "recruitPostTag")},
+    subgraphs = @NamedSubgraph(name = "recruitPostTag", attributeNodes = {@NamedAttributeNode("tag")}))
+})
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,6 +50,10 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROFILE_ID")
+    private ProfileEntity profile;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
     private List<RecruitPostTagEntity> recruitPostTag = new ArrayList<>();
@@ -98,9 +113,9 @@ public class RecruitPostEntity extends BaseTimeEntity {
                 recruitDueTime : this.recruitDueTime;
 
 
-        this.requiredProjectManagers = Optional.ofNullable(requestDto.getRequiredProjectManagers()).orElseGet(this::getRequiredProjectManagers);
-        this.requiredDesigners =  Optional.ofNullable(requestDto.getRequiredDesigners()).orElseGet(this::getRequiredDesigners);
-        this.requiredDevelopers =  Optional.ofNullable(requestDto.getRequiredDevelopers()).orElseGet(this::getRequiredDevelopers);
+        this.requiredProjectManagers = Optional.ofNullable(requestDto.getRequiredProjectManagers()).orElseGet(() -> this.requiredProjectManagers);
+        this.requiredDesigners =  Optional.ofNullable(requestDto.getRequiredDesigners()).orElseGet(() -> this.requiredDesigners);
+        this.requiredDevelopers =  Optional.ofNullable(requestDto.getRequiredDevelopers()).orElseGet(() -> this.requiredDevelopers);
 
         return this;
     }

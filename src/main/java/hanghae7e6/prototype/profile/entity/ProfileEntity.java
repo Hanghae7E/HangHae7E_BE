@@ -43,7 +43,7 @@ public class ProfileEntity extends BaseTimeEntity {
     @Column(name = "PHONE_NUMBER", nullable = true)
     private String phoneNumber;
 
-    @Column(name = "IMAGE_URL", nullable = true)
+    @Column(name = "IMAGE_URL", columnDefinition = "varchar(255) default ''")
     private String imageUrl;
 
     @Column(name = "PORTFOLIO_URL", nullable = true)
