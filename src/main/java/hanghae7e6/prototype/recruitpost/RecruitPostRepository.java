@@ -29,8 +29,8 @@ public interface RecruitPostRepository extends JpaRepository<RecruitPostEntity, 
 
 //    @Query(value = "select post from RecruitPostEntity post join fetch post.user join fetch ProfileEntity profile on post.user.id = profile.user.id join fetch RecruitPostTagEntity rt on rt.recruitPost.id =v post.id where rt.tag.id = :tagId")
 //    Page <RecruitPostEntity> findByTagId(Long tagId, Pageable pageable);
-    @EntityGraph(attributePaths = {"user", "profile", "recruitPostTag", "recruitPostTag.tag"}, type = EntityGraphType.FETCH)
-    Page<RecruitPostEntity> findAllByTagId(Long tagId, Pageable pageable);
+//    @EntityGraph(attributePaths = {"user", "profile", "recruitPostTag", "recruitPostTag.tag"}, type = EntityGraphType.FETCH)
+//    Page<RecruitPostEntity> findAllByTagId(Long tagId, Pageable pageable);
 }
 //    List<SimplePostResponseDto> postDtos = queryFactory.select(
 //                                                           Projections.fields(SimplePostResponseDto.class,
