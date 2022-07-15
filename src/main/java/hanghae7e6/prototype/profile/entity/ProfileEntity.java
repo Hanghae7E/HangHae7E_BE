@@ -3,6 +3,7 @@ package hanghae7e6.prototype.profile.entity;
 import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.profile.dto.ProfileRequest;
 import hanghae7e6.prototype.user.UserEntity;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,7 +57,7 @@ public class ProfileEntity extends BaseTimeEntity {
     private String availableTime;
 
     @Column(name = "FACE_TO_FACE", nullable = true)
-    private boolean faceToFace;
+    private Boolean faceToFace;
 
     @Column(name = "CAREER_PERIOD", nullable = true)
     private String careerPeriod;
@@ -82,13 +83,13 @@ public class ProfileEntity extends BaseTimeEntity {
 
     public void update(ProfileRequest profileRequest, PositionEntity updatedPosition) {
         this.position = updatedPosition != null? updatedPosition : this.position;
-        this.phoneNumber = profileRequest.getPhone_number();
-        this.portfolioUrl = profileRequest.getPortfolio_url();
-        this.availablePeriod = profileRequest.getAvailable_period();
-        this.availableTime = profileRequest.getAvailable_time();
-        this.faceToFace = profileRequest.isFace_to_face();
-        this.careerPeriod = profileRequest.getCareer_period();
-        this.residence = profileRequest.getResidence();
+        this.phoneNumber = Optional.ofNullable(profileRequest.getPhone_number()).orElseGet(this::getPhoneNumber);
+        this.portfolioUrl = Optional.ofNullable(profileRequest.getPortfolio_url()).orElseGet(this::getPortfolioUrl);
+        this.availablePeriod = Optional.ofNullable(profileRequest.getAvailable_period()).orElseGet(this::getAvailablePeriod);
+        this.availableTime = Optional.ofNullable(profileRequest.getAvailable_time()).orElseGet(this::getAvailableTime);
+        this.faceToFace = Optional.ofNullable(profileRequest.getFace_to_face()).orElseGet(this::getFaceToFace);
+        this.careerPeriod = Optional.ofNullable(profileRequest.getCareer_period()).orElseGet(this::getCareerPeriod);
+        this.residence = Optional.ofNullable(profileRequest.getResidence()).orElseGet(this::getResidence);
     }
 
     public String getPosition() {

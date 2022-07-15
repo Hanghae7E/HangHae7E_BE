@@ -23,7 +23,6 @@ public interface RecruitPostRepository extends JpaRepository<RecruitPostEntity, 
         "select distinct post from RecruitPostEntity post join fetch post.user left join fetch post.applicants where post in (select a.recruitPost from ApplicantEntity a where a.user.id = :userId)")
     List <RecruitPostEntity> findMyApplyPostsByUserId(Long userId);
 
-//    @Query(value = "select post from RecruitPostEntity post join fetch post.user join fetch ProfileEntity profile on post.user.id = profile.user.id")
     @EntityGraph(value = "RecruitPost.findAll", type = EntityGraphType.FETCH)
     Page <RecruitPostEntity> findAll(Pageable pageable);
 

@@ -19,7 +19,7 @@ public class ProfileRequest {
     private String available_time;
     private String position;
     private List<String> fields;
-    private boolean face_to_face;
+    private Boolean face_to_face;
     private List<String> skills;
     private String career_period;
     private String portfolio_url;

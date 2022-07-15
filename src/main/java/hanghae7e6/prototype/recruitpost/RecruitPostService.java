@@ -44,7 +44,7 @@ public class RecruitPostService {
     @Value("${cloud.aws.s3.bucket}") private String BUCKET;
 
 
-    private SimplePostResponseDto transfer(RecruitPostEntity entity) {
+    private SimplePostResponseDto transfer(RecruitPostEntity entity) throws AbstractException {
         SimplePostResponseDto response = SimplePostResponseDto.toDto(entity);
         List <TagResponseDto> tagRes = TagResponseDto.getDtos(recruitPostTagService.getTagsByPostId(
             entity.getId()));
@@ -54,7 +54,7 @@ public class RecruitPostService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getPosts(PageRequest pageRequest, Long tagId) {
+    public Map<String, Object> getPosts(PageRequest pageRequest, Long tagId) throws AbstractException {
         boolean isLast = true;
         Map<String, Object> result = new HashMap<>();
 
@@ -83,14 +83,7 @@ public class RecruitPostService {
 //                isLast = false;
         }
 //
-//
 
-//        Map<String, Object> result = new HashMap<>();
-
-//        List<SimplePostResponseDto> posts = recruitPostRepositoryCustom.findAllByTagId(requestDto);
-//        boolean isLast = recruitPostRepositoryCustom.isLastPage(requestDto);
-
-//        result.put("posts", posts);
         result.put("isLast", isLast);
 
         return result;
@@ -98,7 +91,7 @@ public class RecruitPostService {
 
 
     @Transactional(readOnly = true)
-    public DetailPostResponseDto getPost(Long postId) {
+    public DetailPostResponseDto getPost(Long postId) throws AbstractException {
 
         return recruitPostRepositoryCustom.findById(postId);
     }
@@ -112,8 +105,7 @@ public class RecruitPostService {
     @Transactional
     public RecruitPostEntity createPost(
             CustomUserDetails userDetails,
-            PostRequestDto requestDto) throws IOException {
-
+            PostRequestDto requestDto) throws IOException, AbstractException {
 
 
         ProfileEntity profile = profileRepository.findByUserId(userDetails.getId())
@@ -136,7 +128,7 @@ public class RecruitPostService {
     public void updatePost(
             CustomUserDetails userDetails,
             Long postId,
-            PostRequestDto requestDto) throws IOException {
+            PostRequestDto requestDto) throws IOException, AbstractException {
 
         RecruitPostEntity post =
                 recruitPostRepositoryCustom.findByIdAndUserId(postId, userDetails.getId());
