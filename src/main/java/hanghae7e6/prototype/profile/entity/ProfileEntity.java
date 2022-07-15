@@ -100,4 +100,9 @@ public class ProfileEntity extends BaseTimeEntity {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+
+    public boolean isFaceToFace() {
+        return this.faceToFace;
+    }
 }
