@@ -2,6 +2,7 @@ package hanghae7e6.prototype.profile.dto;
 
 
 
+import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.profile.entity.ProfileTagEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
@@ -56,7 +57,7 @@ public class ProfileResponse {
         this.applyPosts = applyPosts;
     }
 
-    public static ProfileResponse toResponse(ProfileEntity profile, List<ProfileTagEntity> profileTags, List<RecruitPostEntity> myRecruitPosts, List <RecruitPostEntity> myAppliedRecruitPosts) {
+    public static ProfileResponse toResponse(ProfileEntity profile, List<ProfileTagEntity> profileTags, List<RecruitPostEntity> myRecruitPosts, List <RecruitPostEntity> myAppliedRecruitPosts) throws AbstractException{
         UserEntity user = profile.getUser();
 
         List <String> fields = profileTags.stream().filter(profileTag -> profileTag.getProfileAttributeName().equals("field")).map(profileTag -> profileTag.getTag().getBody()).collect(
@@ -90,7 +91,7 @@ public class ProfileResponse {
     }
 
 
-    public static Map<String, String> convertPostEntityToMap(RecruitPostEntity entity, Long userId) {
+    public static Map<String, String> convertPostEntityToMap(RecruitPostEntity entity, Long userId) throws AbstractException {
         int totalCapacity = entity.getRequiredDesigners() + entity.getRequiredProjectManagers() + entity.getRequiredDevelopers();
         int currentHeads = entity.getAcceptedApplicantByPosition("개발자").size()
                             + entity.getAcceptedApplicantByPosition("기획자").size()

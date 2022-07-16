@@ -38,7 +38,7 @@ public class RecruitPostController {
         if (sort.equals("new")) sort = "createdAt";
         if (sort.equals("due")) sort = "recruitDueTime";
 
-        PageRequest pageRequest = PageRequest.of(page, size, Direction.ASC, sort);
+        PageRequest pageRequest = PageRequest.of(page, size, Direction.DESC, sort);
         Map<String, Object> body = recruitPostService.getPosts(pageRequest, tagId);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);

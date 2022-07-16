@@ -55,36 +55,13 @@ public class RecruitPostService {
 
     @Transactional(readOnly = true)
     public Map<String, Object> getPosts(PageRequest pageRequest, Long tagId) throws AbstractException {
-        boolean isLast = true;
         Map<String, Object> result = new HashMap<>();
+        Page<RecruitPostEntity> recruitPostPage = tagId == null? recruitPostRepository.findAll(pageRequest) : recruitPostRepository.findAllByTagId(tagId, pageRequest);
+        List<RecruitPostEntity> recruitPosts = recruitPostPage.getContent();
 
-        if (tagId == null) {
-            Page<RecruitPostEntity> recruitPostPage = recruitPostRepository.findAll(pageRequest);
-            List<RecruitPostEntity> recruitPosts = recruitPostPage.getContent();
-
-            List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
-            result.put("posts", responseDtos);
-
-            if (recruitPostPage.hasNext())
-                isLast = false;
-        } else {
-            List <RecruitPostTagEntity> recruitPostTagEntities = recruitPostTagService.getPostTagsByTagId(tagId);
-            List <Long> postIds = recruitPostTagEntities.stream().map(tags -> tags.getRecruitPost().getId()).collect(
-                Collectors.toList());
-
-
-            List<RecruitPostEntity> recruitPostPage = recruitPostRepository.findAllById(postIds);
-//            List<RecruitPostEntity> recruitPosts = recruitPostPage.getContent();
-
-//            List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
-//            result.put("posts", responseDtos);
-
-//            if (recruitPostPage.hasNext())
-//                isLast = false;
-        }
-//
-
-        result.put("isLast", isLast);
+        List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
+        result.put("posts", responseDtos);
+        result.put("isLast", recruitPostPage.hasNext());
 
         return result;
     }

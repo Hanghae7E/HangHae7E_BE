@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.profile.controller;
 
+import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.profile.dto.ProfileRequest;
 import hanghae7e6.prototype.profile.dto.ProfileResponse;
 import hanghae7e6.prototype.profile.service.ProfileService;
@@ -29,7 +30,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUserProfile(@PathVariable Long userId, ProfileRequest profileRequest) throws IOException {
+    public ResponseEntity<?> updateUserProfile(@PathVariable Long userId, ProfileRequest profileRequest) throws IOException, AbstractException {
         profileService.updateUserProfile(userId, profileRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);

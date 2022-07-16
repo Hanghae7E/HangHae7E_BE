@@ -11,6 +11,4 @@ public interface RecruitPostTagRepository extends JpaRepository<RecruitPostTagEn
     @Query(value = "select rt from RecruitPostTagEntity rt join fetch rt.tag where rt.recruitPost.id = :recruitPostId")
     List <RecruitPostTagEntity> findAllByRecruitPostId(Long recruitPostId);
 
-    @Query(value = "select rt from RecruitPostTagEntity rt join fetch rt.recruitPost join fetch rt.tag where rt.tag.id = :tagId")
-    List<RecruitPostTagEntity> findAllByTagId(Long tagId);
 }

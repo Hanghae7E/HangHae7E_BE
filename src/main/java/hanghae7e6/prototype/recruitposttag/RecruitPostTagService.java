@@ -25,10 +25,6 @@ public class RecruitPostTagService {
         this.tagService = tagService;
     }
 
-    public List <RecruitPostTagEntity> getPostTagsByTagId(Long tagId) {
-        return recruitPostTagRepository.findAllByTagId(tagId);
-    }
-
 
     public List<TagEntity> getTagsByPostId(Long postId) {
         List <RecruitPostTagEntity> recruitPostTagEntities = recruitPostTagRepository.findAllByRecruitPostId(postId);

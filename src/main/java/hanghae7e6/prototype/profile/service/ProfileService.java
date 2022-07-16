@@ -64,7 +64,7 @@ public class ProfileService {
         ProfileEntity profile = profileRepository.findByUserId(userId)
                                                  .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
-        if (!profileRequest.getUsername().equals(user.getUsername()))
+        if (profileRequest.getUsername() != null && !profileRequest.getUsername().equals(user.getUsername()))
             user.setUsername(profileRequest.getUsername());
 
         Long profileId = profile.getId();
@@ -78,7 +78,7 @@ public class ProfileService {
             profileRequest.getSkills(), profile);
 
         if (profileRequest.getFiles() != null) {
-            if (profile.getImageUrl() != null)
+            if (!profile.getImageUrl().equals(""))
                 amazonS3Client.deleteObject(BUCKET, toS3ProfileImgKey(profileId));
 
             uploadMultipartFileToS3(profileRequest.getFiles(), toS3ProfileImgKey(profileId));

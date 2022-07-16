@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping()
 public class UserController {
 
     @Autowired
@@ -31,10 +30,4 @@ public class UserController {
 
         return userRepository.findAll();
     }
-
-//    @GetMapping("/login/oauth2/code/kakao")
-//    public void asdf(@RequestParam String code) {
-//        System.out.println("code : " + code);
-//
-//    }
 }
