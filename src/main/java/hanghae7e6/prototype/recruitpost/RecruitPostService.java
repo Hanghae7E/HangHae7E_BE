@@ -61,7 +61,7 @@ public class RecruitPostService {
 
         List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
         result.put("posts", responseDtos);
-        result.put("isLast", recruitPostPage.hasNext());
+        result.put("isLast", !recruitPostPage.hasNext());
 
         return result;
     }
