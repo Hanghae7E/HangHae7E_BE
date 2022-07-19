@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -44,25 +45,31 @@ public class ProfileEntity extends BaseTimeEntity {
     @Column(name = "PHONE_NUMBER", nullable = true)
     private String phoneNumber;
 
-    @Column(name = "IMAGE_URL", columnDefinition = "varchar(255) default ''")
+    @Column(name = "IMAGE_URL")
+    @ColumnDefault("")
     private String imageUrl;
 
     @Column(name = "PORTFOLIO_URL", nullable = true)
+    @ColumnDefault("")
     private String portfolioUrl;
 
     @Column(name = "AVAILABLE_PERIOD", nullable = true)
+    @ColumnDefault("")
     private String availablePeriod;
 
     @Column(name = "AVAILABLE_TIME", nullable = true)
+    @ColumnDefault("")
     private String availableTime;
 
     @Column(name = "FACE_TO_FACE", nullable = true)
     private Boolean faceToFace;
 
     @Column(name = "CAREER_PERIOD", nullable = true)
+    @ColumnDefault("")
     private String careerPeriod;
 
     @Column(name = "RESIDENCE", nullable = true)
+    @ColumnDefault("")
     private String residence;
 
     @Builder

@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.profile.dto;
 
+import java.util.StringTokenizer;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ public class ProfileRequest {
     private String available_period;
     private String available_time;
     private String position;
-    private List<String> fields;
+    private String fields;
     private Boolean face_to_face;
-    private List<String> skills;
+    private String skills;
     private String career_period;
     private String portfolio_url;
     private MultipartFile files;
@@ -29,12 +30,22 @@ public class ProfileRequest {
     public List<String> getFields() {
         if (this.fields == null)
             return new ArrayList<>();
-        return fields;
+        return getParsedTags(fields);
     }
 
     public List<String> getSkills() {
         if (this.skills == null)
             return new ArrayList<>();
-        return skills;
+        return getParsedTags(skills);
+    }
+
+    public List<String> getParsedTags(String tagStr) {
+        StringTokenizer st = new StringTokenizer(tagStr, ",");
+        List <String> parsedTags = new ArrayList<>();
+
+        while (st.hasMoreTokens())
+            parsedTags.add(st.nextToken());
+
+        return parsedTags;
     }
 }

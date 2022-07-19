@@ -46,8 +46,7 @@ public class RecruitPostService {
 
     private SimplePostResponseDto transfer(RecruitPostEntity entity) throws AbstractException {
         SimplePostResponseDto response = SimplePostResponseDto.toDto(entity);
-        List <TagResponseDto> tagRes = TagResponseDto.getDtos(recruitPostTagService.getTagsByPostId(
-            entity.getId()));
+        List <TagResponseDto> tagRes = TagResponseDto.getDtos(recruitPostTagService.getTagsByPostId(entity.getId()));
         response.setTags(tagRes);
 
         return response;
