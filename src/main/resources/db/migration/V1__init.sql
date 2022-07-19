@@ -1,4 +1,4 @@
-set foreign_key_checks = 0;
+-- set foreign_key_checks = 0;
 
 drop table if exists applicants CASCADE;
 drop table if exists positions CASCADE;
@@ -8,8 +8,7 @@ drop table if exists recruit_post_tags CASCADE;
 drop table if exists recruit_posts CASCADE;
 drop table if exists tags CASCADE;
 drop table if exists users CASCADE;
--- drop sequence if exists hibernate_sequence;
--- create sequence hibernate_sequence start with 1 increment by 1;
+
 
 create table applicants (
                             applicant_id bigint auto_increment,
@@ -44,14 +43,14 @@ create table profiles (
                           profile_id bigint auto_increment,
                           created_at timestamp,
                           updated_at timestamp,
-                          available_period varchar(255),
-                          available_time varchar(255),
-                          career_period varchar(255),
+                          available_period varchar(255) default '',
+                          available_time varchar(255) default '',
+                          career_period varchar(255) default '',
                           face_to_face boolean,
                           image_url varchar(255) default '',
-                          phone_number varchar(255),
-                          portfolio_url varchar(255),
-                          residence varchar(255),
+                          phone_number varchar(255) default '',
+                          portfolio_url varchar(255) default '',
+                          residence varchar(255) default '',
                           position_id bigint,
                           user_id bigint,
                           primary key (profile_id)
@@ -71,7 +70,7 @@ create table recruit_posts (
                                created_at timestamp,
                                updated_at timestamp,
                                body varchar(255) not null,
-                               image_url varchar(255),
+                               image_url varchar(255) default '',
                                project_end_time date,
                                project_start_time date,
                                recruit_due_time date,

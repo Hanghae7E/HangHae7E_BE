@@ -30,7 +30,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<?> updateUserProfile(@PathVariable Long userId, ProfileRequest profileRequest) throws IOException, AbstractException {
+    public ResponseEntity<?> updateUserProfile(@PathVariable Long userId, @ModelAttribute ProfileRequest profileRequest) throws IOException, AbstractException {
         profileService.updateUserProfile(userId, profileRequest);
 
         return new ResponseEntity<>(HttpStatus.OK);

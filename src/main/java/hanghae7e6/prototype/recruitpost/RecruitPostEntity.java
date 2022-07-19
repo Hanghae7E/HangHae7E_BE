@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Fetch;
@@ -70,13 +71,16 @@ public class RecruitPostEntity extends BaseTimeEntity {
     private String body;
 
 
-    @Column(name = "required_developers", columnDefinition = "integer default 0")
+    @Column(name = "required_developers")
+    @ColumnDefault("0")
     private Integer requiredDevelopers;
 
-    @Column(name = "required_designers", columnDefinition = "integer default 0")
+    @Column(name = "required_designers")
+    @ColumnDefault("0")
     private Integer requiredDesigners;
 
-    @Column(name = "required_project_managers", columnDefinition = "integer default 0")
+    @Column(name = "required_project_managers")
+    @ColumnDefault("")
     private Integer requiredProjectManagers;
 
     @Column
@@ -89,6 +93,7 @@ public class RecruitPostEntity extends BaseTimeEntity {
     private LocalDate recruitDueTime;
 
     @Column
+    @ColumnDefault("")
     private String imageUrl;
 
     @Column
