@@ -144,7 +144,7 @@ public class RecruitPostRepositoryCustom {
         List<Long> postTagDtos =
                 recruitPostTagRepositoryCustom.findByPostId(dto.getPostId());
 
-        dto.setTags(postTagDtos);
+//        dto.setTags(postTagDtos);
 
         return dto;
     }

@@ -29,16 +29,16 @@ import java.util.Objects;
 @DynamicUpdate
 @Table(name = "RECRUIT_POSTS")
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "RecruitPost.findAll", attributeNodes = {
+        @NamedEntityGraph(name = "RecruitPost.FetchAttributes", attributeNodes = {
                                     @NamedAttributeNode("user"),
                                     @NamedAttributeNode("profile"),
                                     @NamedAttributeNode("recruitPostTag")}),
-        @NamedEntityGraph(name = "RecruitPost.findAllByTagId", attributeNodes = {
+        @NamedEntityGraph(name = "RecruitPost.FetchWithTag", attributeNodes = {
                                     @NamedAttributeNode("user"),
                                     @NamedAttributeNode("profile"),
                                     @NamedAttributeNode(value = "recruitPostTag", subgraph = "recruitPostTag")},
                                     subgraphs = @NamedSubgraph(name = "recruitPostTag", attributeNodes = {@NamedAttributeNode("tag")}))
-})
+    })
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
