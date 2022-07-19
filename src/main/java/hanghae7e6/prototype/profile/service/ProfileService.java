@@ -17,6 +17,8 @@ import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.profile.repository.ProfileTagRepository;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostService;
+import hanghae7e6.prototype.user.UserEntity;
+import hanghae7e6.prototype.user.UserRepository;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
@@ -37,6 +39,7 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
     private final ProfileTagRepository profileTagRepository;
     private final PositionRepository positionRepository;
+    private final UserRepository userRepository;
     private final RecruitPostService recruitPostService;
     private final AmazonS3Client amazonS3Client;
 
@@ -60,6 +63,10 @@ public class ProfileService {
     public void updateUserProfile(Long userId, ProfileRequest profileRequest) throws AbstractException, IOException {
         ProfileEntity profile = profileRepository.findByUserId(userId)
                                                  .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        UserEntity user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        if (profileRequest.getUsername() != null && !profileRequest.getUsername().equals(user.getUsername()))
+            user.setUsername(profileRequest.getUsername());
+
         Long profileId = profile.getId();
 
         PositionEntity updatedPosition = positionRepository.findByPositionName(profileRequest.getPosition());
@@ -71,7 +78,7 @@ public class ProfileService {
             profileRequest.getSkills(), profile);
 
         if (profileRequest.getFiles() != null) {
-            if (profile.getImageUrl() != null)
+            if (!profile.getImageUrl().equals(""))
                 amazonS3Client.deleteObject(BUCKET, toS3ProfileImgKey(profileId));
 
             uploadMultipartFileToS3(profileRequest.getFiles(), toS3ProfileImgKey(profileId));
@@ -82,6 +89,7 @@ public class ProfileService {
 
         profile.update(profileRequest, updatedPosition);
 
+        userRepository.save(user);
         profileRepository.save(profile);
     }
 

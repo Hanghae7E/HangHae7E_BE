@@ -18,12 +18,17 @@ public class RecruitPostTagService {
 
     TagService tagService;
 
-
     @Autowired
     public RecruitPostTagService(RecruitPostTagRepository recruitPostTagRepository,
                                  TagService tagService) {
         this.recruitPostTagRepository = recruitPostTagRepository;
         this.tagService = tagService;
+    }
+
+
+    public List<TagEntity> getTagsByPostId(Long postId) {
+        List <RecruitPostTagEntity> recruitPostTagEntities = recruitPostTagRepository.findAllByRecruitPostId(postId);
+        return recruitPostTagEntities.stream().map(RecruitPostTagEntity::getTag).collect(Collectors.toList());
     }
 
     public List<RecruitPostTagEntity> saveTags(

@@ -1,5 +1,8 @@
 package hanghae7e6.prototype.recruitpost.dto;
 
+import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
+import hanghae7e6.prototype.recruitposttag.RecruitPostTagDto;
+import hanghae7e6.prototype.tag.TagResponseDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -39,11 +42,24 @@ public class SimplePostResponseDto {
 
     private LocalDate recruitDueTime;
 
-    private Boolean isLast = false;
+    private List<TagResponseDto> tags = new ArrayList<>();
 
-    private List<Long> tags = new ArrayList<>();
 
-    public void addTag(Long postTagDto){
-        tags.add(postTagDto);
+    public static SimplePostResponseDto toDto(RecruitPostEntity entity) {
+        String username = entity.getUser().getUsername();
+        String userImg = entity.getProfile().getImageUrl();
+        return SimplePostResponseDto.builder().postId(entity.getId())
+                                    .username(username).authorImage(userImg)
+                                    .title(entity.getTitle()).projectImage(entity.getImageUrl())
+                                    .requiredDesigners(entity.getRequiredDesigners())
+            .requiredDevelopers(entity.getRequiredDevelopers())
+            .requiredProjectManagers(entity.getRequiredProjectManagers())
+            .projectEndTime(entity.getProjectEndTime())
+            .projectStartTime(entity.getProjectStartTime())
+            .recruitDueTime(entity.getRecruitDueTime())
+            .build();
+    }
+
+    public void addTag(Long tagId) {
     }
 }
