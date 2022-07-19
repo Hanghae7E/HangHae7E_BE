@@ -56,6 +56,8 @@ public class ProfileService {
 
         List <RecruitPostEntity> myRecruitPosts = recruitPostService.getMyPostsByUserId(userId);
         List <RecruitPostEntity> myAppliedPosts = recruitPostService.getAppliedPostsByUserId(userId);
+
+
         return ProfileResponse.toResponse(profile, profileTags, myRecruitPosts, myAppliedPosts);
     }
 
@@ -78,9 +80,6 @@ public class ProfileService {
             profileRequest.getSkills(), profile);
 
         if (profileRequest.getFiles() != null) {
-            if (!profile.getImageUrl().equals(""))
-                amazonS3Client.deleteObject(BUCKET, toS3ProfileImgKey(profileId));
-
             uploadMultipartFileToS3(profileRequest.getFiles(), toS3ProfileImgKey(profileId));
             String profileImgUrl = amazonS3Client.getUrl(BUCKET, toS3ProfileImgKey(profileId)).toString();
 

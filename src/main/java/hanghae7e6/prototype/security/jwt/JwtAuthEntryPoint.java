@@ -18,7 +18,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException authException) throws IOException, ServletException {
-
         ErrorRes errorRes = ErrorRes.builder().status(401).message(
             ErrorCode.LOGIN_REQUIRED.getMessage()).build();
 

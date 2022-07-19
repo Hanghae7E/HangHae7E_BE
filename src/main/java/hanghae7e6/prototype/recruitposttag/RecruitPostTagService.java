@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitposttag;
 
+import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.tag.TagService;
@@ -26,13 +27,12 @@ public class RecruitPostTagService {
     }
 
 
-    public List<TagEntity> getTagsByPostId(Long postId) {
+    public List<TagEntity> getTagsByPostId(Long postId) throws AbstractException {
         List <RecruitPostTagEntity> recruitPostTagEntities = recruitPostTagRepository.findAllByRecruitPostId(postId);
         return recruitPostTagEntities.stream().map(RecruitPostTagEntity::getTag).collect(Collectors.toList());
     }
 
-    public List<RecruitPostTagEntity> saveTags(
-            RecruitPostEntity recruitPostEntity, List<Long> tagIds){
+    public List<RecruitPostTagEntity> saveTags(RecruitPostEntity recruitPostEntity, List<Long> tagIds){
 
         if(Objects.isNull(tagIds) || tagIds.isEmpty()){
             return Arrays.asList();

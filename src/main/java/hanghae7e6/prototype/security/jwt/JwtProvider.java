@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import java.util.Objects;
 @Component
 public class JwtProvider {
     private final String secretKey;
-    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 *1000 * 24;  // 초단위, 1시간
+    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 *1000 * 24;  // 초단위, 24시간
 
     private final UserDetailsService userDetailsService;
 
@@ -60,7 +61,7 @@ public class JwtProvider {
         }
     }
 
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String token) throws UsernameNotFoundException {
         String userId = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
                             .get("userId", String.class);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
