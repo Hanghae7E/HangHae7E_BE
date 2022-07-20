@@ -29,4 +29,8 @@ public class RecruitPostTagEntity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TAG_ID")
     private TagEntity tag;
+
+    void setRecruitPost(RecruitPostEntity post) {
+        this.recruitPost = post;
+    }
 }

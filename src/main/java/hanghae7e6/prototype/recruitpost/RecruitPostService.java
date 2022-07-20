@@ -17,6 +17,7 @@ import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagService;
 import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.tag.TagResponseDto;
+import hanghae7e6.prototype.tag.TagService;
 import hanghae7e6.prototype.user.CustomUserDetails;
 import java.io.IOException;
 import java.util.List;
@@ -41,6 +42,7 @@ public class RecruitPostService {
     private final ProfileRepository profileRepository;
     private final RecruitPostRepositoryCustom recruitPostRepositoryCustom;
     private final RecruitPostTagService recruitPostTagService;
+    private final TagService tagService;
     private final AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}") private String BUCKET;
 
@@ -96,8 +98,10 @@ public class RecruitPostService {
 
         RecruitPostEntity post = recruitPostRepository.save(
                 requestDto.toEntity(userDetails.getId(), profile));
-        if (requestDto.getTags() != null && !requestDto.getTags().equals(""))
-            recruitPostTagService.saveTags(post, requestDto.getParsedTags());
+        if (requestDto.getTags() != null && !requestDto.getTags().equals("")) {
+            List<TagEntity> tags = tagService.getTagsByIds(requestDto.getParsedTags());
+            post.setRecruitPostTag(tags);
+        }
 
         deleteAndUploadImg(requestDto, post,  post.getId());
 
@@ -116,8 +120,10 @@ public class RecruitPostService {
 
         post.updateFields(requestDto);
 
-        if (requestDto.getTags() != null && !requestDto.getTags().equals(""))
-            recruitPostTagService.saveTags(post, requestDto.getParsedTags());
+        if (requestDto.getTags() != null && !requestDto.getTags().equals("")) {
+            List<TagEntity> tags = tagService.getTagsByIds(requestDto.getParsedTags());
+            post.setRecruitPostTag(tags);
+        }
 
         deleteAndUploadImg(requestDto, post, postId);
         recruitPostRepository.save(post);
