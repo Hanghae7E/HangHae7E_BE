@@ -25,7 +25,7 @@ public class TagResponseDto {
     }
 
 
-    public static List<TagResponseDto> getDtos(List<TagEntity> tags){
+    public static List<TagResponseDto> toDtos(List<TagEntity> tags){
         return tags.stream()
                 .map(TagResponseDto::new)
                 .collect(Collectors.toList());
@@ -33,7 +33,7 @@ public class TagResponseDto {
 
 
     public static List<TagResponseDto> getDtos(RecruitPostEntity post){
-        return TagResponseDto.getDtos(
+        return TagResponseDto.toDtos(
                 post.getRecruitPostTag().stream()
                 .map(RecruitPostTagEntity::getTag)
                 .collect(Collectors.toList()));

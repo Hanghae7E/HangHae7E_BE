@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.exception.ErrorCode;
+import hanghae7e6.prototype.exception.InvalidException;
 import hanghae7e6.prototype.exception.NotFoundException;
 import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.profile.repository.ProfileRepository;
@@ -46,7 +47,7 @@ public class RecruitPostService {
 
     private SimplePostResponseDto transfer(RecruitPostEntity entity) throws AbstractException {
         SimplePostResponseDto response = SimplePostResponseDto.toDto(entity);
-        List <TagResponseDto> tagRes = TagResponseDto.getDtos(recruitPostTagService.getTagsByPostId(entity.getId()));
+        List <TagResponseDto> tagRes = TagResponseDto.toDtos(recruitPostTagService.getTagsByPostId(entity.getId()));
         response.setTags(tagRes);
 
         return response;
@@ -69,7 +70,10 @@ public class RecruitPostService {
     @Transactional(readOnly = true)
     public DetailPostResponseDto getPost(Long postId) throws AbstractException {
 
-        return recruitPostRepositoryCustom.findById(postId);
+        RecruitPostEntity recruitPost = recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
+        List <TagEntity> tags = recruitPostTagService.getTagsByPostId(recruitPost.getId());
+
+        return DetailPostResponseDto.toDto(recruitPost, tags);
     }
 
     public RecruitPostEntity getPostById(Long postId) throws AbstractException {
@@ -83,10 +87,12 @@ public class RecruitPostService {
             CustomUserDetails userDetails,
             PostRequestDto requestDto) throws IOException, AbstractException {
 
-
         ProfileEntity profile = profileRepository.findByUserId(userDetails.getId())
                                                  .orElseThrow(() -> new NotFoundException(
-                                                     ErrorCode.USER_NOT_FOUND));;
+                                                     ErrorCode.USER_NOT_FOUND));
+
+        if (requestDto.getTitle() == null) throw new InvalidException(ErrorCode.EMPTY_BODY);
+
 
         RecruitPostEntity post = recruitPostRepository.save(
                 requestDto.toEntity(userDetails.getId(), profile));
@@ -106,12 +112,15 @@ public class RecruitPostService {
             Long postId,
             PostRequestDto requestDto) throws IOException, AbstractException {
 
-        RecruitPostEntity post =
-                recruitPostRepositoryCustom.findByIdAndUserId(postId, userDetails.getId());
+        RecruitPostEntity post = recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
 
         post.updateFields(requestDto);
 
+        if (requestDto.getTags() != null && !requestDto.getTags().equals(""))
+            recruitPostTagService.saveTags(post, requestDto.getParsedTags());
+
         deleteAndUploadImg(requestDto, post, postId);
+        recruitPostRepository.save(post);
     }
 
 
