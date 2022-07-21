@@ -5,6 +5,7 @@ import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
 import hanghae7e6.prototype.recruitposttag.RecruitPostTagEntity;
+import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.user.UserEntity;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -57,7 +58,7 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @JoinColumn(name = "PROFILE_ID")
     private ProfileEntity profile;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<RecruitPostTagEntity> recruitPostTag = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recruitPost", orphanRemoval = true)
@@ -71,16 +72,13 @@ public class RecruitPostEntity extends BaseTimeEntity {
     private String body;
 
 
-    @Column(name = "required_developers")
-    @ColumnDefault("0")
+    @Column(name = "required_developers", columnDefinition = "integer default 0")
     private Integer requiredDevelopers;
 
-    @Column(name = "required_designers")
-    @ColumnDefault("0")
+    @Column(name = "required_designers", columnDefinition = "integer default 0")
     private Integer requiredDesigners;
 
-    @Column(name = "required_project_managers")
-    @ColumnDefault("")
+    @Column(name = "required_project_managers", columnDefinition = "integer default 0")
     private Integer requiredProjectManagers;
 
     @Column
@@ -92,11 +90,10 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column
     private LocalDate recruitDueTime;
 
-    @Column
-    @ColumnDefault("")
+    @Column(columnDefinition =  "varchar(255) default ''")
     private String imageUrl;
 
-    @Column
+    @Column(columnDefinition =  "boolean default true ")
     private Boolean recruitStatus;
 
     public RecruitPostEntity updateFields(PostRequestDto requestDto){
@@ -144,4 +141,13 @@ public class RecruitPostEntity extends BaseTimeEntity {
                               .collect(Collectors.toList());
     }
 
+    public void setRecruitPostTag(List <TagEntity> tags) {
+        List <RecruitPostTagEntity> updated = this.recruitPostTag;
+        updated.clear();
+
+        for (TagEntity tag: tags) {
+            RecruitPostTagEntity postTag = RecruitPostTagEntity.builder().recruitPost(this).tag(tag).build();
+            updated.add(postTag);
+        }
+    }
 }

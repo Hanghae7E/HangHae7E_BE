@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RecruitPostTagService {
@@ -32,19 +33,14 @@ public class RecruitPostTagService {
         return recruitPostTagEntities.stream().map(RecruitPostTagEntity::getTag).collect(Collectors.toList());
     }
 
-    public List<RecruitPostTagEntity> saveTags(RecruitPostEntity recruitPostEntity, List<Long> tagIds){
+    @Transactional
+    public void saveTags(RecruitPostEntity recruitPostEntity, List<Long> tagIds){
+        if(Objects.isNull(tagIds) || tagIds.isEmpty()) return;
 
-        if(Objects.isNull(tagIds) || tagIds.isEmpty()){
-            return Arrays.asList();
-        }
-
-        List<TagEntity> tags = tagIds.stream()
-                .map(TagEntity::new)
-                .collect(Collectors.toList());
-
+        List<TagEntity> tags = tagService.getTagsByIds(tagIds);
         List<RecruitPostTagEntity> recruitPostTagEntities =
                 RecruitPostTagDto.getEntities(recruitPostEntity, tags);
 
-        return recruitPostTagRepository.saveAll(recruitPostTagEntities);
+        recruitPostTagRepository.saveAll(recruitPostTagEntities);
     }
 }

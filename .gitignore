@@ -162,4 +162,5 @@ gradle-app.setting
 # properties
 application-oauth.yml
 application-s3.yml
-application-flyway.yml
+application-test1.yml
+application-test2.yml

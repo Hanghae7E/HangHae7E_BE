@@ -42,34 +42,28 @@ public class ProfileEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProfileTagEntity> profileTags = new ArrayList<>();
 
-    @Column(name = "PHONE_NUMBER", nullable = true)
+    @Column(name = "PHONE_NUMBER", columnDefinition = "varchar(255) default ''")
     private String phoneNumber;
 
-    @Column(name = "IMAGE_URL")
-    @ColumnDefault("")
+    @Column(name = "IMAGE_URL", columnDefinition = "varchar(255) default ''")
     private String imageUrl;
 
-    @Column(name = "PORTFOLIO_URL", nullable = true)
-    @ColumnDefault("")
+    @Column(name = "PORTFOLIO_URL", columnDefinition = "varchar(255) default ''")
     private String portfolioUrl;
 
-    @Column(name = "AVAILABLE_PERIOD", nullable = true)
-    @ColumnDefault("")
+    @Column(name = "AVAILABLE_PERIOD", columnDefinition = "varchar(255) default ''")
     private String availablePeriod;
 
-    @Column(name = "AVAILABLE_TIME", nullable = true)
-    @ColumnDefault("")
+    @Column(name = "AVAILABLE_TIME", columnDefinition = "varchar(255) default ''")
     private String availableTime;
 
-    @Column(name = "FACE_TO_FACE", nullable = true)
+    @Column(name = "FACE_TO_FACE", columnDefinition = "boolean default false ")
     private Boolean faceToFace;
 
-    @Column(name = "CAREER_PERIOD", nullable = true)
-    @ColumnDefault("")
+    @Column(name = "CAREER_PERIOD", columnDefinition = "varchar(255) default ''")
     private String careerPeriod;
 
-    @Column(name = "RESIDENCE", nullable = true)
-    @ColumnDefault("")
+    @Column(name = "RESIDENCE", columnDefinition = "varchar(255) default ''")
     private String residence;
 
     @Builder

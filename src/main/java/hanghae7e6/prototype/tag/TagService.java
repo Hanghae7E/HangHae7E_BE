@@ -38,4 +38,8 @@ public class TagService {
 
         tagRepository.save(TagEntity.builder().body(tagRequest.getBody()).build());
     }
+
+    public List<TagEntity> getTagsByIds(List<Long> tagIds) {
+        return tagRepository.findAllById(tagIds);
+    }
 }
