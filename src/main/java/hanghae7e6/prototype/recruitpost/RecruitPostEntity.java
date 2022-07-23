@@ -96,7 +96,7 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column(columnDefinition =  "boolean default true ")
     private Boolean recruitStatus;
 
-    public RecruitPostEntity updateFields(PostRequestDto requestDto){
+    public void updateFields(PostRequestDto requestDto){
         String title = requestDto.getTitle();
         String body = requestDto.getBody();
         LocalDate projectStartTime = requestDto.getProjectStartTime();
@@ -119,8 +119,6 @@ public class RecruitPostEntity extends BaseTimeEntity {
         this.requiredProjectManagers = Optional.ofNullable(requestDto.getRequiredProjectManagers()).orElseGet(() -> this.requiredProjectManagers);
         this.requiredDesigners =  Optional.ofNullable(requestDto.getRequiredDesigners()).orElseGet(() -> this.requiredDesigners);
         this.requiredDevelopers =  Optional.ofNullable(requestDto.getRequiredDevelopers()).orElseGet(() -> this.requiredDevelopers);
-
-        return this;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -142,6 +140,9 @@ public class RecruitPostEntity extends BaseTimeEntity {
     }
 
     public void setRecruitPostTag(List <TagEntity> tags) {
+        if (this.recruitPostTag == null)
+            this.recruitPostTag = new ArrayList<>();
+
         List <RecruitPostTagEntity> updated = this.recruitPostTag;
         updated.clear();
 

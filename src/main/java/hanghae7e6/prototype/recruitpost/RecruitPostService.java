@@ -85,7 +85,7 @@ public class RecruitPostService {
 
 
     @Transactional
-    public RecruitPostEntity createPost(
+    public void createPost(
             CustomUserDetails userDetails,
             PostRequestDto requestDto) throws IOException, AbstractException {
 
@@ -97,15 +97,15 @@ public class RecruitPostService {
 
 
         RecruitPostEntity post = recruitPostRepository.save(
-                requestDto.toEntity(userDetails.getId(), profile));
+                requestDto.toEntity(profile.getUser(), profile));
         if (requestDto.getTags() != null && !requestDto.getTags().equals("")) {
             List<TagEntity> tags = tagService.getTagsByIds(requestDto.getParsedTags());
             post.setRecruitPostTag(tags);
         }
 
+        System.out.println(post.getRecruitPostTag().size());
         deleteAndUploadImg(requestDto, post,  post.getId());
-
-        return post;
+        recruitPostRepository.save(post);
 
     }
 
