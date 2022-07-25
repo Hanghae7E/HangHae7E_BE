@@ -11,6 +11,7 @@ import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostService;
 import hanghae7e6.prototype.user.UserEntity;
 import hanghae7e6.prototype.user.UserService;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,8 @@ public class ApplicantService {
 
         UserEntity user = userService.getUserById(userId);
         RecruitPostEntity recruitPost = recruitPostService.getPostById(postId);
+
+        if (Objects.equals(userId, recruitPost.getUser().getId())) throw new InvalidException(ErrorCode.APPLICANT_IS_AUTHOR);
 
         applicantRepository.save(applicantRequest.toEntity(user, recruitPost));
     }

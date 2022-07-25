@@ -19,6 +19,7 @@ public enum ErrorCode {
     POSITION_ALREADY_EXISTS("이미 존재하는 포지션입니다."),
     INVALID_POSITION("잘못되거나 없는 포지션입니다."),
     APPLICANT_ALREADY_EXISTS("해당 프로젝트에 이미 신청하셨습니다."),
+    APPLICANT_IS_AUTHOR("게시글 작성자는 신청할 수 없습니다."),
     EMPTY_BODY("필요한 값이 비어있거나 잘못되어 있습니다. 값 형식을 확인해 주세요!"),
     EMPTY_POSITION("포지션이 비어있습니다."),
 

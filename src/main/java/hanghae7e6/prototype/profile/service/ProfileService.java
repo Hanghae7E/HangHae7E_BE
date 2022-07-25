@@ -21,6 +21,8 @@ import hanghae7e6.prototype.user.UserEntity;
 import hanghae7e6.prototype.user.UserRepository;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,9 @@ public class ProfileService {
 
     @Value("${cloud.aws.s3.bucket}")
     private String BUCKET;
+
+    @Value("${s3.base-path}")
+    private String BASE_PATH;
 
     public ProfileResponse getUserProfile(Long userId) throws AbstractException {
         ProfileEntity profile = profileRepository.findByUserId(userId)
@@ -79,9 +84,10 @@ public class ProfileService {
         profileTagService.updateProfileTags(profileTags, profileRequest.getFields(),
             profileRequest.getSkills(), profile);
 
-        if (profileRequest.getFiles() != null) {
-            uploadMultipartFileToS3(profileRequest.getFiles(), toS3ProfileImgKey(profileId));
-            String profileImgUrl = amazonS3Client.getUrl(BUCKET, toS3ProfileImgKey(profileId)).toString();
+        if (profileRequest.getFiles() != null && !profileRequest.getFiles().isEmpty()) {
+            String profilePath = getProfileImgPath(profileId);
+            String fileKey = uploadMultipartFileToS3(profile.getImageUrl(), profileRequest.getFiles(), profilePath);
+            String profileImgUrl = BASE_PATH + fileKey;
 
             profile.setImageUrl(profileImgUrl);
         }
@@ -92,16 +98,29 @@ public class ProfileService {
         profileRepository.save(profile);
     }
 
-    private void uploadMultipartFileToS3(MultipartFile file, String key) throws IOException {
+    private String uploadMultipartFileToS3(String previousImgUrl, MultipartFile file, String filePath) throws IOException {
+        SimpleDateFormat date = new SimpleDateFormat("yyyymmddHHmmss");
+        String fileKey = filePath + "/" + date.format(new Date()) + ".jpg";
+
+//        if (!previousImgUrl.equals("")) {
+//                System.out.println("delete Obj");
+//                amazonS3Client.deleteObject(BUCKET, BUCKET + "/" + urlToS3key(previousImgUrl));
+//        }
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
         objectMetadata.setContentType("image/jpeg");
 
-        amazonS3Client.putObject(BUCKET, key, file.getInputStream(), objectMetadata);
+        amazonS3Client.putObject(BUCKET, fileKey, file.getInputStream(), objectMetadata);
+        return fileKey;
     }
 
-    private String toS3ProfileImgKey(Long profileId) {
-        return "images/profiles/" + profileId.toString() + "/profileImage.jpg";
+    private String getProfileImgPath(Long profileId) {
+        return "images/profiles/" + profileId.toString();
     }
+
+//    private String urlToS3key(String url) {
+//        System.out.println(url.replace(BASE_PATH, ""));
+//        return url.replace(BASE_PATH, "");
+//    }
 }
