@@ -47,9 +47,11 @@ public class RecruitPostController {
 
     @GetMapping("/recruitPost/{postId}")
     public ResponseEntity<DetailPostResponseDto> getPost(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long postId){
 
-        DetailPostResponseDto body = recruitPostService.getPost(postId);
+        Long currentUserId = userDetails != null ? userDetails.getId() : null;
+        DetailPostResponseDto body = recruitPostService.getPost(currentUserId, postId);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
@@ -95,9 +97,4 @@ public class RecruitPostController {
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
-
-
-
-
 }
