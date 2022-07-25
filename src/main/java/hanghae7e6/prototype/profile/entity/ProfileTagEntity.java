@@ -31,7 +31,7 @@ public class ProfileTagEntity extends BaseTimeEntity {
     private ProfileEntity profile;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "TAG_ID", unique = true)
+    @JoinColumn(name = "TAG_ID")
     private TagEntity tag;
 
     @Column(name = "PROFILE_ATTRIBUTE_NAME")

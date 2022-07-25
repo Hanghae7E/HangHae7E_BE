@@ -6,6 +6,7 @@ import hanghae7e6.prototype.profile.entity.ProfileTagEntity;
 import hanghae7e6.prototype.profile.repository.ProfileTagRepository;
 import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.tag.TagRepository;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +27,11 @@ public class ProfileTagService {
 
     @Transactional
     public void updateProfileTags(List <ProfileTagEntity> profileTags, List<String>fieldTags, List<String> skills, ProfileEntity profile) throws AbstractException {
+        if (profileTags == null) profileTags = new ArrayList<>();
         List <TagEntity> requestFieldTags = tagRepository.findByBodyIn(fieldTags);
         List <TagEntity> requestSkillTags = tagRepository.findByBodyIn(skills);
 
-        List <TagEntity> requestAllTags = Stream.concat(requestFieldTags.stream(), requestSkillTags.stream()).
-                                                collect(Collectors.toList());
-
-        profileTags.removeIf(profileTag -> !requestAllTags.contains(profileTag.getTag()));
+        profileTags.clear();
 
         for (TagEntity fieldTag : requestFieldTags) {
             if (profileTags.stream().noneMatch(profileTag -> profileTag.getTag() == fieldTag)) {
