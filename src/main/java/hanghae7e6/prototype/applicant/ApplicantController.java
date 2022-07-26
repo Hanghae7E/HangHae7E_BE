@@ -26,7 +26,7 @@ public class ApplicantController {
     private final ApplicantService applicantService;
 
     @PostMapping("/{postId}/application")
-    public void createUserApplication(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
+    public void createUserApplication(@PathVariable Long postId, ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) {
 
         if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
@@ -49,11 +49,13 @@ public class ApplicantController {
 //    }
 
     @PostMapping("/{postId}/application/accepted")
-    public void acceptApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
+    public void acceptApplicant(@PathVariable Long postId, ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) throws AbstractException {
 
         if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
         Long authorId = userDetails.getId();
+
+        if (applicantRequest.getUserId() == null) throw new InvalidException(ErrorCode.EMPTY_BODY);
 
         applicantRequest.setPostId(postId);
         applicantRequest.setStatus("합격");
@@ -61,7 +63,7 @@ public class ApplicantController {
     }
 
     @PostMapping("/{postId}/application/denied")
-    public void deniedApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
+    public void deniedApplicant(@PathVariable Long postId, ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) throws AbstractException {
 
         if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
@@ -75,7 +77,7 @@ public class ApplicantController {
     }
 
     @DeleteMapping("/{postId}/application")
-    public void deleteApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
+    public void deleteApplicant(@PathVariable Long postId, ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) throws AbstractException {
 
         applicantRequest.setPostId(postId);
