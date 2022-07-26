@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class ApplicantController {
     private final ApplicantService applicantService;
 
     @PostMapping("/{postId}/application")
-    public void createUserApplication(@PathVariable Long postId, ApplicantRequest applicantRequest, @AuthenticationPrincipal
+    public void createUserApplication(@PathVariable Long postId, @RequestBody ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) {
 
         if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
@@ -49,7 +50,7 @@ public class ApplicantController {
 //    }
 
     @PostMapping("/{postId}/application/accepted")
-    public void acceptApplicant(@PathVariable Long postId, ApplicantRequest applicantRequest, @AuthenticationPrincipal
+    public void acceptApplicant(@PathVariable Long postId, @RequestBody ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) throws AbstractException {
 
         if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
@@ -63,7 +64,7 @@ public class ApplicantController {
     }
 
     @PostMapping("/{postId}/application/denied")
-    public void deniedApplicant(@PathVariable Long postId, ApplicantRequest applicantRequest, @AuthenticationPrincipal
+    public void deniedApplicant(@PathVariable Long postId, @RequestBody ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) throws AbstractException {
 
         if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
