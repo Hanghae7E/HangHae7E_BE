@@ -25,6 +25,12 @@ public class ProfileTagService {
     @Autowired
     TagRepository tagRepository;
 
+
+    public List <TagEntity> getTagsByAttributeNameAndProfileId(String attrName, Long profileId) {
+        List <ProfileTagEntity> profileTags = profileTagRepository.findAllByProfileAttributeNameAndProfileId(attrName, profileId);
+        return profileTags.stream().map(ProfileTagEntity::getTag).collect(Collectors.toList());
+    }
+
     @Transactional
     public void updateProfileTags(List <ProfileTagEntity> profileTags, List<String> fields, List<String> skills, ProfileEntity profile) throws AbstractException {
         if (profileTags == null) profileTags = new ArrayList<>();

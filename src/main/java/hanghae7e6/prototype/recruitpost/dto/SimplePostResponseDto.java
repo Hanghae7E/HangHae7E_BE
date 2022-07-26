@@ -44,6 +44,7 @@ public class SimplePostResponseDto {
 
     private List<TagResponseDto> tags = new ArrayList<>();
 
+    private List<TagResponseDto> authorFields;
 
     public static SimplePostResponseDto toDto(RecruitPostEntity entity) {
         String username = entity.getUser().getUsername();

@@ -12,6 +12,7 @@ import hanghae7e6.prototype.exception.TransferException;
 import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.profile.service.ProfileService;
+import hanghae7e6.prototype.profile.service.ProfileTagService;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
 import hanghae7e6.prototype.recruitpost.dto.PostParamDto;
 import hanghae7e6.prototype.recruitpost.dto.PostRequestDto;
@@ -49,14 +50,19 @@ public class RecruitPostService {
     private final RecruitPostTagService recruitPostTagService;
     private final TagService tagService;
     private final AmazonS3Client amazonS3Client;
+    private final ProfileTagService profileTagService;
     @Value("${cloud.aws.s3.bucket}") private String BUCKET;
 
 
     private SimplePostResponseDto transfer(RecruitPostEntity entity) throws AbstractException {
         SimplePostResponseDto response = SimplePostResponseDto.toDto(entity);
+        List <TagResponseDto> authorFields = TagResponseDto
+            .toDtos(profileTagService.getTagsByAttributeNameAndProfileId("field", entity.getProfile().getId()));
+
+        System.out.println(authorFields.size());
         List <TagResponseDto> tagRes = TagResponseDto.toDtos(recruitPostTagService.getTagsByPostId(entity.getId()));
         response.setTags(tagRes);
-
+        response.setAuthorFields(authorFields);
         return response;
     }
 

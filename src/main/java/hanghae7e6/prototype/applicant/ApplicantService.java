@@ -5,6 +5,8 @@ import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.exception.ErrorCode;
 import hanghae7e6.prototype.exception.InvalidException;
 import hanghae7e6.prototype.exception.NotFoundException;
+import hanghae7e6.prototype.profile.entity.ProfileEntity;
+import hanghae7e6.prototype.profile.repository.ProfileRepository;
 import hanghae7e6.prototype.profile.service.PositionService;
 import hanghae7e6.prototype.profile.service.ProfileService;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApplicantService {
 
     private final ApplicantRepository applicantRepository;
+    private final ProfileRepository profileRepository;
     private final UserService userService;
     private final RecruitPostService recruitPostService;
     private final PositionService positionService;
@@ -35,7 +38,8 @@ public class ApplicantService {
             throw new InvalidException(ErrorCode.APPLICANT_ALREADY_EXISTS);
 
         if (applicantRequest.getPosition() == null) {
-            String positionName = profileService.getUserProfile(userId).getPosition().toString();
+            String positionName = profileService.getUserProfile(userId).getPosition();
+            if (positionName.equals("")) throw new InvalidException(ErrorCode.APPLICANT_POSITION_EMPTY);
             applicantRequest.setPosition(positionName);
         }
 

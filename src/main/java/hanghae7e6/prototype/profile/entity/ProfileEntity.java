@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -35,6 +36,7 @@ public class ProfileEntity extends BaseTimeEntity {
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
 
+    @BatchSize(size = 1)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "POSITION_ID")
     private PositionEntity position;
