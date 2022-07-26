@@ -49,9 +49,14 @@ public class ApplicantService {
 
 
     @Transactional
-    public void updateApplicant(ApplicantRequest applicantRequest) throws AbstractException {
+    public void updateApplicant(Long authorId, ApplicantRequest applicantRequest) throws AbstractException {
         Long postId = applicantRequest.getPostId();
         Long userId = applicantRequest.getUserId();
+
+        RecruitPostEntity recruitPost = recruitPostService.getPostById(postId);
+
+        if (recruitPost.getUser().getId() != authorId) throw new InvalidException(ErrorCode.NOT_AUTHOR);
+        if (recruitPost.getUser().getId() == userId) throw new InvalidException(ErrorCode.APPLICANT_IS_AUTHOR);
 
         ApplicantEntity applicant = applicantRepository.findByUserIdAndRecruitPostId(userId, postId).orElseThrow(() ->  new NotFoundException(ErrorCode.APPLICANT_NOT_FOUND));
 

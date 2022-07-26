@@ -26,27 +26,23 @@ public class ProfileTagService {
     TagRepository tagRepository;
 
     @Transactional
-    public void updateProfileTags(List <ProfileTagEntity> profileTags, List<String>fieldTags, List<String> skills, ProfileEntity profile) throws AbstractException {
+    public void updateProfileTags(List <ProfileTagEntity> profileTags, List<String> fields, List<String> skills, ProfileEntity profile) throws AbstractException {
         if (profileTags == null) profileTags = new ArrayList<>();
-        List <TagEntity> requestFieldTags = tagRepository.findByBodyIn(fieldTags);
+        List <TagEntity> requestFieldTags = tagRepository.findByBodyIn(fields);
         List <TagEntity> requestSkillTags = tagRepository.findByBodyIn(skills);
 
         profileTags.clear();
 
         for (TagEntity fieldTag : requestFieldTags) {
-            if (profileTags.stream().noneMatch(profileTag -> profileTag.getTag() == fieldTag)) {
                 ProfileTagEntity newProfileTag = ProfileTagEntity.builder().profile(profile).tag(fieldTag).profileAttributeName("field").build();
-                profileTagRepository.save(newProfileTag);
                 profileTags.add(newProfileTag);
-            }
+
         }
 
         for (TagEntity skillTag : requestSkillTags) {
-            if (profileTags.stream().noneMatch(profileTag -> profileTag.getTag() == skillTag)) {
                 ProfileTagEntity newProfileTag = ProfileTagEntity.builder().profile(profile).tag(skillTag).profileAttributeName("skill").build();
-                profileTagRepository.save(newProfileTag);
                 profileTags.add(newProfileTag);
-            }
+
         }
     }
 

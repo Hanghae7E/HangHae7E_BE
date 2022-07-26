@@ -1,6 +1,10 @@
 package hanghae7e6.prototype.applicant;
 
 import hanghae7e6.prototype.applicant.dto.ApplicantRequest;
+import hanghae7e6.prototype.exception.AbstractException;
+import hanghae7e6.prototype.exception.ErrorCode;
+import hanghae7e6.prototype.exception.InvalidException;
+import hanghae7e6.prototype.exception.NotFoundException;
 import hanghae7e6.prototype.profile.repository.PositionRepository;
 import hanghae7e6.prototype.profile.service.PositionService;
 import hanghae7e6.prototype.user.CustomUserDetails;
@@ -25,6 +29,8 @@ public class ApplicantController {
     public void createUserApplication(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
         CustomUserDetails userDetails) {
 
+        if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
+
         applicantRequest.setPostId(postId);
         applicantRequest.setUserId(userDetails.getId());
 
@@ -33,38 +39,44 @@ public class ApplicantController {
 
     }
 
-    @PutMapping ("/{postId}/application")
-    public void updateApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
-        CustomUserDetails userDetails) {
-
-        applicantRequest.setPostId(postId);
-        applicantRequest.setUserId(userDetails.getId());
-        applicantService.updateApplicant(applicantRequest);
-    }
+//    @PutMapping ("/{postId}/application")
+//    public void updateApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
+//        CustomUserDetails userDetails) throws AbstractException {
+//
+//        applicantRequest.setPostId(postId);
+//        applicantRequest.setUserId(userDetails.getId());
+//        applicantService.updateApplicant(applicantRequest);
+//    }
 
     @PostMapping("/{postId}/application/accepted")
     public void acceptApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
-        CustomUserDetails userDetails) {
+        CustomUserDetails userDetails) throws AbstractException {
+
+        if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
+        Long authorId = userDetails.getId();
 
         applicantRequest.setPostId(postId);
         applicantRequest.setStatus("합격");
-        applicantRequest.setUserId(userDetails.getId());
-        applicantService.updateApplicant(applicantRequest);
+        applicantService.updateApplicant(authorId, applicantRequest);
     }
 
     @PostMapping("/{postId}/application/denied")
     public void deniedApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
-        CustomUserDetails userDetails) {
+        CustomUserDetails userDetails) throws AbstractException {
+
+        if (userDetails == null) throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
+        Long authorId = userDetails.getId();
+
+        if (applicantRequest.getUserId() == null) throw new InvalidException(ErrorCode.EMPTY_BODY);
 
         applicantRequest.setPostId(postId);
         applicantRequest.setStatus("불합격");
-        applicantRequest.setUserId(userDetails.getId());
-        applicantService.updateApplicant(applicantRequest);
+        applicantService.updateApplicant(authorId, applicantRequest);
     }
 
     @DeleteMapping("/{postId}/application")
     public void deleteApplicant(@PathVariable Long postId, @ModelAttribute ApplicantRequest applicantRequest, @AuthenticationPrincipal
-        CustomUserDetails userDetails) {
+        CustomUserDetails userDetails) throws AbstractException {
 
         applicantRequest.setPostId(postId);
         applicantRequest.setUserId(userDetails.getId());

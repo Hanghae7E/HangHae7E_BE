@@ -30,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,7 +76,6 @@ public class RecruitPostService {
 
     @Transactional(readOnly = true)
     public DetailPostResponseDto getPost(Long currentUserId, Long postId) throws AbstractException {
-
         RecruitPostEntity recruitPost = recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
         List <TagEntity> tags = recruitPostTagService.getTagsByPostId(recruitPost.getId());
 
@@ -105,27 +105,25 @@ public class RecruitPostService {
         if (requestDto.getTitle() == null) throw new InvalidException(ErrorCode.EMPTY_BODY);
 
 
-        RecruitPostEntity post = recruitPostRepository.save(
-                requestDto.toEntity(profile.getUser(), profile));
+        RecruitPostEntity post = recruitPostRepository.save(requestDto.toEntity(profile.getUser(), profile));
         if (requestDto.getTags() != null && !requestDto.getTags().equals("")) {
             List<TagEntity> tags = tagService.getTagsByIds(requestDto.getParsedTags());
             post.setRecruitPostTag(tags);
         }
 
-        System.out.println(post.getRecruitPostTag().size());
         deleteAndUploadImg(requestDto, post,  post.getId());
         recruitPostRepository.save(post);
-
     }
 
 
     @Transactional
-    public void updatePost(
-            CustomUserDetails userDetails,
-            Long postId,
-            PostRequestDto requestDto) throws IOException, AbstractException {
+    public void updatePost(CustomUserDetails userDetails, Long postId, PostRequestDto requestDto)
+        throws IOException, AbstractException {
 
         RecruitPostEntity post = recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
+
+        if (userDetails != null && userDetails.getId() != post.getUser().getId())
+            throw new InvalidException(ErrorCode.NOT_AUTHOR);
 
         post.updateFields(requestDto);
 
@@ -140,8 +138,7 @@ public class RecruitPostService {
 
 
     @Transactional
-    public RecruitPostEntity deletePost(
-            CustomUserDetails userDetails, Long postId) {
+    public RecruitPostEntity deletePost(CustomUserDetails userDetails, Long postId) throws AbstractException {
 
         RecruitPostEntity post =
                 recruitPostRepositoryCustom.findByIdAndUserId(postId, userDetails.getId());

@@ -81,8 +81,7 @@ public class ProfileService {
 
         List <ProfileTagEntity> profileTags = profile.getProfileTags();
 
-        profileTagService.updateProfileTags(profileTags, profileRequest.getFields(),
-            profileRequest.getSkills(), profile);
+        profileTagService.updateProfileTags(profileTags, profileRequest.getFields(), profileRequest.getSkills(), profile);
 
         if (profileRequest.getFiles() != null && !profileRequest.getFiles().isEmpty()) {
             String profilePath = getProfileImgPath(profileId);
