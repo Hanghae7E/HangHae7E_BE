@@ -183,8 +183,8 @@ public class RecruitPostService {
             return;
         }
 
-        if (post.getImageUrl() != null && !post.getImageUrl().equals(""))
-            amazonS3Client.deleteObject(BUCKET, toS3ProfileImgKey(postId));
+//        if (post.getImageUrl() != null && !post.getImageUrl().equals(""))
+//            amazonS3Client.deleteObject(BUCKET, toS3ProfileImgKey(postId));
 
         uploadMultipartFileToS3(requestDto.getImg(), toS3ProfileImgKey(postId));
         String profileImgUrl = amazonS3Client.getUrl(BUCKET, toS3ProfileImgKey(postId)).toString();
