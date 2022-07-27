@@ -59,7 +59,6 @@ public class RecruitPostService {
         List <TagResponseDto> authorFields = TagResponseDto
             .toDtos(profileTagService.getTagsByAttributeNameAndProfileId("field", entity.getProfile().getId()));
 
-        System.out.println(authorFields.size());
         List <TagResponseDto> tagRes = TagResponseDto.toDtos(recruitPostTagService.getTagsByPostId(entity.getId()));
         response.setTags(tagRes);
         response.setAuthorFields(authorFields);
@@ -144,17 +143,11 @@ public class RecruitPostService {
 
 
     @Transactional
-    public RecruitPostEntity deletePost(CustomUserDetails userDetails, Long postId) throws AbstractException {
+    public void deletePost(CustomUserDetails userDetails, Long postId) throws AbstractException {
 
-        RecruitPostEntity post =
-                recruitPostRepositoryCustom.findByIdAndUserId(postId, userDetails.getId());
-
-        if (post.getImageUrl() != null)
-            amazonS3Client.deleteObject(BUCKET, toS3ProfileImgKey(postId));
-
+        RecruitPostEntity post = recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
         recruitPostRepository.deleteById(post.getId());
 
-        return post;
     }
 
     public List<RecruitPostEntity> getMyPostsByUserId(Long userId) {

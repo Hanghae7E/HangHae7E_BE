@@ -14,6 +14,7 @@ import hanghae7e6.prototype.recruitpost.RecruitPostService;
 import hanghae7e6.prototype.user.UserEntity;
 import hanghae7e6.prototype.user.UserService;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +35,16 @@ public class ApplicantService {
         Long postId = applicantRequest.getPostId();
         Long userId = applicantRequest.getUserId();
 
-        if (applicantRepository.findByUserIdAndRecruitPostId(userId, postId).isPresent())
+        Optional <ApplicantEntity> previousApplicant = applicantRepository.findByUserIdAndRecruitPostId(userId, postId);
+
+        if (previousApplicant.isPresent()) {
+            if (previousApplicant.get().getStatus().equals("불합격"))
+                throw new InvalidException(ErrorCode.DENIED_APPLICANT);
+            if (previousApplicant.get().getStatus().equals("합격"))
+                throw new InvalidException(ErrorCode.ACCEPTED_APPLICANT);
+
             throw new InvalidException(ErrorCode.APPLICANT_ALREADY_EXISTS);
+        }
 
         if (applicantRequest.getPosition() == null) {
             String positionName = profileService.getUserProfile(userId).getPosition();
