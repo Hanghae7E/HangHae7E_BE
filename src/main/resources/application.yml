@@ -71,7 +71,7 @@ spring:
     database: mysql
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         show_sql : false
