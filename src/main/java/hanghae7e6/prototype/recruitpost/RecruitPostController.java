@@ -35,10 +35,16 @@ public class RecruitPostController {
     @GetMapping("/main")
     public ResponseEntity<Map<String, Object>> getPosts(
         @RequestParam("page") Integer page, @RequestParam("size") Integer size, @RequestParam("sort") String sort, @RequestParam(required = false, value = "tags") Long tagId) {
-        if (sort.equals("new")) sort = "createdAt";
+
+        Direction sortDirection = Direction.ASC;
+
+        if (sort.equals("new")) {
+            sortDirection = Direction.DESC;
+            sort = "createdAt";
+        }
         if (sort.equals("due")) sort = "recruitDueTime";
 
-        PageRequest pageRequest = PageRequest.of(page, size, Direction.DESC, sort);
+        PageRequest pageRequest = PageRequest.of(page, size, sortDirection, sort);
         Map<String, Object> body = recruitPostService.getPosts(pageRequest, tagId);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);

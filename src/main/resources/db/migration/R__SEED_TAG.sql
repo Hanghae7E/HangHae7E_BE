@@ -6,6 +6,30 @@ insert into tags(body, created_at, updated_at) values ('백엔드', now(), now()
 insert into tags(body, created_at, updated_at) values ('모바일개발', now(), now());
 insert into tags(body, created_at, updated_at) values ('웹개발', now(), now());
 insert into tags(body, created_at, updated_at) values ('데스크탑개발', now(), now());
+
+insert into tags(body, created_at, updated_at) values ('UX 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('프로덕트 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('UI 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('웹 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('그래픽 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('브랜드 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('광고 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('제품 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('3D 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('영상 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('모션 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('패키지 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('일러스트레이터', now(), now());
+insert into tags(body, created_at, updated_at) values ('캐릭터 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('공간 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('출판 & 편집 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('인테리어 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('패션 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('산업 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('가구 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('조경 디자이너', now(), now());
+insert into tags(body, created_at, updated_at) values ('패브릭 디자이너', now(), now());
+
 insert into tags(body, created_at, updated_at) values ('adobe', now(), now());
 insert into tags(body, created_at, updated_at) values ('aws', now(), now());
 insert into tags(body, created_at, updated_at) values ('asp.net', now(), now());
@@ -25,3 +49,37 @@ insert into tags(body, created_at, updated_at) values ('intelliJ', now(), now())
 insert into tags(body, created_at, updated_at) values ('java', now(), now());
 insert into tags(body, created_at, updated_at) values ('node', now(), now());
 insert into tags(body, created_at, updated_at) values ('react', now(), now());
+
+
+insert into tags(body, created_at, updated_at) values ('라이프스타일', now(), now());
+insert into tags(body, created_at, updated_at) values ('금융', now(), now());
+insert into tags(body, created_at, updated_at) values ('소셜', now(), now());
+insert into tags(body, created_at, updated_at) values ('미디어', now(), now());
+insert into tags(body, created_at, updated_at) values ('교육', now(), now());
+insert into tags(body, created_at, updated_at) values ('생산성', now(), now());
+insert into tags(body, created_at, updated_at) values ('블록체인', now(), now());
+insert into tags(body, created_at, updated_at) values ('인공지능', now(), now());
+insert into tags(body, created_at, updated_at) values ('커뮤니티', now(), now());
+insert into tags(body, created_at, updated_at) values ('디자인', now(), now());
+insert into tags(body, created_at, updated_at) values ('프로덕트디자인', now(), now());
+insert into tags(body, created_at, updated_at) values ('창업', now(), now());
+insert into tags(body, created_at, updated_at) values ('영상', now(), now());
+insert into tags(body, created_at, updated_at) values ('비즈니스', now(), now());
+insert into tags(body, created_at, updated_at) values ('취미', now(), now());
+insert into tags(body, created_at, updated_at) values ('생활', now(), now());
+insert into tags(body, created_at, updated_at) values ('마케팅', now(), now());
+insert into tags(body, created_at, updated_at) values ('쇼핑', now(), now());
+insert into tags(body, created_at, updated_at) values ('뷰티', now(), now());
+insert into tags(body, created_at, updated_at) values ('홈/리빙', now(), now());
+insert into tags(body, created_at, updated_at) values ('자동차', now(), now());
+insert into tags(body, created_at, updated_at) values ('엔터테인먼트', now(), now());
+insert into tags(body, created_at, updated_at) values ('환경/에너지', now(), now());
+insert into tags(body, created_at, updated_at) values ('보안', now(), now());
+insert into tags(body, created_at, updated_at) values ('부동산', now(), now());
+insert into tags(body, created_at, updated_at) values ('반려동물', now(), now());
+insert into tags(body, created_at, updated_at) values ('패션', now(), now());
+insert into tags(body, created_at, updated_at) values ('바이오/의료', now(), now());
+insert into tags(body, created_at, updated_at) values ('게임', now(), now());
+insert into tags(body, created_at, updated_at) values ('헬스케어', now(), now());
+insert into tags(body, created_at, updated_at) values ('음식', now(), now());
+insert into tags(body, created_at, updated_at) values ('여행', now(), now());
