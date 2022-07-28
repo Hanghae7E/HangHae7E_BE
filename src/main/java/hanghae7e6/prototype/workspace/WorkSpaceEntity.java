@@ -1,10 +1,12 @@
 package hanghae7e6.prototype.workspace;
 
+import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
 import hanghae7e6.prototype.workspace.tempteam.Team;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,11 +15,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@DynamicInsert
-@DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor
-public class WorkSpaceEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class WorkSpaceEntity extends BaseTimeEntity {
 
     @Id
     @Column(name = "id", nullable = false)
@@ -34,14 +35,11 @@ public class WorkSpaceEntity {
     @Column(name = "CONTENT")
     private String content;
 
-    @Column(name = "CRAETED_AT")
-    private LocalDateTime createdAt;
 
     public WorkSpaceEntity(Team team){
         this.team = team;
         this.title = "none";
         this.content = "none";
-        this.createdAt = LocalDateTime.now();
     }
 
     public void update(DetailWorkSpaceDto dto){

@@ -1,5 +1,10 @@
 package hanghae7e6.prototype.workspace.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class WorkSpaceSubMsg {
 
     private String username;
