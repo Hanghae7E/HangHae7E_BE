@@ -93,10 +93,10 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column
     private LocalDate recruitDueTime;
 
-    @Column(columnDefinition =  "varchar(255) default ''")
+    @Column(columnDefinition = "varchar(255) default ''")
     private String imageUrl;
 
-    @Column(columnDefinition =  "boolean default true ")
+    @Column(columnDefinition = "bit")
     private Boolean recruitStatus;
 
     public void updateFields(PostRequestDto requestDto){

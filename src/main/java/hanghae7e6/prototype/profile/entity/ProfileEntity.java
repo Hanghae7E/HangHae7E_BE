@@ -59,7 +59,7 @@ public class ProfileEntity extends BaseTimeEntity {
     @Column(name = "AVAILABLE_TIME", columnDefinition = "varchar(255) default ''")
     private String availableTime;
 
-    @Column(name = "FACE_TO_FACE", columnDefinition = "boolean default false ")
+    @Column(name = "FACE_TO_FACE", columnDefinition = "bit")
     private Boolean faceToFace;
 
     @Column(name = "CAREER_PERIOD", columnDefinition = "varchar(255) default ''")

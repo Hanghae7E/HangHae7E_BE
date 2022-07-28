@@ -42,6 +42,8 @@ public class DetailPostResponseDto {
 
     private String imageUrl;
 
+    private Boolean recruitStatus;
+
     private List<TagResponseDto> tags;
 
     private List<ApplicantResponse> applicants;
@@ -60,6 +62,7 @@ public class DetailPostResponseDto {
                                     .projectEndTime(entity.getProjectEndTime())
                                     .projectStartTime(entity.getProjectStartTime())
                                     .recruitDueTime(entity.getRecruitDueTime())
+                                    .recruitStatus(entity.getRecruitStatus())
                                     .tags(TagResponseDto.toDtos(tags))
                                     .build();
     }
@@ -80,6 +83,7 @@ public class DetailPostResponseDto {
                                     .projectStartTime(entity.getProjectStartTime())
                                     .recruitDueTime(entity.getRecruitDueTime())
                                     .tags(TagResponseDto.toDtos(tags))
+                                    .recruitStatus(entity.getRecruitStatus())
                                     .applicants(ApplicantResponse.toResponses(applicants))
                                     .build();
     }

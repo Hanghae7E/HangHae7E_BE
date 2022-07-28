@@ -71,9 +71,9 @@ public class RecruitPostService {
     @Transactional(readOnly = true)
     public Map<String, Object> getPosts(PageRequest pageRequest, Long tagId) throws AbstractException {
         Map<String, Object> result = new HashMap<>();
-        Page<RecruitPostEntity> recruitPostPage = tagId == null? recruitPostRepository.findAllByRecruitStatusAndRecruitDueTimeIsAfter(Boolean.TRUE,
-            LocalDate.now() , pageRequest) : recruitPostRepository.findAllByTagIdAndRecruitStatusAndRecruitDueTimeIsAfter(tagId,
-            Boolean.TRUE, LocalDateTime.now(),  pageRequest);
+        Page<RecruitPostEntity> recruitPostPage = tagId == null? recruitPostRepository.findAllByRecruitStatusAndRecruitDueTimeGreaterThan(Boolean.TRUE,
+            LocalDate.now().minusDays(1) , pageRequest) : recruitPostRepository.findAllByTagIdAndRecruitStatusAndRecruitDueTimeGreaterThan(tagId,
+            Boolean.TRUE, LocalDate.now().minusDays(1),  pageRequest);
         List<RecruitPostEntity> recruitPosts = recruitPostPage.getContent();
 
         List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
@@ -202,6 +202,10 @@ public class RecruitPostService {
         RecruitPostEntity post = recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
         if (post.getUser().getId() != userDetails.getId()) throw new InvalidException(ErrorCode.NOT_AUTHOR);
         if (post.getRecruitStatus() == Boolean.FALSE) throw new InvalidException(ErrorCode.ALREADY_CLOSED_POST);
+
+        List <ApplicantEntity> applicants = applicantRepository.findAllByRecruitPostId(postId);
+        applicants.stream().filter(applicant -> applicant.getStatus().equals("대기중"))
+                            .forEach(applicant -> applicant.setStatus("불합격"));
 
         post.closeRecruitPost();
     }
