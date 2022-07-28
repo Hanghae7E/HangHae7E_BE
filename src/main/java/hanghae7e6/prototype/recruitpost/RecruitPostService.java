@@ -23,7 +23,10 @@ import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.tag.TagResponseDto;
 import hanghae7e6.prototype.tag.TagService;
 import hanghae7e6.prototype.user.CustomUserDetails;
+import hanghae7e6.prototype.user.UserEntity;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -68,7 +71,9 @@ public class RecruitPostService {
     @Transactional(readOnly = true)
     public Map<String, Object> getPosts(PageRequest pageRequest, Long tagId) throws AbstractException {
         Map<String, Object> result = new HashMap<>();
-        Page<RecruitPostEntity> recruitPostPage = tagId == null? recruitPostRepository.findAll(pageRequest) : recruitPostRepository.findAllByTagId(tagId, pageRequest);
+        Page<RecruitPostEntity> recruitPostPage = tagId == null? recruitPostRepository.findAllByRecruitStatusAndRecruitDueTimeIsAfter(Boolean.TRUE,
+            LocalDate.now() , pageRequest) : recruitPostRepository.findAllByTagIdAndRecruitStatusAndRecruitDueTimeIsAfter(tagId,
+            Boolean.TRUE, LocalDateTime.now(),  pageRequest);
         List<RecruitPostEntity> recruitPosts = recruitPostPage.getContent();
 
         List <SimplePostResponseDto> responseDtos = recruitPosts.stream().map(this::transfer).collect(Collectors.toList());
@@ -190,6 +195,15 @@ public class RecruitPostService {
         String profileImgUrl = amazonS3Client.getUrl(BUCKET, toS3ProfileImgKey(postId)).toString();
 
         post.setImageUrl(profileImgUrl);
+    }
+
+    @Transactional
+    public void closePost(CustomUserDetails userDetails, Long postId) throws AbstractException {
+        RecruitPostEntity post = recruitPostRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
+        if (post.getUser().getId() != userDetails.getId()) throw new InvalidException(ErrorCode.NOT_AUTHOR);
+        if (post.getRecruitStatus() == Boolean.FALSE) throw new InvalidException(ErrorCode.ALREADY_CLOSED_POST);
+
+        post.closeRecruitPost();
     }
 }
 

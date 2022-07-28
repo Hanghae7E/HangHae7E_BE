@@ -26,7 +26,7 @@ public enum ErrorCode {
     EMPTY_BODY("필요한 값이 비어있거나 잘못되어 있습니다. 값 형식을 확인해 주세요!"),
     EMPTY_POSITION("포지션이 비어있습니다."),
     APPLICANT_POSITION_EMPTY("신청자의 포지션이 비어있습니다."),
-
+    ALREADY_CLOSED_POST("이미 마감된 게시글입니다."),
 
     /* 401 UNAUTHORIZED 인증되지 않은 사용자 */
     LOGIN_REQUIRED( "로그인이 필요합니다."),

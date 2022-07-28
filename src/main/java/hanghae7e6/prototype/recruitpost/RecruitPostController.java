@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.exception.ErrorCode;
 import hanghae7e6.prototype.exception.InvalidException;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
@@ -66,7 +67,7 @@ public class RecruitPostController {
     @PostMapping("/recruitPost")
     public ResponseEntity<?> createPost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @ModelAttribute PostRequestDto requestDto) throws IOException{
+            @ModelAttribute PostRequestDto requestDto) throws IOException, AbstractException {
 
         if (requestDto.getProjectEndTime() == null || requestDto.getRecruitDueTime() == null || requestDto.getProjectStartTime() == null)
             throw new InvalidException(ErrorCode.EMPTY_BODY);
@@ -81,7 +82,7 @@ public class RecruitPostController {
     public ResponseEntity<?> updatePost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long postId,
-            @ModelAttribute PostRequestDto requestDto) throws IOException {
+            @ModelAttribute PostRequestDto requestDto) throws IOException, AbstractException {
 
         if (requestDto.getProjectEndTime() == null || requestDto.getRecruitDueTime() == null || requestDto.getProjectStartTime() == null)
             throw new InvalidException(ErrorCode.EMPTY_BODY);
@@ -97,9 +98,21 @@ public class RecruitPostController {
     @DeleteMapping("recruitPost/{postId}")
     public ResponseEntity<?> deletePost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long postId){
+            @PathVariable Long postId) throws AbstractException {
 
         recruitPostService.deletePost(userDetails, postId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/recruitPost/{postId}/closed")
+    public ResponseEntity<?> closeRecruitPost(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PathVariable Long postId) throws IOException {
+
+        if (userDetails == null) throw new InvalidException(ErrorCode.INVALID_REQUEST);
+
+        recruitPostService.closePost(userDetails, postId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

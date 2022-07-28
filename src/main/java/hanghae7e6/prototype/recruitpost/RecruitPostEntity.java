@@ -70,6 +70,7 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String title;
 
+    @Lob
     @Column(nullable = false)
     private String body;
 
@@ -152,5 +153,9 @@ public class RecruitPostEntity extends BaseTimeEntity {
             RecruitPostTagEntity postTag = RecruitPostTagEntity.builder().recruitPost(this).tag(tag).build();
             updated.add(postTag);
         }
+    }
+
+    public void closeRecruitPost() {
+        this.recruitStatus = Boolean.FALSE;
     }
 }
