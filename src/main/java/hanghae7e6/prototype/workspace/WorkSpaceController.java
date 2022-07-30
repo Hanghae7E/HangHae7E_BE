@@ -19,60 +19,73 @@ public class WorkSpaceController {
     }
 
 
-    @PostMapping("/team/{teamId}/workSpace")
+    @PostMapping("/project/{projectId}/workSpace")
     public ResponseEntity<String> createWorkSpace(
-            @PathVariable Long teamId){
-        workSpaceService.createWorkSpace(teamId);
+            @PathVariable Long projectId){
+        workSpaceService.createWorkSpace(projectId);
 
         return ResponseEntity.ok().body("SUCCESS");
     }
 
 
-    @GetMapping("/team/{teamId}/workSpace/{workSpaceId}")
+    @GetMapping("/project/{projectId}/workSpace/{workSpaceId}")
     public ResponseEntity<DetailWorkSpaceDto> getWorkSpace(
-            @PathVariable Long teamId,
+            @PathVariable Long projectId,
             @PathVariable Long workSpaceId){
 
-        WorkSpaceEntity workSpace = workSpaceService.getWorkSpace(teamId, workSpaceId);
+        WorkSpaceEntity workSpace = workSpaceService.getWorkSpace(projectId, workSpaceId);
         DetailWorkSpaceDto responseDto = new DetailWorkSpaceDto(workSpace);
 
         return ResponseEntity.ok().body(responseDto);
     }
 
 
-    @GetMapping("/team/{teamId}/workSpace")
+    @GetMapping("/project/{projectId}/workSpace")
     public ResponseEntity<Map<String, Object>> getWorkSpaces(
-            @PathVariable Long teamId,
+            @PathVariable Long projectId,
             @RequestParam("page") Integer page){
 
         page = 1 <= page? page - 1 : 0;
 
         Map<String, Object> responseMap =
-                workSpaceService.getWorkSpaces(teamId, page);
+                workSpaceService.getWorkSpaces(projectId, page);
 
         return ResponseEntity.ok().body(responseMap);
     }
 
 
-    @DeleteMapping("/team/{teamId}/workSpace/{workSpaceId}")
+    @DeleteMapping("/project/{projectId}/workSpace/{workSpaceId}")
     public ResponseEntity<String> deleteWorkSpace(
-            @PathVariable Long teamId,
+            @PathVariable Long projectId,
             @PathVariable Long workSpaceId){
 
-        workSpaceService.deleteWorkSpace(teamId, workSpaceId);
+        workSpaceService.deleteWorkSpace(projectId, workSpaceId);
 
         return ResponseEntity.ok().body("SUCCESS");
     }
 
-    @PutMapping("/team/{teamId}/workSpace/{workSpaceId}")
+    @PutMapping("/project/{projectId}/workSpace/{workSpaceId}")
     public ResponseEntity<String> updateWorkSpace(
-            @PathVariable Long teamId,
+            @PathVariable Long projectId,
             @PathVariable Long workSpaceId,
             @RequestBody DetailWorkSpaceDto requestDto){
 
-        workSpaceService.updateWorkSpace(teamId, workSpaceId, requestDto);
+        workSpaceService.updateWorkSpace(projectId, workSpaceId, requestDto);
 
         return ResponseEntity.ok().body("SUCCESS");
     }
 
+//    @GetMapping("/project/{projectId}/workSpace")
+//    public ResponseEntity<Map<String, Object>> searchWorkSpaces(
+//            @PathVariable Long projectId,
+//            @RequestParam("page") Integer page,
+//        @RequestParam("query") String query){
+//
+//            page = 1 <= page? page - 1 : 0;
+//
+//        Map<String, Object> responseMap =
+//                workSpaceService.searchWorkSpaces(projectId, page, query);
+//
+//        return ResponseEntity.ok().body(responseMap);
+//    }
 }

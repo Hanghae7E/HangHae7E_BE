@@ -2,14 +2,11 @@ package hanghae7e6.prototype.workspace;
 
 import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
-import hanghae7e6.prototype.workspace.tempteam.Team;
+import hanghae7e6.prototype.workspace.tempprojects.ProjectEntity;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,8 +23,8 @@ public class WorkSpaceEntity extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
+    @JoinColumn(name = "PROJECT_ID")
+    private ProjectEntity project;
 
     @Column(name = "TITLE")
     private String title;
@@ -36,11 +33,12 @@ public class WorkSpaceEntity extends BaseTimeEntity {
     private String content;
 
 
-    public WorkSpaceEntity(Team team){
-        this.team = team;
+    public WorkSpaceEntity(ProjectEntity project){
+        this.project= project;
         this.title = "none";
         this.content = "none";
     }
+
 
     public void update(DetailWorkSpaceDto dto){
         this.title = dto.getTitle();

@@ -1,9 +1,8 @@
 package hanghae7e6.prototype.workspace;
 
-import hanghae7e6.prototype.recruitpost.SortValue;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
 import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
-import hanghae7e6.prototype.workspace.tempteam.Team;
+import hanghae7e6.prototype.workspace.tempprojects.ProjectEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class WorkSpaceService {
@@ -30,30 +28,45 @@ public class WorkSpaceService {
     }
 
 
-    public WorkSpaceEntity createWorkSpace(Long teamId){
-        WorkSpaceEntity workSpace = new WorkSpaceEntity(new Team(teamId));
+    @Transactional
+    public WorkSpaceEntity createWorkSpace(Long projectId){
+        WorkSpaceEntity workSpace = new WorkSpaceEntity(new ProjectEntity(projectId));
         return workSpaceRepository.save(workSpace);
     }
 
+
     @Transactional(readOnly = true)
-    public WorkSpaceEntity getWorkSpace(Long teamId, Long workSpaceId){
-       return workSpaceRepository.findByTeamAndId(new Team(teamId), workSpaceId)
+    public WorkSpaceEntity getWorkSpace(Long projectId, Long workSpaceId){
+       return workSpaceRepository.findByProjectAndId(new ProjectEntity(projectId), workSpaceId)
                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getWorkSpaces(Long teamId, Integer page){
+    public Map<String, Object> getWorkSpaces(Long projectId, Integer page){
 
         Map<String, Object> responseMap = new HashMap<>();
 
         Pageable pageable = PageRequest.of(page, SIZE, SORT);
+        Page<WorkSpaceEntity> workSpaces = workSpaceRepository.findAllByProject(new ProjectEntity(projectId), pageable);
 
-        Page<WorkSpaceEntity> workSpaces = workSpaceRepository.findAllByTeam(new Team(teamId), pageable);
+        List<SimpleWorkSpaceDto> responseDto = SimpleWorkSpaceDto.toDto(workSpaces);
 
-        List<SimpleWorkSpaceDto> responseDto = workSpaces.toList()
-                .stream()
-                .map(SimpleWorkSpaceDto::new)
-                .collect(Collectors.toList());
+        responseMap.put("isLast", workSpaces.isLast());
+        responseMap.put("wordSpaces", responseDto);
+
+        return responseMap;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> searchWorkSpaces(Long projectId, Integer page, String title){
+
+        Map<String, Object> responseMap = new HashMap<>();
+
+        Pageable pageable = PageRequest.of(page, SIZE, SORT);
+        Page<WorkSpaceEntity> workSpaces = workSpaceRepository
+                .findAllByProjectAndTitleContains(new ProjectEntity(projectId), pageable, title);
+
+        List<SimpleWorkSpaceDto> responseDto = SimpleWorkSpaceDto.toDto(workSpaces);
 
         responseMap.put("isLast", workSpaces.isLast());
         responseMap.put("wordSpaces", responseDto);
@@ -62,9 +75,9 @@ public class WorkSpaceService {
     }
 
     @Transactional
-    public WorkSpaceEntity updateWorkSpace(Long teamId, Long workSpaceId, DetailWorkSpaceDto dto){
+    public WorkSpaceEntity updateWorkSpace(Long projectId, Long workSpaceId, DetailWorkSpaceDto dto){
 
-        WorkSpaceEntity workSpace = workSpaceRepository.findByTeamAndId(new Team(teamId), workSpaceId)
+        WorkSpaceEntity workSpace = workSpaceRepository.findByProjectAndId(new ProjectEntity(projectId), workSpaceId)
                 .orElseThrow(IllegalArgumentException::new);
         workSpace.update(dto);
 
@@ -72,8 +85,8 @@ public class WorkSpaceService {
     }
 
     @Transactional
-    public WorkSpaceEntity deleteWorkSpace(Long teamId, Long workSpaceId){
-        return workSpaceRepository.deleteByTeamAndId(new Team(teamId), workSpaceId)
+    public WorkSpaceEntity deleteWorkSpace(Long projectId, Long workSpaceId){
+        return workSpaceRepository.deleteByProjectAndId(new ProjectEntity(projectId), workSpaceId)
                 .orElseThrow(IllegalArgumentException::new);
     }
 

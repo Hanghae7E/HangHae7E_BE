@@ -1,4 +1,4 @@
-package hanghae7e6.prototype.workspace.tempteam;
+package hanghae7e6.prototype.workspace.tempprojects;
 
 import lombok.*;
 
@@ -9,16 +9,16 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Team {
+public class ProjectEntity {
     @Id
-    @Column(name = "TEAM_ID", nullable = false)
+    @Column(name = "PROJECT_ID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
     private String uuid;
 
-    public Team(Long id){
+    public ProjectEntity(Long id){
        this.id = id;
     }
 
