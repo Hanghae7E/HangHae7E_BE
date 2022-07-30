@@ -1,8 +1,8 @@
 package hanghae7e6.prototype.workspace;
 
+import hanghae7e6.prototype.project.ProjectEntity;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
 import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
-import hanghae7e6.prototype.workspace.tempprojects.ProjectEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

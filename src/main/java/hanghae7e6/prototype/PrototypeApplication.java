@@ -13,12 +13,6 @@ import javax.persistence.PersistenceUnit;
 @SpringBootApplication
 public class PrototypeApplication {
 
-	@PersistenceContext
-	EntityManager em;
-
-	@PersistenceUnit
-	EntityManagerFactory emf;
-
 	public static void main(String[] args) {
 		SpringApplication.run(PrototypeApplication.class, args);
 	}
