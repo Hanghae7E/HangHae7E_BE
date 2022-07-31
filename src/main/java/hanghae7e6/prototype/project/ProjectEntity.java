@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,23 +32,32 @@ public class ProjectEntity {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
   @BatchSize(size = 100)
-  private List<ProjectTagsEntity> projectTags;
+  private List<ProjectTagsEntity> projectTags = new ArrayList<>();
 
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
   @BatchSize(size = 100)
-  private List<ProjectMemberEntity> projectMembers;
+  private List<ProjectMemberEntity> projectMembers = new ArrayList<>();
 
-
-
-
-  public ProjectEntity(ProjectDto projectDto) {
-    this.projectName = projectDto.getProjectName();
-    this.imgUrl = projectDto.getImgUrl();
-//    this.projectTags = projectDto.getProjectTags();
-  }
 
   public ProjectEntity(Long projectId) {
     this.projectId = projectId;
+  }
+
+
+  public void addProjectTags(List<ProjectTagsEntity> entities){
+    entities.stream()
+            .forEach(entity -> {
+              projectTags.add(entity);
+              entity.setProject(this);
+            });
+  }
+
+  public void addProjectMembers(List<ProjectMemberEntity> entities){
+    entities.stream()
+            .forEach(entity -> {
+              projectMembers.add(entity);
+              entity.setProject(this);
+            });
   }
 }

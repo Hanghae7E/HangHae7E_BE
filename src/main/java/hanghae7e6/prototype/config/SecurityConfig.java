@@ -59,6 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.DELETE, "/api/recruitPost").hasRole(UserRole.USER.name())
             .antMatchers(HttpMethod.GET, "/api/recruitPost/**").permitAll()
 
+                // PROJECT기능 TEST
+                .antMatchers(HttpMethod.POST, "/api/project").permitAll()
+
 //            .antMatchers("/api/user").hasRole(UserRole.USER.name())
             .anyRequest()
             .permitAll()

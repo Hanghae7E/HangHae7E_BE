@@ -2,6 +2,7 @@ package hanghae7e6.prototype.project;
 
 import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,10 +18,15 @@ public class ProjectService {
   }
 
 
+  @Transactional
   public ProjectEntity createProject(ProjectRequestDto requestDto) {
+    ProjectEntity projectObj = requestDto.toEntity();
 
-    ProjectEntity project = requestDto.toEntity();
-    projectRepository.save(project);
+    ProjectEntity project = projectRepository.save(projectObj);
+
+
+    project.addProjectTags(requestDto.getProjectTags());
+    project.addProjectMembers(requestDto.getProjectMember());
 
     return project;
   }

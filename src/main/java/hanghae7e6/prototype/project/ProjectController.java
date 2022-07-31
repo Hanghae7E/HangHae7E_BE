@@ -22,11 +22,10 @@ public class ProjectController {
 
 
 
-  @PostMapping("/teamproject")
-  public ProjectEntity createProject(
+  @PostMapping("/project")
+  public void createProject(
           @RequestBody ProjectRequestDto requestDto) {
-
-    return projectService.createProject(requestDto);
+        projectService.createProject(requestDto);
   }
 
 

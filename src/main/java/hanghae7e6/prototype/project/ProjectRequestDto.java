@@ -5,6 +5,7 @@ import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,16 +20,26 @@ public class ProjectRequestDto {
     private String imgUrl;
 
 
+    public List<ProjectTagsEntity> getProjectTags(){
+        return tagIds.stream()
+                .map(ProjectTagsEntity::getEntity)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<ProjectMemberEntity> getProjectMember(){
+        return userIds.stream()
+                .map(ProjectMemberEntity::getEntity)
+                .collect(Collectors.toList());
+    }
+
+
     public ProjectEntity toEntity(){
         return ProjectEntity.builder()
                 .projectName(title)
                 .imgUrl(imgUrl)
-                .projectTags(tagIds.stream()
-                        .map(ProjectTagsEntity::getEntity)
-                        .collect(Collectors.toList()))
-                .projectMembers(userIds.stream()
-                        .map(ProjectMemberEntity::getEntity)
-                        .collect(Collectors.toList()))
+                .projectTags(new ArrayList<>())
+                .projectMembers(new ArrayList<>())
                 .build();
     }
 

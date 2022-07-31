@@ -4,15 +4,13 @@ import hanghae7e6.prototype.project.ProjectEntity;
 import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
 import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.user.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @Table(name = "PROJECT_MEMBER")
 @AllArgsConstructor
