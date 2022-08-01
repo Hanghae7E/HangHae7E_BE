@@ -8,16 +8,14 @@ import lombok.Setter;
 @Setter
 public class DetailWorkSpaceDto {
 
+    private Long workSpaceId;
     private String title;
     private String content;
 
     public DetailWorkSpaceDto(WorkSpaceEntity workSpace){
+        this.workSpaceId = workSpace.getId();
         this.title = workSpace.getTitle();
         this.content = workSpace.getContent();
     }
 
-//    public DetailWorkSpaceDto(WorkSpacePubMsg msg){
-//        this.title = msg.getTitle();
-//        this.content = msg.getContent();
-//    }
 }

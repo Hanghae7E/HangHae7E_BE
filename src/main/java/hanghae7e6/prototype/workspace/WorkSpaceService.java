@@ -53,7 +53,7 @@ public class WorkSpaceService {
 
         List<SimpleWorkSpaceDto> responseDto =  SimpleWorkSpaceDto.toDto(workSpaces);
 
-        responseMap.put("isLastPage", workSpaces.isLast());
+        responseMap.put("isLast", workSpaces.isLast());
         responseMap.put("workSpaces", responseDto);
 
         return responseMap;

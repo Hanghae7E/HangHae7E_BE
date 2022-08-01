@@ -30,5 +30,4 @@ public class SimpleWorkSpaceDto {
                 .collect(Collectors.toList());
 
     }
-
 }
