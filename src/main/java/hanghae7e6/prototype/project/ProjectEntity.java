@@ -27,15 +27,18 @@ public class ProjectEntity {
   @Column
   private String projectName;
 
+  @Column(unique = true)
+  private String uuid;
+
   @Column
   private String imgUrl;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY)
   @BatchSize(size = 100)
   private List<ProjectTagsEntity> projectTags = new ArrayList<>();
 
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "project", fetch = FetchType.LAZY)
   @BatchSize(size = 100)
   private List<ProjectMemberEntity> projectMembers = new ArrayList<>();
 

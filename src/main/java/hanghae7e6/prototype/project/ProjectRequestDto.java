@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -38,6 +39,7 @@ public class ProjectRequestDto {
         return ProjectEntity.builder()
                 .projectName(title)
                 .imgUrl(imgUrl)
+                .uuid(UUID.randomUUID().toString())
                 .projectTags(new ArrayList<>())
                 .projectMembers(new ArrayList<>())
                 .build();

@@ -9,6 +9,7 @@ import java.util.Map;
 
 
 @RestController
+@RequestMapping("/api")
 public class WorkSpaceController {
 
     private WorkSpaceService workSpaceService;

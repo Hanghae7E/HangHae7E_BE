@@ -1,6 +1,11 @@
 package hanghae7e6.prototype.project;
 
+import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -15,10 +20,13 @@ public class ProjectController {
     }
 
 
-//  @GetMapping("/projects")
-//  public List<ProjectEntity> getProject(@RequestBody ProjectTagsEntity projectTagsEntity) {
-//    return projectService.getProject(projectTagsEntity);
-//  }
+  @GetMapping("/project/{projectId}")
+  public ResponseEntity<ProjectResponseDto> getProject(
+          @PathVariable Long projectId) {
+    ProjectResponseDto responseDto = projectService.getProject(projectId);
+
+    return ResponseEntity.ok().body(responseDto);
+  }
 
 
 

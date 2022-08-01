@@ -24,6 +24,7 @@ public class WorkSpaceService {
 
     @Autowired
     public WorkSpaceService(WorkSpaceRepository workSpaceRepository) {
+
         this.workSpaceRepository = workSpaceRepository;
     }
 
@@ -46,16 +47,26 @@ public class WorkSpaceService {
 
         Map<String, Object> responseMap = new HashMap<>();
 
+
         Pageable pageable = PageRequest.of(page, SIZE, SORT);
         Page<WorkSpaceEntity> workSpaces = workSpaceRepository.findAllByProject(new ProjectEntity(projectId), pageable);
 
-        List<SimpleWorkSpaceDto> responseDto = SimpleWorkSpaceDto.toDto(workSpaces);
+        List<SimpleWorkSpaceDto> responseDto =  SimpleWorkSpaceDto.toDto(workSpaces);
 
-        responseMap.put("isLast", workSpaces.isLast());
-        responseMap.put("wordSpaces", responseDto);
+        responseMap.put("isLastPage", workSpaces.isLast());
+        responseMap.put("workSpaces", responseDto);
 
         return responseMap;
     }
+
+    public List<SimpleWorkSpaceDto> getSimpWorkSpacesDto(Long projectId, Integer page){
+
+        Pageable pageable = PageRequest.of(0, SIZE, SORT);
+        Page<WorkSpaceEntity> workSpaces = workSpaceRepository.findAllByProject(new ProjectEntity(projectId), pageable);
+
+       return SimpleWorkSpaceDto.toDto(workSpaces);
+    }
+
 
     @Transactional(readOnly = true)
     public Map<String, Object> searchWorkSpaces(Long projectId, Integer page, String title){
