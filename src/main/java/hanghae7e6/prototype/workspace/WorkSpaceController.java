@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 
 @RestController
+@RequestMapping("/api")
 public class WorkSpaceController {
 
     private WorkSpaceService workSpaceService;
@@ -24,7 +26,7 @@ public class WorkSpaceController {
             @PathVariable Long projectId){
         workSpaceService.createWorkSpace(projectId);
 
-        return ResponseEntity.ok().body("SUCCESS");
+        return ResponseEntity.ok().body("ok");
     }
 
 
@@ -45,7 +47,7 @@ public class WorkSpaceController {
             @PathVariable Long projectId,
             @RequestParam("page") Integer page){
 
-        page = 1 <= page? page - 1 : 0;
+        page = (1 <= page) || Objects.isNull(page) ? page - 1 : 0;
 
         Map<String, Object> responseMap =
                 workSpaceService.getWorkSpaces(projectId, page);
@@ -60,17 +62,6 @@ public class WorkSpaceController {
             @PathVariable Long workSpaceId){
 
         workSpaceService.deleteWorkSpace(projectId, workSpaceId);
-
-        return ResponseEntity.ok().body("SUCCESS");
-    }
-
-    @PutMapping("/project/{projectId}/workSpace/{workSpaceId}")
-    public ResponseEntity<String> updateWorkSpace(
-            @PathVariable Long projectId,
-            @PathVariable Long workSpaceId,
-            @RequestBody DetailWorkSpaceDto requestDto){
-
-        workSpaceService.updateWorkSpace(projectId, workSpaceId, requestDto);
 
         return ResponseEntity.ok().body("SUCCESS");
     }

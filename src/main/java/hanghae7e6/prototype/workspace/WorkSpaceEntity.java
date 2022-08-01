@@ -1,8 +1,8 @@
 package hanghae7e6.prototype.workspace;
 
 import hanghae7e6.prototype.common.BaseTimeEntity;
+import hanghae7e6.prototype.project.ProjectEntity;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
-import hanghae7e6.prototype.workspace.tempprojects.ProjectEntity;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

@@ -1,8 +1,8 @@
 package hanghae7e6.prototype.workspace;
 
+import hanghae7e6.prototype.project.ProjectEntity;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
 import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
-import hanghae7e6.prototype.workspace.tempprojects.ProjectEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +24,7 @@ public class WorkSpaceService {
 
     @Autowired
     public WorkSpaceService(WorkSpaceRepository workSpaceRepository) {
+
         this.workSpaceRepository = workSpaceRepository;
     }
 
@@ -37,8 +38,8 @@ public class WorkSpaceService {
 
     @Transactional(readOnly = true)
     public WorkSpaceEntity getWorkSpace(Long projectId, Long workSpaceId){
-       return workSpaceRepository.findByProjectAndId(new ProjectEntity(projectId), workSpaceId)
-               .orElseThrow(IllegalArgumentException::new);
+        return workSpaceRepository.findByProjectAndId(new ProjectEntity(projectId), workSpaceId)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Transactional(readOnly = true)
@@ -46,16 +47,26 @@ public class WorkSpaceService {
 
         Map<String, Object> responseMap = new HashMap<>();
 
+
         Pageable pageable = PageRequest.of(page, SIZE, SORT);
         Page<WorkSpaceEntity> workSpaces = workSpaceRepository.findAllByProject(new ProjectEntity(projectId), pageable);
 
-        List<SimpleWorkSpaceDto> responseDto = SimpleWorkSpaceDto.toDto(workSpaces);
+        List<SimpleWorkSpaceDto> responseDto =  SimpleWorkSpaceDto.toDto(workSpaces);
 
         responseMap.put("isLast", workSpaces.isLast());
-        responseMap.put("wordSpaces", responseDto);
+        responseMap.put("workSpaces", responseDto);
 
         return responseMap;
     }
+
+    public List<SimpleWorkSpaceDto> getSimpWorkSpacesDto(Long projectId, Integer page){
+
+        Pageable pageable = PageRequest.of(0, SIZE, SORT);
+        Page<WorkSpaceEntity> workSpaces = workSpaceRepository.findAllByProject(new ProjectEntity(projectId), pageable);
+
+        return SimpleWorkSpaceDto.toDto(workSpaces);
+    }
+
 
     @Transactional(readOnly = true)
     public Map<String, Object> searchWorkSpaces(Long projectId, Integer page, String title){
