@@ -66,17 +66,6 @@ public class WorkSpaceController {
         return ResponseEntity.ok().body("SUCCESS");
     }
 
-    @PutMapping("/project/{projectId}/workSpace/{workSpaceId}")
-    public ResponseEntity<String> updateWorkSpace(
-            @PathVariable Long projectId,
-            @PathVariable Long workSpaceId,
-            @RequestBody DetailWorkSpaceDto requestDto){
-
-        workSpaceService.updateWorkSpace(projectId, workSpaceId, requestDto);
-
-        return ResponseEntity.ok().body("SUCCESS");
-    }
-
 //    @GetMapping("/project/{projectId}/workSpace")
 //    public ResponseEntity<Map<String, Object>> searchWorkSpaces(
 //            @PathVariable Long projectId,
