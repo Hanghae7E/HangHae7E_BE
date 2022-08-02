@@ -18,11 +18,13 @@ import hanghae7e6.prototype.user.UserRepository;
 import hanghae7e6.prototype.user.UserRole;
 import hanghae7e6.prototype.workspace.WorkSpaceEntity;
 import hanghae7e6.prototype.workspace.WorkSpaceRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 @Component
 public class Starter {
@@ -34,6 +36,8 @@ public class Starter {
     ProfileRepository profileRepository;
     PositionRepository positionRepository;
     WorkSpaceRepository workSpaceRepository;
+
+    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 *1000 * 24;  // 초단위, 24시간
 
 
     @Autowired
@@ -49,14 +53,22 @@ public class Starter {
 
 
     public void doInit(){
-        UserEntity userB = UserEntity.builder()
-                .email("test@test.com")
-                .username("tester")
+        UserEntity userB1 = UserEntity.builder()
+                .email("test1@test.com")
+                .username("tester1")
                 .userRole(UserRole.USER)
-                .socialType("testType")
+                .socialType("google")
                 .build();
 
-        UserEntity user = userRepository.save(userB);
+        UserEntity userB2 = UserEntity.builder()
+                .email("test2@test.com")
+                .username("tester2")
+                .userRole(UserRole.USER)
+                .socialType("google")
+                .build();
+
+        UserEntity user1 = userRepository.save(userB1);
+        UserEntity user2 = userRepository.save(userB2);
 
 
         ProjectEntity projectB = ProjectEntity.builder()
@@ -78,18 +90,24 @@ public class Starter {
 
         ProjectMemberEntity projectMemberB = ProjectMemberEntity.builder()
                 .project(project)
-                .user(user)
+                .user(user1)
                 .build();
 
         ProjectMemberEntity projectMember = projectMemberRepository.save(projectMemberB);
 
 
-        ProfileEntity profileB = ProfileEntity.builder()
-                .user(user)
+        ProfileEntity profileB1 = ProfileEntity.builder()
+                .user(user1)
                 .position(positionRepository.findById(1L).orElseThrow(IllegalArgumentException::new))
                 .build();
 
-        ProfileEntity profile = profileRepository.save(profileB);
+        ProfileEntity profileB2 = ProfileEntity.builder()
+                .user(user2)
+                .position(positionRepository.findById(1L).orElseThrow(IllegalArgumentException::new))
+                .build();
+
+        ProfileEntity profile1 = profileRepository.save(profileB1);
+        ProfileEntity profile2 = profileRepository.save(profileB2);
 
 
         WorkSpaceEntity workSpaceB = WorkSpaceEntity.builder()
@@ -100,6 +118,35 @@ public class Starter {
 
         WorkSpaceEntity workSpace = workSpaceRepository.save(workSpaceB);
 
+        System.out.println("test1 - "+createJwt(user1));
+        System.out.println("test1 - "+createJwt(user2));
+
+
+    }
+
+    public String createJwt(UserEntity user){
+
+        String secretKey = Base64.getEncoder().encodeToString("test".getBytes());
+        Date now = new Date();
+
+        String userId = user.getId().toString();
+        String email = user.getEmail();
+        String socialType = user.getSocialType();
+
+        Claims claims = Jwts.claims();
+
+        claims.put("userId", userId);
+        claims.put("email", email);
+        claims.put("social-type", socialType);
+
+        String jwt = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_VALID_TIME))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+
+        return jwt;
     }
 
 }
