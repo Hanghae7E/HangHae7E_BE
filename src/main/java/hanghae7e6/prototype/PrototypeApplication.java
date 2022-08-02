@@ -19,9 +19,9 @@ public class PrototypeApplication {
 		SpringApplication.run(PrototypeApplication.class, args);
 	}
 
-//	@Bean
-//	public CommandLineRunner setUp(Starter starter){
-//		return args -> starter.doInit();
-//	}
+	@Bean
+	public CommandLineRunner setUp(Starter starter){
+		return args -> starter.doInit();
+	}
 }
 
