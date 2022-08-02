@@ -8,9 +8,7 @@ import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ProjectService {

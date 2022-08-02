@@ -38,8 +38,8 @@ public class WorkSpaceService {
 
     @Transactional(readOnly = true)
     public WorkSpaceEntity getWorkSpace(Long projectId, Long workSpaceId){
-       return workSpaceRepository.findByProjectAndId(new ProjectEntity(projectId), workSpaceId)
-               .orElseThrow(IllegalArgumentException::new);
+        return workSpaceRepository.findByProjectAndId(new ProjectEntity(projectId), workSpaceId)
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @Transactional(readOnly = true)
@@ -64,7 +64,7 @@ public class WorkSpaceService {
         Pageable pageable = PageRequest.of(0, SIZE, SORT);
         Page<WorkSpaceEntity> workSpaces = workSpaceRepository.findAllByProject(new ProjectEntity(projectId), pageable);
 
-       return SimpleWorkSpaceDto.toDto(workSpaces);
+        return SimpleWorkSpaceDto.toDto(workSpaces);
     }
 
 

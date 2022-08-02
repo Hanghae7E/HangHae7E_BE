@@ -2,7 +2,6 @@ package hanghae7e6.prototype.project;
 
 import hanghae7e6.prototype.projectmember.ProjectMemberEntity;
 import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
-import hanghae7e6.prototype.workspace.WorkSpaceEntity;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 

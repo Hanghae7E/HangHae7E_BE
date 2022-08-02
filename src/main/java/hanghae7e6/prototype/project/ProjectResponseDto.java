@@ -1,6 +1,5 @@
 package hanghae7e6.prototype.project;
 
-import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.projectmember.ProjectMemberDto;
 import hanghae7e6.prototype.projectmember.ProjectMemberEntity;
 import hanghae7e6.prototype.projecttag.ProjectTagsDto;
