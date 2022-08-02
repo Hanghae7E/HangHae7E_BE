@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -36,31 +37,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+	@Override
+	public void configure(WebSecurity web) {
+	// h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
+      	web
+			.ignoring()
+ 			.antMatchers("/websocket/**");
+		}
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .headers()
-                .frameOptions().sameOrigin().and()
             .headers().frameOptions().disable()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .cors().configurationSource(configurationSource())
+
             .and()
             .exceptionHandling()
             .authenticationEntryPoint(jwtAuthEntryPoint)
 
             .and()
             .authorizeRequests()
-
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/sub/**").permitAll()
-                .antMatchers("/pub/**").permitAll()
-                .antMatchers("/ws/**").permitAll()
-                .antMatchers("/sub").permitAll()
-                .antMatchers("/ws").permitAll()
-                .antMatchers("/pub").permitAll()
-
             .antMatchers("/api","/api/login", "/api/register").permitAll()
             .antMatchers(HttpMethod.GET, "/api/running-port").permitAll()
             .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
@@ -99,7 +98,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.addAllowedOrigin("*");
-        configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 

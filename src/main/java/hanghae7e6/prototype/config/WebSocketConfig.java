@@ -21,9 +21,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/websocket")
                 .setAllowedOriginPatterns("*")
-//                .setAllowedOriginPatterns("http://*.*.*.*:8080","http://*:8080")
-                .withSockJS()
-                .setSupressCors(true);
+                .withSockJS();
 
     }
 }
