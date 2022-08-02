@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
@@ -38,18 +39,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .headers()
+                .frameOptions().sameOrigin().and()
             .headers().frameOptions().disable()
             .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .cors().configurationSource(configurationSource())
-
             .and()
             .exceptionHandling()
             .authenticationEntryPoint(jwtAuthEntryPoint)
 
             .and()
             .authorizeRequests()
+
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers("/sub/**").permitAll()
+                .antMatchers("/pub/**").permitAll()
+                .antMatchers("/ws/**").permitAll()
+                .antMatchers("/sub").permitAll()
+                .antMatchers("/ws").permitAll()
+                .antMatchers("/pub").permitAll()
+
             .antMatchers("/api","/api/login", "/api/register").permitAll()
             .antMatchers(HttpMethod.GET, "/api/running-port").permitAll()
             .antMatchers(HttpMethod.GET, "/api/recruitPost").permitAll()
@@ -87,11 +98,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource configurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-//        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedMethod("http://*.*.*.*:8080");
-        configuration.addAllowedOrigin("http://*:8080");
-//        configuration.addAllowedOrigin("*");
-//        configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("*");
+        configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 
