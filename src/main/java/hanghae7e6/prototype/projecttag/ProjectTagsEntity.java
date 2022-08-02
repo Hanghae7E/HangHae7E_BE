@@ -16,30 +16,30 @@ import javax.persistence.*;
 public class ProjectTagsEntity {
 
 
-    @Id
-    @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectTagsId;
+  @Id
+  @Column(nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long projectTagsId;
 
 
-    @ManyToOne
-    @JoinColumn(name = "PROJECT_ID")
-    private ProjectEntity project;
+  @ManyToOne
+  @JoinColumn(name = "PROJECT_ID")
+  private ProjectEntity project;
 
-    @ManyToOne
-    @JoinColumn(name = "TAG_ID")
-    private TagEntity tag;
+  @ManyToOne
+  @JoinColumn(name = "TAG_ID")
+  private TagEntity tag;
 
 
-    public ProjectTagsEntity(Long projectTagsId) {
-        this.projectTagsId = projectTagsId;
-    }
+  public ProjectTagsEntity(Long projectTagsId) {
+    this.projectTagsId = projectTagsId;
+  }
 
-    public static ProjectTagsEntity getEntity(Long tagId){
-        return ProjectTagsEntity.builder()
-                .tag(new TagEntity(tagId))
-                .build();
-    }
+  public static ProjectTagsEntity getEntity(Long tagId){
+     return ProjectTagsEntity.builder()
+             .tag(new TagEntity(tagId))
+             .build();
+  }
 
 
 }
