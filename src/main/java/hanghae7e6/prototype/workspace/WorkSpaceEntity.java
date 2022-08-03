@@ -3,6 +3,7 @@ package hanghae7e6.prototype.workspace;
 import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.project.ProjectEntity;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
+import hanghae7e6.prototype.workspace.dto.WorkSpaceSubMsg;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "WORK_SPACE")
 @EntityListeners(AuditingEntityListener.class)
 public class WorkSpaceEntity extends BaseTimeEntity {
 
@@ -40,7 +42,7 @@ public class WorkSpaceEntity extends BaseTimeEntity {
     }
 
 
-    public void update(DetailWorkSpaceDto dto){
+    public void update(WorkSpaceSubMsg dto){
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }
