@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectResponseDto {
+public class DetailProjectResponseDto {
 
 
   private Long projectId;
@@ -28,7 +28,7 @@ public class ProjectResponseDto {
   private List<ProjectMemberDto> team;
   private List<SimpleWorkSpaceDto> workSpaces;
 
-  public ProjectResponseDto(ProjectEntity project){
+  public DetailProjectResponseDto(ProjectEntity project){
     List<ProjectMemberEntity> projectMembers = project.getProjectMembers();
     List<ProjectTagsEntity> projectTags = project.getProjectTags();
 

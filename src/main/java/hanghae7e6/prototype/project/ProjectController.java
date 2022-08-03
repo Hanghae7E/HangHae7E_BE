@@ -1,7 +1,14 @@
 package hanghae7e6.prototype.project;
 
+import hanghae7e6.prototype.user.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
 @RestController
@@ -17,13 +24,23 @@ public class ProjectController {
 
 
   @GetMapping("/project/{projectId}")
-  public ResponseEntity<ProjectResponseDto> getProject(
+  public ResponseEntity<DetailProjectResponseDto> getProject(
           @PathVariable Long projectId) {
-    ProjectResponseDto responseDto = projectService.getProject(projectId);
+    DetailProjectResponseDto responseDto = projectService.getProject(projectId);
 
     return ResponseEntity.ok().body(responseDto);
   }
 
+    @GetMapping("/project")
+    public ResponseEntity<Map<String, Object>> getProjects(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Nullable @RequestParam("page") Integer page) {
+
+        page = Objects.isNull(page) || (1 <= page)? 0 : page - 1 ;
+
+        Map<String, Object> responseMap= projectService.getProjects(userDetails, page);
+        return ResponseEntity.ok().body(responseMap);
+    }
 
 
   @PostMapping("/project")
@@ -46,6 +63,7 @@ public class ProjectController {
 
   @DeleteMapping("/projects/{projectId}")
   public Long deleteProject(@PathVariable Long projectId) {
-    return projectService.deleteProject(projectId);
+    projectService.deleteProject(projectId);
+    return projectId;
   }
 }

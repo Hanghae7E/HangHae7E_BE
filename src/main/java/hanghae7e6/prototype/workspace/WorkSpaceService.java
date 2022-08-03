@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.workspace;
 
+import hanghae7e6.prototype.common.BaseTimeSort;
 import hanghae7e6.prototype.project.ProjectEntity;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
 import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
@@ -20,7 +21,7 @@ public class WorkSpaceService {
 
     private WorkSpaceRepository workSpaceRepository;
     final Integer SIZE = 10;
-    final Sort SORT = WorkSpaceSort.LATEST_WORKSPACE.getSort();
+    final Sort SORT = BaseTimeSort.LATEST_DATA.getSort();
 
     @Autowired
     public WorkSpaceService(WorkSpaceRepository workSpaceRepository) {

@@ -1,9 +1,11 @@
 package hanghae7e6.prototype.project;
 
+import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.projectmember.ProjectMemberEntity;
 import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +18,8 @@ import java.util.List;
 @Table(name = "TEAM_PROJECT")
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class ProjectEntity extends BaseTimeEntity {
 
   @Id
   @Column(nullable = false)

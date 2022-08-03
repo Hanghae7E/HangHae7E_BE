@@ -3,8 +3,10 @@ package hanghae7e6.prototype.workspace;
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,11 +24,11 @@ public class WorkSpaceController {
 
 
     @PostMapping("/project/{projectId}/workSpace")
-    public ResponseEntity<String> createWorkSpace(
+    public ResponseEntity<Long> createWorkSpace(
             @PathVariable Long projectId){
-        workSpaceService.createWorkSpace(projectId);
 
-        return ResponseEntity.ok().body("ok");
+        WorkSpaceEntity workSpace = workSpaceService.createWorkSpace(projectId);
+        return ResponseEntity.ok().body(workSpace.getId());
     }
 
 
@@ -45,14 +47,26 @@ public class WorkSpaceController {
     @GetMapping("/project/{projectId}/workSpace")
     public ResponseEntity<Map<String, Object>> getWorkSpaces(
             @PathVariable Long projectId,
-            @RequestParam("page") Integer page){
+            @Nullable @RequestParam("page") Integer page){
 
-        page = (1 <= page) || Objects.isNull(page) ? page - 1 : 0;
+        page = Objects.isNull(page) || (1 <= page)? 0 : page - 1 ;
 
         Map<String, Object> responseMap =
                 workSpaceService.getWorkSpaces(projectId, page);
 
         return ResponseEntity.ok().body(responseMap);
+    }
+
+
+    @PutMapping("/project/{projectId}/workSpace/{workSpaceId}")
+    public ResponseEntity<String> updateWorkSpace(
+            @PathVariable Long projectId,
+            @PathVariable Long workSpaceId,
+            @RequestBody DetailWorkSpaceDto requestDto){
+
+       workSpaceService.updateWorkSpace(projectId, workSpaceId, requestDto);
+
+       return ResponseEntity.ok().body("ok");
     }
 
 
@@ -63,8 +77,9 @@ public class WorkSpaceController {
 
         workSpaceService.deleteWorkSpace(projectId, workSpaceId);
 
-        return ResponseEntity.ok().body("SUCCESS");
+        return ResponseEntity.ok().body("ok");
     }
+
 
 //    @GetMapping("/project/{projectId}/workSpace")
 //    public ResponseEntity<Map<String, Object>> searchWorkSpaces(
