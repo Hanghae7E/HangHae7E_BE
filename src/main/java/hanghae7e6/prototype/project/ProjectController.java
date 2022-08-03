@@ -36,7 +36,7 @@ public class ProjectController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @Nullable @RequestParam("page") Integer page) {
 
-        page = Objects.isNull(page) || (1 <= page)? 0 : page - 1 ;
+        page = Objects.isNull(page) || (1 >= page)? 0 : page - 1 ;
 
         Map<String, Object> responseMap= projectService.getProjects(userDetails, page);
         return ResponseEntity.ok().body(responseMap);

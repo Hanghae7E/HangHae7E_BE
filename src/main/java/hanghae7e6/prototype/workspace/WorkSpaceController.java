@@ -49,7 +49,7 @@ public class WorkSpaceController {
             @PathVariable Long projectId,
             @Nullable @RequestParam("page") Integer page){
 
-        page = Objects.isNull(page) || (1 <= page)? 0 : page - 1 ;
+        page = Objects.isNull(page) || (1 >= page)? 0 : page - 1 ;
 
         Map<String, Object> responseMap =
                 workSpaceService.getWorkSpaces(projectId, page);
