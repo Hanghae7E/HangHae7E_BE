@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class ProjectResponseDto {
 
+
+  private Long projectId;
   private String projectName;
   private String imgUrl;
   private String uuid;
@@ -30,6 +32,7 @@ public class ProjectResponseDto {
     List<ProjectMemberEntity> projectMembers = project.getProjectMembers();
     List<ProjectTagsEntity> projectTags = project.getProjectTags();
 
+    this.projectId = project.getProjectId();
     this.projectName = project.getProjectName();
     this.imgUrl = project.getImgUrl();
     this.uuid = project.getUuid();

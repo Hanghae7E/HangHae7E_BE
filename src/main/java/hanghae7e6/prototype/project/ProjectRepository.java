@@ -11,6 +11,6 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
 
     @Query("select distinct p from ProjectEntity p left join p.projectTags pt " +
             "left join pt.tag t left join p.projectMembers pm left join pm.user u "
-    +" left join u.profile pf")
+    +" left join u.profile pf where p.projectId = ?1")
     Optional<ProjectEntity> joinById(Long id);
 }
