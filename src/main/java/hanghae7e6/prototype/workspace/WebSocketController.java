@@ -28,7 +28,7 @@ public class WebSocketController {
         String sub = message.getSubEndPoint("/sub/workspace");
         log.info(message.getWorkStatus().toString());
         log.info(sub);
-//        log.info(message.getContent());
+        log.info(message.getContent());
         template.convertAndSend(sub, message); // 받는 메시지와 보내는 메시지가 같은 타입이어야 한다
     }
 }

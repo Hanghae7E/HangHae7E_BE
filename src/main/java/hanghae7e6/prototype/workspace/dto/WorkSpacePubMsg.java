@@ -14,9 +14,9 @@ public class WorkSpacePubMsg {
     private String content;
 
     public String getSubEndPoint(String prefix){
-        if(workStatus.equals(WorkStatus.EDITING)){
-            return prefix + "/" + uuid + "/" + workSpaceId;
+        if(workStatus.equals(WorkStatus.ENTER) || workStatus.equals(WorkStatus.LEAVE)){
+            return prefix + "/" + uuid;
         }
-        return prefix + "/" + uuid;
+        return prefix + "/" + uuid + "/" + workSpaceId;
     }
 }
