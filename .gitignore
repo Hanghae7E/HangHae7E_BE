@@ -164,3 +164,4 @@ application-oauth.yml
 application-s3.yml
 application-test1.yml
 application-test2.yml
+application-mysql.yml
