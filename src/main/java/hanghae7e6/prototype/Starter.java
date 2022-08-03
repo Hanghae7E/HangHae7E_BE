@@ -16,6 +16,7 @@ import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.user.UserEntity;
 import hanghae7e6.prototype.user.UserRepository;
 import hanghae7e6.prototype.user.UserRole;
+import hanghae7e6.prototype.workspace.UserStatusRepository;
 import hanghae7e6.prototype.workspace.WorkSpaceEntity;
 import hanghae7e6.prototype.workspace.WorkSpaceRepository;
 import io.jsonwebtoken.Claims;
@@ -29,19 +30,8 @@ import java.util.*;
 @Component
 public class Starter {
 
-    UserRepository userRepository;
-    ProjectRepository projectRepository;
-    ProjectMemberRepository projectMemberRepository;
-    ProjectTagsRepository projectTagsRepository;
-    ProfileRepository profileRepository;
-    PositionRepository positionRepository;
-    WorkSpaceRepository workSpaceRepository;
 
-    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 *1000 * 24;  // 초단위, 24시간
-
-
-    @Autowired
-    public Starter(UserRepository userRepository, ProjectRepository projectRepository, ProjectMemberRepository projectMemberRepository, ProjectTagsRepository projectTagsRepository, ProfileRepository profileRepository, PositionRepository positionRepository, WorkSpaceRepository workSpaceRepository) {
+    public Starter(UserRepository userRepository, ProjectRepository projectRepository, ProjectMemberRepository projectMemberRepository, ProjectTagsRepository projectTagsRepository, ProfileRepository profileRepository, PositionRepository positionRepository, WorkSpaceRepository workSpaceRepository, UserStatusRepository userStatusRepository) {
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
         this.projectMemberRepository = projectMemberRepository;
@@ -49,7 +39,21 @@ public class Starter {
         this.profileRepository = profileRepository;
         this.positionRepository = positionRepository;
         this.workSpaceRepository = workSpaceRepository;
+        this.userStatusRepository = userStatusRepository;
     }
+
+    UserRepository userRepository;
+    ProjectRepository projectRepository;
+    ProjectMemberRepository projectMemberRepository;
+    ProjectTagsRepository projectTagsRepository;
+    ProfileRepository profileRepository;
+    PositionRepository positionRepository;
+    WorkSpaceRepository workSpaceRepository;
+    UserStatusRepository userStatusRepository;
+
+    private static final long ACCESS_TOKEN_VALID_TIME = 60 * 60 *1000 * 24;  // 초단위, 24시간
+
+
 
 
     public void doInit(){
@@ -117,9 +121,11 @@ public class Starter {
                 .build();
 
         WorkSpaceEntity workSpace = workSpaceRepository.save(workSpaceB);
+//        UserEntity user1 = userRepository.findById(1L).orElseThrow(IllegalArgumentException::new);
+//        UserEntity user2 = userRepository.findById(2L).orElseThrow(IllegalArgumentException::new);
 
         System.out.println("test1 - "+createJwt(user1));
-        System.out.println("test1 - "+createJwt(user2));
+        System.out.println("test2 - "+createJwt(user2));
 
 
     }
@@ -148,5 +154,13 @@ public class Starter {
 
         return jwt;
     }
+
+    public void redisTest(){
+        String test = userStatusRepository.addUserStatus("test", 1L);
+        System.out.println(test);
+//        List<Long> tests = userStatusRepository.getUserStatus("test");
+//        tests.stream().forEach(System.out::println);
+    }
+
 
 }

@@ -15,9 +15,13 @@ spring:
     activate:
       on-profile: local
 
-  h2:
-    console:
-      enabled: true
+  redis:
+    host: localhost
+    port: 6379
+
+#  h2:
+#    console:
+#      enabled: true
 
   datasource:
 #    url: jdbc:h2:mem:test
@@ -25,9 +29,9 @@ spring:
 #    username: sa
 #    password:
     url: jdbc:mysql://southoftheriver.iptime.org:3306/huddleup
-    driver-class-name: com.mysql.jdbc.Driver
-    username:
-    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: remote
+    password: MYwmfrlwk01!
 
 
   jpa:
@@ -58,74 +62,74 @@ logging:
 jwt:
   secret: test
 
----
-# 프로덕션(배포) 환경 설정
-
-server:
-  port: 8081
-
-spring:
-  config:
-    activate:
-      on-profile: test1
-
-  datasource:
-    url: ${DATABASE_URL}
-    driver-class-name: com.mysql.jdbc.Driver
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
-
-  jpa:
-    database: mysql
-    open-in-view: false
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        show_sql : false
-        format_sql : false
-
-  flyway:
-    enabled: false
-    baseline-on-migrate: true
-    baseline-version: 0
-    user: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
-
-jwt:
-  secret: ${JWT_SECRET}
-
----
-server:
-  port: 8082
-
-spring:
-  config:
-    activate:
-      on-profile: test2
-
-  datasource:
-    url: ${DATABASE_URL}
-    driver-class-name: com.mysql.jdbc.Driver
-    username: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
-
-  jpa:
-    database: mysql
-    open-in-view: false
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        show_sql : false
-        format_sql : false
-
-  flyway:
-    enabled: false
-    baseline-on-migrate: true
-    baseline-version: 0
-    user: ${DATABASE_USER}
-    password: ${DATABASE_PASSWORD}
-
-jwt:
-  secret: ${JWT_SECRET}
+#---
+## 프로덕션(배포) 환경 설정
+#
+#server:
+#  port: 8081
+#
+#spring:
+#  config:
+#    activate:
+#      on-profile: test1
+#
+#  datasource:
+#    url: ${database_url}
+#    driver-class-name: com.mysql.jdbc.driver
+#    username: ${database_user}
+#    password: ${database_password}
+#
+#  jpa:
+#    database: mysql
+#    open-in-view: false
+#    hibernate:
+#      ddl-auto: create-drop
+#    properties:
+#      hibernate:
+#        show_sql : false
+#        format_sql : false
+#
+#  flyway:
+#    enabled: false
+#    baseline-on-migrate: true
+#    baseline-version: 0
+#    user: ${database_user}
+#    password: ${database_password}
+#
+#jwt:
+#  secret: ${jwt_secret}
+#
+#---
+#server:
+#  port: 8082
+#
+#spring:
+#  config:
+#    activate:
+#      on-profile: test2
+#
+#  datasource:
+#    url: ${database_url}
+#    driver-class-name: com.mysql.jdbc.driver
+#    username: ${database_user}
+#    password: ${database_password}
+#
+#  jpa:
+#    database: mysql
+#    open-in-view: false
+#    hibernate:
+#      ddl-auto: create-drop
+#    properties:
+#      hibernate:
+#        show_sql : false
+#        format_sql : false
+#
+#  flyway:
+#    enabled: false
+#    baseline-on-migrate: true
+#    baseline-version: 0
+#    user: ${database_user}
+#    password: ${database_password}
+#
+#jwt:
+#  secret: ${jwt_secret}
