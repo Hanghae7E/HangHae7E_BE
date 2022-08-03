@@ -93,18 +93,14 @@ public class ProfileResponse {
 
 
     public static Map<String, String> convertPostEntityToMap(RecruitPostEntity entity, Long userId) throws TransferException {
-        int totalCapacity = entity.getRequiredDesigners() + entity.getRequiredProjectManagers() + entity.getRequiredDevelopers();
-        int currentHeads = entity.getAcceptedApplicantByPosition("개발자").size()
-                            + entity.getAcceptedApplicantByPosition("기획자").size()
-                            + entity.getAcceptedApplicantByPosition("디자이너").size();
-
-
         Map<String, String> map = new HashMap<>();
 
         map.put("id", entity.getId().toString());
         map.put("title", entity.getTitle());
         map.put("recruit_status", entity.getRecruitStatus().toString());
-        map.put("capacity", Integer.toString(currentHeads) + "/" + Integer.toString(totalCapacity));
+        map.put("required_developers", entity.getRequiredDevelopers().toString());
+        map.put("required_designers", entity.getRequiredDesigners().toString());
+        map.put("required_project_managers", entity.getRequiredProjectManagers().toString());
         map.put("recruit_due_time", entity.getRecruitDueTime().toString());
         map.put("project_start_time", entity.getProjectStartTime().toString());
         map.put("project_end_time", entity.getProjectEndTime().toString());

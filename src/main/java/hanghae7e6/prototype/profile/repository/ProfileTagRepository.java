@@ -13,4 +13,5 @@ public interface ProfileTagRepository extends JpaRepository<ProfileTagEntity, Lo
     List<ProfileTagEntity> findAllByProfileId(Long profileId);
     Optional<ProfileTagEntity> findByTagId(Long tagId);
 
+    List<ProfileTagEntity> findAllByProfileAttributeNameAndProfileId(String profileAttributeName, Long profileId);
 }

@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -35,6 +36,7 @@ public class ProfileEntity extends BaseTimeEntity {
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
 
+    @BatchSize(size = 1)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "POSITION_ID")
     private PositionEntity position;
@@ -57,7 +59,7 @@ public class ProfileEntity extends BaseTimeEntity {
     @Column(name = "AVAILABLE_TIME", columnDefinition = "varchar(255) default ''")
     private String availableTime;
 
-    @Column(name = "FACE_TO_FACE", columnDefinition = "boolean default false ")
+    @Column(name = "FACE_TO_FACE", columnDefinition = "bit")
     private Boolean faceToFace;
 
     @Column(name = "CAREER_PERIOD", columnDefinition = "varchar(255) default ''")

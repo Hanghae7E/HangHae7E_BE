@@ -1,5 +1,7 @@
 package hanghae7e6.prototype.recruitpost;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +23,12 @@ public interface RecruitPostRepository extends JpaRepository<RecruitPostEntity, 
     List <RecruitPostEntity> findMyApplyPostsByUserId(Long userId);
 
     @EntityGraph(value = "RecruitPost.FetchAttributes", type = EntityGraphType.LOAD)
-    Page <RecruitPostEntity> findAll(Pageable pageable);
+    Page <RecruitPostEntity> findAllByRecruitStatusAndRecruitDueTimeGreaterThan(Boolean recruitStatus,
+        LocalDate recruitDueTime, Pageable pageable);
 
-    @Query(value = "select rp from RecruitPostEntity rp join rp.user join rp.profile join rp.recruitPostTag as pt left join TagEntity tag on pt.tag.id = tag.id where tag.id = :tagId")
+    @Query(value = "select rp from RecruitPostEntity rp join rp.user join rp.profile join rp.recruitPostTag as pt left join TagEntity tag on pt.tag.id = tag.id where rp.recruitStatus = :recruitStatus and rp.recruitDueTime > :recruitDueTime and tag.id = :tagId")
     @EntityGraph(value = "RecruitPost.FetchWithTag", type = EntityGraphType.LOAD)
-    Page <RecruitPostEntity> findAllByTagId(Long tagId, Pageable pageable);
+    Page <RecruitPostEntity> findAllByTagIdAndRecruitStatusAndRecruitDueTimeGreaterThan(Long tagId,  Boolean recruitStatus, LocalDate recruitDueTime, Pageable pageable);
 
     @EntityGraph(value = "RecruitPost.FetchWithTag", type = EntityGraphType.LOAD)
     Optional<RecruitPostEntity> findById(Long recruitPostId);

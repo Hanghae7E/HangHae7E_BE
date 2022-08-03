@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -50,7 +51,8 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @BatchSize(size = 1)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID")
     private UserEntity user;
 
@@ -68,6 +70,7 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String title;
 
+    @Lob
     @Column(nullable = false)
     private String body;
 
@@ -90,13 +93,13 @@ public class RecruitPostEntity extends BaseTimeEntity {
     @Column
     private LocalDate recruitDueTime;
 
-    @Column(columnDefinition =  "varchar(255) default ''")
+    @Column(columnDefinition = "varchar(255) default ''")
     private String imageUrl;
 
-    @Column(columnDefinition =  "boolean default true ")
+    @Column(columnDefinition = "bit")
     private Boolean recruitStatus;
 
-    public RecruitPostEntity updateFields(PostRequestDto requestDto){
+    public void updateFields(PostRequestDto requestDto){
         String title = requestDto.getTitle();
         String body = requestDto.getBody();
         LocalDate projectStartTime = requestDto.getProjectStartTime();
@@ -119,8 +122,6 @@ public class RecruitPostEntity extends BaseTimeEntity {
         this.requiredProjectManagers = Optional.ofNullable(requestDto.getRequiredProjectManagers()).orElseGet(() -> this.requiredProjectManagers);
         this.requiredDesigners =  Optional.ofNullable(requestDto.getRequiredDesigners()).orElseGet(() -> this.requiredDesigners);
         this.requiredDevelopers =  Optional.ofNullable(requestDto.getRequiredDevelopers()).orElseGet(() -> this.requiredDevelopers);
-
-        return this;
     }
 
     public void setImageUrl(String imageUrl) {
@@ -142,6 +143,9 @@ public class RecruitPostEntity extends BaseTimeEntity {
     }
 
     public void setRecruitPostTag(List <TagEntity> tags) {
+        if (this.recruitPostTag == null)
+            this.recruitPostTag = new ArrayList<>();
+
         List <RecruitPostTagEntity> updated = this.recruitPostTag;
         updated.clear();
 
@@ -149,5 +153,9 @@ public class RecruitPostEntity extends BaseTimeEntity {
             RecruitPostTagEntity postTag = RecruitPostTagEntity.builder().recruitPost(this).tag(tag).build();
             updated.add(postTag);
         }
+    }
+
+    public void closeRecruitPost() {
+        this.recruitStatus = Boolean.FALSE;
     }
 }

@@ -6,6 +6,7 @@ import hanghae7e6.prototype.profile.entity.ProfileTagEntity;
 import hanghae7e6.prototype.profile.repository.ProfileTagRepository;
 import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.tag.TagRepository;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,30 +25,30 @@ public class ProfileTagService {
     @Autowired
     TagRepository tagRepository;
 
+
+    public List <TagEntity> getTagsByAttributeNameAndProfileId(String attrName, Long profileId) {
+        List <ProfileTagEntity> profileTags = profileTagRepository.findAllByProfileAttributeNameAndProfileId(attrName, profileId);
+        return profileTags.stream().map(ProfileTagEntity::getTag).collect(Collectors.toList());
+    }
+
     @Transactional
-    public void updateProfileTags(List <ProfileTagEntity> profileTags, List<String>fieldTags, List<String> skills, ProfileEntity profile) throws AbstractException {
-        List <TagEntity> requestFieldTags = tagRepository.findByBodyIn(fieldTags);
+    public void updateProfileTags(List <ProfileTagEntity> profileTags, List<String> fields, List<String> skills, ProfileEntity profile) throws AbstractException {
+        if (profileTags == null) profileTags = new ArrayList<>();
+        List <TagEntity> requestFieldTags = tagRepository.findByBodyIn(fields);
         List <TagEntity> requestSkillTags = tagRepository.findByBodyIn(skills);
 
-        List <TagEntity> requestAllTags = Stream.concat(requestFieldTags.stream(), requestSkillTags.stream()).
-                                                collect(Collectors.toList());
-
-        profileTags.removeIf(profileTag -> !requestAllTags.contains(profileTag.getTag()));
+        profileTags.clear();
 
         for (TagEntity fieldTag : requestFieldTags) {
-            if (profileTags.stream().noneMatch(profileTag -> profileTag.getTag() == fieldTag)) {
                 ProfileTagEntity newProfileTag = ProfileTagEntity.builder().profile(profile).tag(fieldTag).profileAttributeName("field").build();
-                profileTagRepository.save(newProfileTag);
                 profileTags.add(newProfileTag);
-            }
+
         }
 
         for (TagEntity skillTag : requestSkillTags) {
-            if (profileTags.stream().noneMatch(profileTag -> profileTag.getTag() == skillTag)) {
                 ProfileTagEntity newProfileTag = ProfileTagEntity.builder().profile(profile).tag(skillTag).profileAttributeName("skill").build();
-                profileTagRepository.save(newProfileTag);
                 profileTags.add(newProfileTag);
-            }
+
         }
     }
 

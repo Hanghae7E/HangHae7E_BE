@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -31,7 +32,7 @@ public class ProfileTagEntity extends BaseTimeEntity {
     private ProfileEntity profile;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "TAG_ID", unique = true)
+    @JoinColumn(name = "TAG_ID")
     private TagEntity tag;
 
     @Column(name = "PROFILE_ATTRIBUTE_NAME")
