@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@Table(name = "PROJECT_TAGS")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectTagsEntity {

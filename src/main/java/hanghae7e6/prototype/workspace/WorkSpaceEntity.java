@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "WORK_SPACE")
+@Table(name = "WORK_SPACES")
 @EntityListeners(AuditingEntityListener.class)
 public class WorkSpaceEntity extends BaseTimeEntity {
 

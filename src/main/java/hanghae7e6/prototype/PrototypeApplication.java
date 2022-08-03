@@ -21,7 +21,7 @@ public class PrototypeApplication {
 
 //	@Bean
 //	public CommandLineRunner setUp(Starter starter){
-//		return args -> starter.redisTest();
+//		return args -> starter.doInit();
 //	}
 }
 

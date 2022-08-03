@@ -74,6 +74,8 @@ public class Starter {
         UserEntity user1 = userRepository.save(userB1);
         UserEntity user2 = userRepository.save(userB2);
 
+        userRepository.save(userB1);
+        userRepository.save(userB2);
 
         ProjectEntity projectB = ProjectEntity.builder()
                 .projectName("test")

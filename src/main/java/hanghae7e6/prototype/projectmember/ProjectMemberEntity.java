@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@Table(name = "PROJECT_MEMBER")
+@Table(name = "PROJECT_MEMBERS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectMemberEntity {
