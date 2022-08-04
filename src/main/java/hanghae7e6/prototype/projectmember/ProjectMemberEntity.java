@@ -1,8 +1,6 @@
 package hanghae7e6.prototype.projectmember;
 
 import hanghae7e6.prototype.project.ProjectEntity;
-import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
-import hanghae7e6.prototype.tag.TagEntity;
 import hanghae7e6.prototype.user.UserEntity;
 import lombok.*;
 
@@ -12,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@Table(name = "PROJECT_MEMBER")
+@Table(name = "PROJECT_MEMBERS")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectMemberEntity {

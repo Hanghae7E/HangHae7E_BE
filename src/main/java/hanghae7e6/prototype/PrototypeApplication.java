@@ -1,7 +1,9 @@
 package hanghae7e6.prototype;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.EntityManager;
@@ -13,15 +15,13 @@ import javax.persistence.PersistenceUnit;
 @SpringBootApplication
 public class PrototypeApplication {
 
-	@PersistenceContext
-	EntityManager em;
-
-	@PersistenceUnit
-	EntityManagerFactory emf;
-
 	public static void main(String[] args) {
 		SpringApplication.run(PrototypeApplication.class, args);
 	}
 
+//	@Bean
+//	public CommandLineRunner setUp(Starter starter){
+//		return args -> starter.doInit();
+//	}
 }
 
