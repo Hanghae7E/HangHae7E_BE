@@ -1,5 +1,6 @@
 package hanghae7e6.prototype.recruitpost;
 
+import hanghae7e6.prototype.exception.AbstractException;
 import hanghae7e6.prototype.exception.ErrorCode;
 import hanghae7e6.prototype.exception.InvalidException;
 import hanghae7e6.prototype.recruitpost.dto.DetailPostResponseDto;
@@ -35,10 +36,16 @@ public class RecruitPostController {
     @GetMapping("/main")
     public ResponseEntity<Map<String, Object>> getPosts(
         @RequestParam("page") Integer page, @RequestParam("size") Integer size, @RequestParam("sort") String sort, @RequestParam(required = false, value = "tags") Long tagId) {
-        if (sort.equals("new")) sort = "createdAt";
+
+        Direction sortDirection = Direction.ASC;
+
+        if (sort.equals("new")) {
+            sortDirection = Direction.DESC;
+            sort = "createdAt";
+        }
         if (sort.equals("due")) sort = "recruitDueTime";
 
-        PageRequest pageRequest = PageRequest.of(page, size, Direction.DESC, sort);
+        PageRequest pageRequest = PageRequest.of(page, size, sortDirection, sort);
         Map<String, Object> body = recruitPostService.getPosts(pageRequest, tagId);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
@@ -47,9 +54,11 @@ public class RecruitPostController {
 
     @GetMapping("/recruitPost/{postId}")
     public ResponseEntity<DetailPostResponseDto> getPost(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long postId){
 
-        DetailPostResponseDto body = recruitPostService.getPost(postId);
+        Long currentUserId = userDetails != null ? userDetails.getId() : null;
+        DetailPostResponseDto body = recruitPostService.getPost(currentUserId, postId);
 
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
@@ -58,7 +67,7 @@ public class RecruitPostController {
     @PostMapping("/recruitPost")
     public ResponseEntity<?> createPost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @ModelAttribute PostRequestDto requestDto) throws IOException{
+            @ModelAttribute PostRequestDto requestDto) throws IOException, AbstractException {
 
         if (requestDto.getProjectEndTime() == null || requestDto.getRecruitDueTime() == null || requestDto.getProjectStartTime() == null)
             throw new InvalidException(ErrorCode.EMPTY_BODY);
@@ -73,7 +82,7 @@ public class RecruitPostController {
     public ResponseEntity<?> updatePost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long postId,
-            @ModelAttribute PostRequestDto requestDto) throws IOException {
+            @ModelAttribute PostRequestDto requestDto) throws IOException, AbstractException {
 
         if (requestDto.getProjectEndTime() == null || requestDto.getRecruitDueTime() == null || requestDto.getProjectStartTime() == null)
             throw new InvalidException(ErrorCode.EMPTY_BODY);
@@ -89,15 +98,22 @@ public class RecruitPostController {
     @DeleteMapping("recruitPost/{postId}")
     public ResponseEntity<?> deletePost(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long postId){
+            @PathVariable Long postId) throws AbstractException {
 
         recruitPostService.deletePost(userDetails, postId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @PostMapping("/recruitPost/{postId}/closed")
+    public ResponseEntity<?> closeRecruitPost(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @PathVariable Long postId) throws IOException {
 
+        if (userDetails == null) throw new InvalidException(ErrorCode.INVALID_REQUEST);
 
+        recruitPostService.closePost(userDetails, postId);
 
-
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

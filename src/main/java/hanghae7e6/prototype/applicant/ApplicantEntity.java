@@ -49,4 +49,8 @@ public class ApplicantEntity extends BaseTimeEntity {
         this.status = Optional.ofNullable( applicantRequest.getStatus()).orElseGet(this::getStatus);
         this.position = Optional.ofNullable(applicantRequest.getPosition()).orElseGet(this::getPosition);
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

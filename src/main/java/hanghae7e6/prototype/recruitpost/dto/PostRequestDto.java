@@ -76,10 +76,10 @@ public class PostRequestDto {
                 LocalDate.parse(date) : null;
     }
 
-    public RecruitPostEntity toEntity(Long userId, ProfileEntity profile){
+    public RecruitPostEntity toEntity(UserEntity user, ProfileEntity profile){
 
         return RecruitPostEntity.builder()
-                .user(UserEntity.builder().id(userId).build())
+                .user(user)
                 .title(getTitle())
                 .body(getBody())
                 .profile(profile)

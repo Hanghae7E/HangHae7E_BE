@@ -1,7 +1,6 @@
 package hanghae7e6.prototype.user;
 
 import hanghae7e6.prototype.common.BaseTimeEntity;
-import hanghae7e6.prototype.profile.entity.ProfileEntity;
 import hanghae7e6.prototype.recruitpost.RecruitPostEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,11 +40,6 @@ public class UserEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "USER_ROLE", nullable = true)
     private UserRole userRole;
-
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private ProfileEntity profile;
-
 
     @Builder
     public UserEntity(Long id, String email, String username, UserRole userRole, String socialType) {

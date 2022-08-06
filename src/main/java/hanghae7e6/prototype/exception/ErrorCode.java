@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ErrorCode {
 
     /* 400 BAD_REQUEST 잘못된 요청 */
+    INVALID_REQUEST("잘못된 접근 요청입니다."),
     ALREADY_LOGIN("이미 로그인이 되어있습니다."),
     INVALID_REGISTER_EMAIL("이메일 형식이 유효하지 않습니다."),
     INVALID_REGISTER_PASSWORD( "비밀번호 형식이 유효하지 않습니다."),
@@ -19,8 +20,13 @@ public enum ErrorCode {
     POSITION_ALREADY_EXISTS("이미 존재하는 포지션입니다."),
     INVALID_POSITION("잘못되거나 없는 포지션입니다."),
     APPLICANT_ALREADY_EXISTS("해당 프로젝트에 이미 신청하셨습니다."),
+    DENIED_APPLICANT("불합격하여 다시 신청할 수 없습니다."),
+    ACCEPTED_APPLICANT("합격하여 다시 신청할 수 없습니다."),
+    APPLICANT_IS_AUTHOR("게시글 작성자는 신청할 수 없습니다."),
     EMPTY_BODY("필요한 값이 비어있거나 잘못되어 있습니다. 값 형식을 확인해 주세요!"),
     EMPTY_POSITION("포지션이 비어있습니다."),
+    APPLICANT_POSITION_EMPTY("신청자의 포지션이 비어있습니다."),
+    ALREADY_CLOSED_POST("이미 마감된 게시글입니다."),
 
     /* 401 UNAUTHORIZED 인증되지 않은 사용자 */
     LOGIN_REQUIRED( "로그인이 필요합니다."),

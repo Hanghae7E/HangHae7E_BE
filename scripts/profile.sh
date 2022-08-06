@@ -11,7 +11,7 @@ function find_idle_profile()
 
     if [ "${CURRENT_PROFILE}" == test1 ]
     then
-      IDLE_PROFILE=tese2
+      IDLE_PROFILE=test2
     else
       IDLE_PROFILE=test1
     fi
