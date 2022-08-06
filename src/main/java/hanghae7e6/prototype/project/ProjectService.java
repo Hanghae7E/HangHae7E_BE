@@ -42,6 +42,7 @@ public class ProjectService {
     ProjectEntity projectObj = requestDto.toEntity();
     ProjectEntity project = projectRepository.save(projectObj);
     project.addProjectTags(requestDto.getProjectTags());
+    project.addProjectMembers(requestDto.getProjectMember());
 
     return project;
   }
