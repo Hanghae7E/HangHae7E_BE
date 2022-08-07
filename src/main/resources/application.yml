@@ -4,13 +4,15 @@ spring:
     include:
       - oauth
       - s3
-#      - mysql
-      - h2
+      - mysql
 
 ---
 # 로컬 환경 설정
 server:
   port: 8080
+
+s3:
+  base-path: hdu
 
 spring:
   config:
@@ -26,18 +28,18 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
         show_sql: true
 
 
-  flyway:
-    enabled: false
-    baseline-on-migrate: true
-    user: sa
-    password:
+#  flyway:
+#    enabled: false
+#    baseline-on-migrate: true
+#    user: sa
+#    password:
 
 logging:
   level:
