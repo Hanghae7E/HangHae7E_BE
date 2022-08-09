@@ -16,6 +16,8 @@ drop table if exists tags;
 
 drop table if exists users;
 
+drop table if exists milestones;
+
 create table applicants (
                             applicant_id bigint not null auto_increment,
                             created_at datetime(6),
@@ -109,6 +111,18 @@ create table users (
                        primary key (user_id)
 ) engine=InnoDB;
 
+create table milestones (
+                           milestone_id bigint not null auto_increment,
+                           title varchar(50) not null,
+                           milestone_status varchar(5),
+                           created_at datetime(9),
+                           completed_by datetime(9),
+                           author_id bigint,
+                           person_in_charge_id bigint,
+                           body varchar(255)
+                           primary key (milestone_id)
+) engine=InnoDB;
+
 alter table positions
     add constraint uk_position_name unique (position_name);
 
@@ -164,3 +178,8 @@ alter table recruit_posts
     add constraint fk_recruit_posts_user_id
         foreign key (user_id)
             references users (user_id);
+
+alter table milestones
+    add constraint fk_milestones_project_member_id
+        foreign key (project_member_id)
+            references project_members (project_member_id);
