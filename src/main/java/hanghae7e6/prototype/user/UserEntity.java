@@ -43,19 +43,11 @@ public class UserEntity extends BaseTimeEntity {
     @Column(name = "USER_ROLE", nullable = true)
     private UserRole userRole;
 
-<<<<<<< HEAD
     @BatchSize(size = 1)
     @OneToOne(mappedBy = "user")
     private ProfileEntity profile;
 
-=======
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private ProfileEntity profile;
-
-
->>>>>>> 3b6fc400c7ded6e0db2efc3b4cf744b166a9d88b
-    @Builder
+ @Builder
     public UserEntity(Long id, String email, String username, UserRole userRole, String socialType) {
         this.id = id;
         this.email = email;
