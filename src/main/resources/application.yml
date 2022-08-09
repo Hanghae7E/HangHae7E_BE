@@ -19,7 +19,7 @@ spring:
     url: jdbc:mysql://localhost:3306/test
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: Emdelia&136
+    password:
 
   jpa:
     open-in-view: false
@@ -36,7 +36,7 @@ spring:
     baseline-on-migrate: true
     baseline-version: 0
     user: root
-    password: Emdelia&136
+    password: 
 
 logging:
   level:
