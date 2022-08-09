@@ -24,6 +24,11 @@ spring:
     port: 6379
 
 
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/test
+#    driver-class-name: com.mysql.jdbc.Driver
+#    username: LeeJerry
+#    password: LeeJerry
 
   jpa:
     open-in-view: false
@@ -34,12 +39,12 @@ spring:
         format_sql: true
         show_sql: true
 
-
-#  flyway:
-#    enabled: false
-#    baseline-on-migrate: true
-#    user: sa
-#    password:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+#    user: LeeJerry
+#    password: LeeJerry
 
 logging:
   level:

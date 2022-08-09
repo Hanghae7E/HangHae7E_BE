@@ -2,9 +2,8 @@ package hanghae7e6.prototype.workspace;
 
 import hanghae7e6.prototype.common.BaseTimeSort;
 import hanghae7e6.prototype.project.ProjectEntity;
-import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
 import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
-import hanghae7e6.prototype.workspace.dto.WorkSpaceSubMsg;
+import hanghae7e6.prototype.workspace.websocket.WorkSpacePubDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -88,7 +87,7 @@ public class WorkSpaceService {
     }
 
     @Transactional
-    public WorkSpaceEntity updateWorkSpace(Long projectId, Long workSpaceId, WorkSpaceSubMsg dto){
+    public WorkSpaceEntity updateWorkSpace(Long projectId, Long workSpaceId, WorkSpacePubDto dto){
 
         WorkSpaceEntity workSpace = workSpaceRepository.findByProjectAndId(new ProjectEntity(projectId), workSpaceId)
                 .orElseThrow(IllegalArgumentException::new);

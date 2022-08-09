@@ -2,8 +2,7 @@ package hanghae7e6.prototype.workspace;
 
 import hanghae7e6.prototype.common.BaseTimeEntity;
 import hanghae7e6.prototype.project.ProjectEntity;
-import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
-import hanghae7e6.prototype.workspace.dto.WorkSpaceSubMsg;
+import hanghae7e6.prototype.workspace.websocket.WorkSpacePubDto;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -42,7 +41,7 @@ public class WorkSpaceEntity extends BaseTimeEntity {
     }
 
 
-    public void update(WorkSpaceSubMsg dto){
+    public void update(WorkSpacePubDto dto){
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }

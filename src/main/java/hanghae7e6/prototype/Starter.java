@@ -67,6 +67,21 @@ public class Starter {
         UserEntity user1 = userRepository.save(userB1);
         UserEntity user2 = userRepository.save(userB2);
 
+
+        ProfileEntity profileB1 = ProfileEntity.builder()
+                .user(user1)
+                .position(positionRepository.findById(1L).orElseThrow(IllegalArgumentException::new))
+                .build();
+
+        ProfileEntity profileB2 = ProfileEntity.builder()
+                .user(user2)
+                .position(positionRepository.findById(1L).orElseThrow(IllegalArgumentException::new))
+                .build();
+
+        ProfileEntity profile1 = profileRepository.save(profileB1);
+        ProfileEntity profile2 = profileRepository.save(profileB2);
+
+
 //        ProjectEntity projectB = ProjectEntity.builder()
 //                .projectName("test")
 //                .uuid("testUuid")
@@ -92,18 +107,6 @@ public class Starter {
 //        ProjectMemberEntity projectMember = projectMemberRepository.save(projectMemberB);
 //
 //
-//        ProfileEntity profileB1 = ProfileEntity.builder()
-//                .user(user1)
-//                .position(positionRepository.findById(1L).orElseThrow(IllegalArgumentException::new))
-//                .build();
-//
-//        ProfileEntity profileB2 = ProfileEntity.builder()
-//                .user(user2)
-//                .position(positionRepository.findById(1L).orElseThrow(IllegalArgumentException::new))
-//                .build();
-//
-//        ProfileEntity profile1 = profileRepository.save(profileB1);
-//        ProfileEntity profile2 = profileRepository.save(profileB2);
 //
 //
 //        WorkSpaceEntity workSpaceB = WorkSpaceEntity.builder()

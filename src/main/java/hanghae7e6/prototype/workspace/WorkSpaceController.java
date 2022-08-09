@@ -1,13 +1,12 @@
 package hanghae7e6.prototype.workspace;
 
 import hanghae7e6.prototype.workspace.dto.DetailWorkSpaceDto;
-import hanghae7e6.prototype.workspace.dto.WorkSpaceSubMsg;
+import hanghae7e6.prototype.workspace.websocket.WorkSpacePubDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Null;
 import java.util.Map;
 import java.util.Objects;
 
@@ -63,7 +62,7 @@ public class WorkSpaceController {
     public ResponseEntity<String> updateWorkSpace(
             @PathVariable Long projectId,
             @PathVariable Long workSpaceId,
-            @RequestBody WorkSpaceSubMsg requestDto){
+            @RequestBody WorkSpacePubDto requestDto){
 
        workSpaceService.updateWorkSpace(projectId, workSpaceId, requestDto);
 

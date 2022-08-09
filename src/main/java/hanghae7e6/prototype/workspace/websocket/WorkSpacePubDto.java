@@ -1,4 +1,4 @@
-package hanghae7e6.prototype.workspace.dto;
+package hanghae7e6.prototype.workspace.websocket;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkSpaceSubMsg {
+public class WorkSpacePubDto {
 
     private String username;
     private WorkStatus workStatus;
@@ -17,7 +17,7 @@ public class WorkSpaceSubMsg {
     private String title;
     private String content;
 
-    public WorkSpaceSubMsg(WorkSpacePubMsg msg){
+    public WorkSpacePubDto(WorkSpacePubMsg msg){
         this.title = msg.getTitle();
         this.content = msg.getContent();
         this.username = msg.getUsername();
