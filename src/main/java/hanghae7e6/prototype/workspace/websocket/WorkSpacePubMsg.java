@@ -5,7 +5,9 @@ import io.jsonwebtoken.Jwts;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +15,6 @@ import java.util.Map;
 @Setter
 public class WorkSpacePubMsg {
 
-    @Value("${jwt.secret}")
-    private String secretKey;
 
     private String username; // 프론트와 이야기 해서 삭제하기
     private Long userId;
@@ -58,12 +58,13 @@ public class WorkSpacePubMsg {
     }
 
 
-    public void validateToken(JwtProvider jwtProvider){
+    public void validateToken(JwtProvider jwtProvider, String secretWord){
         if(jwtProvider.validateToken(token)){
-            Long userId = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
-                    .get("userId", Long.class);
+            String secretKey = Base64.getEncoder().encodeToString(secretWord.getBytes());
+            String userId = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
+                    .get("userId", String.class);
 
-            this.userId = userId;
+            this.userId = Long.valueOf(userId);
         }
 
     }

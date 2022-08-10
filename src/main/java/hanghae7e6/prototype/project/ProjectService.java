@@ -9,6 +9,9 @@ import hanghae7e6.prototype.workspace.WorkSpaceEntity;
 import hanghae7e6.prototype.workspace.WorkSpaceRepository;
 import hanghae7e6.prototype.workspace.WorkSpaceService;
 import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
+import hanghae7e6.prototype.workspace.redis.UserStatusEntity;
+import hanghae7e6.prototype.workspace.redis.UserStatusService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,14 +29,16 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectService {
 
-
   private ProjectRepository projectRepository;
+  private UserStatusService userStatusService;
   final Integer SIZE = 10;
   final Sort SORT = BaseTimeSort.LATEST_DATA.getSort();
 
 
-  public ProjectService(ProjectRepository projectRepository){
+  @Autowired
+  public ProjectService(ProjectRepository projectRepository, UserStatusService userStatusService) {
     this.projectRepository = projectRepository;
+    this.userStatusService = userStatusService;
   }
 
 
@@ -54,7 +59,9 @@ public class ProjectService {
     ProjectEntity project = projectRepository.detailJoinById(projectId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.BOARD_NOT_FOUND));
 
-    DetailProjectResponseDto responseDto = new DetailProjectResponseDto(project);
+    List<UserStatusEntity> userStatusEntities = userStatusService.findAllMemberByUuid(project.getUuid());
+
+    DetailProjectResponseDto responseDto = new DetailProjectResponseDto(project, userStatusEntities);
     return responseDto;
   }
 

@@ -5,6 +5,8 @@ import hanghae7e6.prototype.projectmember.ProjectMemberEntity;
 import hanghae7e6.prototype.projecttag.ProjectTagsDto;
 import hanghae7e6.prototype.projecttag.ProjectTagsEntity;
 import hanghae7e6.prototype.workspace.dto.SimpleWorkSpaceDto;
+import hanghae7e6.prototype.workspace.redis.UserStatusDto;
+import hanghae7e6.prototype.workspace.redis.UserStatusEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +29,9 @@ public class DetailProjectResponseDto {
   private List<ProjectTagsDto> tags;
   private List<ProjectMemberDto> team;
   private List<SimpleWorkSpaceDto> workSpaces;
+  private List<UserStatusDto> userStatus;
 
-  public DetailProjectResponseDto(ProjectEntity project){
+  public DetailProjectResponseDto(ProjectEntity project, List<UserStatusEntity> userStatusEntities){
     List<ProjectMemberEntity> projectMembers = project.getProjectMembers();
     List<ProjectTagsEntity> projectTags = project.getProjectTags();
 
@@ -38,6 +41,8 @@ public class DetailProjectResponseDto {
     this.uuid = project.getUuid();
     this.team = projectMembers.stream().map(ProjectMemberDto::new).collect(Collectors.toList());
     this.tags = projectTags.stream().map(ProjectTagsDto::new).collect(Collectors.toList());
+    this.userStatus = userStatusEntities.stream().map(UserStatusDto::new).collect(Collectors.toList());
+
   }
 
 }
