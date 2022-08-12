@@ -42,8 +42,10 @@ public class UserStatusService {
     }
 
     public void deleteStatus(Long userId, String uuid){
-        userStatusRepository.deleteByUserIdAndUuid(userId, uuid)
+        UserStatusEntity userStatus = userStatusRepository.findByUserIdAndUuid(userId, uuid)
                 .orElseThrow(IllegalArgumentException::new);
+
+        userStatusRepository.delete(userStatus);
     }
 
 }

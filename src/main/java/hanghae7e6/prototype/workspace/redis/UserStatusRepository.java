@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface UserStatusRepository extends CrudRepository<UserStatusEntity, String> {
     List<UserStatusEntity> findAllByUuid(String uuid);
     Optional<UserStatusEntity> findByUserIdAndUuid(Long userId, String uuid);
-    Optional<UserStatusEntity> deleteByUserIdAndUuid(Long userId, String uuid);
 }
